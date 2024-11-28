@@ -1,0 +1,56 @@
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# === Eclipse ===
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# === NetBeans ===
+/nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# === VS Code ===
+.vscode/
+
+# === Mac OS ===
+.DS_Store
+
+# === Maven ===
+target/
+
+# === Gradle ===
+build/
+
+# === Compiled Java classes ===
+*.class
+
+# === JAR files ===
+*.jar
+*.war
+*.ear
+
+# === Logs ===
+*.log
+
+# === Temporary files ===
+*.tmp
+*.swp
+
+# === Others ===
+*.bak
+*.orig
