@@ -1,0 +1,73 @@
+@startuml
+skinparam roundCorner 0
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam ClassBackgroundColor #OldLace
+skinparam NoteBackgroundColor #OldLace
+skinparam Shadowing false
+
+enum PieceType {
+    PAWN
+    ROOK
+    KNIGHT
+    BISHOP
+    QUEEN
+    KING
+}
+
+enum PlayerColor {
+    WHITE
+    BLACK
+}
+
+interface ChessController {
+    + start(view: ChessView): void
+    + newGame(): void
+    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
+}
+
+interface ChessView {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
+    + displayMessage(msg: String): void
+    + askUser<T>(title: String, question: String, possibilities: ...T): T
+}
+
+note left of ChessView
+T implements User Choice: <T extends User Choice> in Java
+end note
+
+interface UserChoice {
+    + textValue(): String
+}
+
+interface "DrawableResource<E>" {
+    + getResource(): E
+}
+
+abstract class "BaseView<E>" implements ChessView {
+    + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
+    # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
+}
+
+class GUIView extends "BaseView<E>" {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+    + displayMessage(msg: String): void
+    + askUser<T>(title: String, question: String, possibilities: ...T): T
+}
+
+class ConsoleView extends "BaseView<E>" {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+    + displayMessage(msg: String): void
+    + askUser<T>(title: String, question: String, possibilities: ...T): T
+}
+
+ChessController "1" --> "1" ChessView : manage >
+"BaseView<E>" "1" --> "1" ChessController : callback >
+"BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
+@enduml
