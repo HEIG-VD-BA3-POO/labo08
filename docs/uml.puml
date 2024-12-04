@@ -6,65 +6,97 @@ skinparam ClassBackgroundColor #OldLace
 skinparam NoteBackgroundColor #OldLace
 skinparam Shadowing false
 
-enum PieceType {
-    PAWN
-    ROOK
-    KNIGHT
-    BISHOP
-    QUEEN
-    KING
-}
+package chess {
+    enum PieceType {
+        PAWN
+        ROOK
+        KNIGHT
+        BISHOP
+        QUEEN
+        KING
+    }
 
-enum PlayerColor {
-    WHITE
-    BLACK
-}
+    enum PlayerColor {
+        WHITE
+        BLACK
+    }
 
-interface ChessController {
-    + start(view: ChessView): void
-    + newGame(): void
-    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
-}
+    interface ChessController {
+        + start(view: ChessView): void
+        + newGame(): void
+        + move(fromX: int, fromY: int, toX: int, toY: int): boolean
+    }
 
-interface ChessView {
-    + startView(): void
-    + removePiece(x: int, y: int): void
-    + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
-    + displayMessage(msg: String): void
-    + askUser<T>(title: String, question: String, possibilities: ...T): T
-}
+    interface UserChoice {
+        + textValue(): String
+    }
 
-note left of ChessView
-T implements User Choice: <T extends User Choice> in Java
-end note
+    interface "DrawableResource<E>" {
+        + getResource(): E
+    }
 
-interface UserChoice {
-    + textValue(): String
-}
+    package view {
+        interface ChessView {
+            + startView(): void
+            + removePiece(x: int, y: int): void
+            + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
+            + displayMessage(msg: String): void
+            + askUser<T>(title: String, question: String, possibilities: ...T): T
+        }
 
-interface "DrawableResource<E>" {
-    + getResource(): E
-}
+        note left of ChessView
+        T implements User Choice: <T extends User Choice> in Java
+        end note
 
-abstract class "BaseView<E>" implements ChessView {
-    + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
-    # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
-}
 
-class GUIView extends "BaseView<E>" {
-    + startView(): void
-    + removePiece(x: int, y: int): void
-    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-    + displayMessage(msg: String): void
-    + askUser<T>(title: String, question: String, possibilities: ...T): T
-}
+        abstract class "BaseView<E>" implements ChessView {
+            + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
+            # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
+        }
 
-class ConsoleView extends "BaseView<E>" {
-    + startView(): void
-    + removePiece(x: int, y: int): void
-    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-    + displayMessage(msg: String): void
-    + askUser<T>(title: String, question: String, possibilities: ...T): T
+        class GUIView extends "BaseView<E>" {
+            + startView(): void
+            + removePiece(x: int, y: int): void
+            + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+            + displayMessage(msg: String): void
+            + askUser<T>(title: String, question: String, possibilities: ...T): T
+        }
+
+        class ConsoleView extends "BaseView<E>" {
+            + startView(): void
+            + removePiece(x: int, y: int): void
+            + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+            + displayMessage(msg: String): void
+            + askUser<T>(title: String, question: String, possibilities: ...T): T
+        }
+    }
+
+    package engine {
+        class ChessEngine {
+            + startGame(): void
+            + movePiece(fromX: int, fromY: int, x: int, y: int): void
+        }
+
+        class GameState {}
+
+        class MoveValidator {}
+
+        class MoveGenerator {}
+
+        class ChessBoard {}
+
+        class BitBoard {}
+
+        package piece {
+            abstract class ChessPiece {}
+            class Pawn extends ChessPiece {}
+            class Rook extends ChessPiece {}
+            class Knight extends ChessPiece {}
+            class Bishop extends ChessPiece {}
+            class Queen extends ChessPiece {}
+            class King extends ChessPiece {}
+        }
+    }
 }
 
 ChessController "1" --> "1" ChessView : manage >
