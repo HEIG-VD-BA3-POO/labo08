@@ -35,21 +35,19 @@ package chess {
         + getResource(): E
     }
 
-    package view {
-        interface ChessView {
-            + startView(): void
-            + removePiece(x: int, y: int): void
-            + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
-            + displayMessage(msg: String): void
-            + askUser<T>(title: String, question: String, possibilities: ...T): T
-        }
+    interface ChessView {
+        + startView(): void
+        + removePiece(x: int, y: int): void
+        + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
+        + displayMessage(msg: String): void
+    }
 
-        note left of ChessView
+    note left of ChessView
         T implements User Choice: <T extends User Choice> in Java
         end note
 
-
-        abstract class "BaseView<E>" implements ChessView {
+    package view {
+        abstract class "BaseView<E>" implements chess.ChessView {
             + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
             # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
         }
@@ -77,6 +75,14 @@ package chess {
             + movePiece(fromX: int, fromY: int, x: int, y: int): void
         }
 
+        enum GameState {
+            IN_PROGRESS
+			CHECK
+			CHECKMATE
+			STALEMATE
+			DRAW
+        }
+
         class GameState {}
 
         class MoveValidator {}
@@ -88,13 +94,21 @@ package chess {
         class BitBoard {}
 
         package piece {
-            abstract class ChessPiece {}
+            abstract class ChessPiece implements chess.UserChoice {}
             class Pawn extends ChessPiece {}
             class Rook extends ChessPiece {}
             class Knight extends ChessPiece {}
             class Bishop extends ChessPiece {}
             class Queen extends ChessPiece {}
             class King extends ChessPiece {}
+
+        }
+
+        package validation {
+            interface MoveValidationStrategy {}
+            class DirectionalMoveStrategy implements MoveValidationStrategy {}
+            class DistanceMoveStrategy implements MoveValidationStrategy {}
+            class CaptureValidationStrategy implements MoveValidationStrategy {}
         }
     }
 }
@@ -102,4 +116,7 @@ package chess {
 ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >
 "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
+
+ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
+
 @enduml
