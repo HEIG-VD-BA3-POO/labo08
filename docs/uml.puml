@@ -110,6 +110,15 @@ package chess {
             class DistanceMoveStrategy implements MoveValidationStrategy {}
             class CaptureValidationStrategy implements MoveValidationStrategy {}
         }
+
+        package move {
+            interface MoveBehavior {}
+            class DiagonaleBehavior implements MoveBehavior {}
+            class StraightBehavior implements MoveBehavior {}
+            class LBehavior implements MoveBehavior {}
+            class EnPassantBehavior implements MoveBehavior {}
+            class CastlingBehavior implements MoveBehavior {}
+        }
     }
 }
 
@@ -118,5 +127,6 @@ ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
+ChessPiece "1..*" --> "1..*" MoveBehavior : has >
 
 @enduml
