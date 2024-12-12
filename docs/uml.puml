@@ -91,8 +91,6 @@ package chess {
 
         class ChessBoard {}
 
-        class BitBoard {}
-
         package piece {
             abstract class ChessPiece implements chess.UserChoice {}
             class Pawn extends ChessPiece {}
@@ -106,18 +104,19 @@ package chess {
 
         package validation {
             interface MoveValidationStrategy {}
-            class DirectionalMoveStrategy implements MoveValidationStrategy {}
-            class DistanceMoveStrategy implements MoveValidationStrategy {}
-            class CaptureValidationStrategy implements MoveValidationStrategy {}
+            class DiagonaleValidationStrategy implements MoveValidationStrategy {}
+            class StraightValidationStrategy implements MoveValidationStrategy {}
+            class LValidationStrategy implements MoveValidationStrategy {}
+            ' class EnPassantValidationStrategy implements MoveValidationStrategy {}
+            ' class CastlingValidationStrategy implements MoveValidationStrategy {}
         }
 
         package move {
-            interface MoveBehavior {}
-            class DiagonaleBehavior implements MoveBehavior {}
-            class StraightBehavior implements MoveBehavior {}
-            class LBehavior implements MoveBehavior {}
-            class EnPassantBehavior implements MoveBehavior {}
-            class CastlingBehavior implements MoveBehavior {}
+            class Move {} 
+            class Capture implements Move {} 
+            class Check implements Move {} 
+            class EnPassant implements Move {} 
+            class Castling implements Move {} 
         }
     }
 }
@@ -128,5 +127,6 @@ ChessController "1" --> "1" ChessView : manage >
 
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
 ChessPiece "1..*" --> "1..*" MoveBehavior : has >
+ChessBoard "1..*" --> "2..32" Piece : has >
 
 @enduml
