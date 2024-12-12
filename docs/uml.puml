@@ -92,7 +92,9 @@ package chess {
         class ChessBoard {}
 
         package piece {
-            abstract class ChessPiece implements chess.UserChoice {}
+            abstract class ChessPiece implements chess.UserChoice {
+            - boolean: hasMoved
+           }
             class Pawn extends ChessPiece {}
             class Rook extends ChessPiece {}
             class Knight extends ChessPiece {}
@@ -107,16 +109,16 @@ package chess {
             class DiagonaleValidationStrategy implements MoveValidationStrategy {}
             class StraightValidationStrategy implements MoveValidationStrategy {}
             class LValidationStrategy implements MoveValidationStrategy {}
-            ' class EnPassantValidationStrategy implements MoveValidationStrategy {}
-            ' class CastlingValidationStrategy implements MoveValidationStrategy {}
+            class DistanceValidationStrategy implements MoveValidationStrategy {}
         }
 
         package move {
             class Move {} 
-            class Capture implements Move {} 
-            class Check implements Move {} 
-            class EnPassant implements Move {} 
-            class Castling implements Move {} 
+            class Capture extends Move {}
+            class Check extends Move {}
+            class EnPassant extends Move {}
+            class Castling extends Move {}
+            class Promotion extends Move {}
         }
     }
 }
@@ -126,7 +128,6 @@ ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
-ChessPiece "1..*" --> "1..*" MoveBehavior : has >
-ChessBoard "1..*" --> "2..32" Piece : has >
+ChessBoard "1" --> "2..32" ChessPiece : has >
 
 @enduml
