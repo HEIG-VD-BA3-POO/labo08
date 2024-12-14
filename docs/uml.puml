@@ -8,21 +8,33 @@ skinparam NoteBackgroundColor #OldLace
 skinparam Shadowing false
 top to bottom direction
 
-interface ChessController {
+<style>
+    classDiagram {
+        .provided {
+            BackgroundColor GhostWhite
+            LineColor DimGrey
+            FontColor DimGrey
+        }
+    }
+</style>
+
+hide <<provided>> stereotype
+
+interface ChessController<<provided>> {
     + start(view: ChessView): void
     + newGame(): void
     + move(fromX: int, fromY: int, toX: int, toY: int): boolean
 }
 
-interface UserChoice {
+interface UserChoice<<provided>> {
     + textValue(): String
 }
 
-interface "DrawableResource<E>" {
+interface "DrawableResource<E>"<<provided>> {
     + getResource(): E
 }
 
-interface ChessView {
+interface ChessView<<provided>> {
     + startView(): void
     + removePiece(x: int, y: int): void
     + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
@@ -33,12 +45,12 @@ note left of ChessView
     T implements User Choice: <T extends User Choice> in Java
 end note
 
-abstract class "BaseView<E>" implements ChessView {
+abstract class "BaseView<E>"<<provided>> implements ChessView {
     + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
     # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
 }
 
-class GUIView extends "BaseView<E>" {
+class GUIView<<provided>> extends "BaseView<E>" {
     + startView(): void
     + removePiece(x: int, y: int): void
     + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
@@ -46,7 +58,7 @@ class GUIView extends "BaseView<E>" {
     + askUser<T>(title: String, question: String, possibilities: ...T): T
 }
 
-class ConsoleView extends "BaseView<E>" {
+class ConsoleView<<provided>> extends "BaseView<E>" {
     + startView(): void
     + removePiece(x: int, y: int): void
     + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
@@ -73,12 +85,12 @@ static class ChessBoardInitialzer<<static>> {}
 
 class Position {}
 
-enum PlayerColor {
+enum PlayerColor<<provided>> {
     WHITE
     BLACK
 }
 
-enum PieceType {
+enum PieceType<<provided>> {
     PAWN
     ROOK
     KNIGHT
