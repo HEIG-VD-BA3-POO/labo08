@@ -1,26 +1,22 @@
 package chess.engine.move;
 
-import chess.ChessView;
 import chess.engine.ChessBoard;
 import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
-import chess.engine.validation.Direction;
 
-import java.util.Map;
+public class Capture extends Move {
 
-public class Move {
-    protected final Position from;
-    protected final Position to;
-
-    public Move(Position from, Position to) {
-        this.from = from;
-        this.to = to;
+    public Capture(Position from, Position to) {
+        super(from, to);
     }
 
+    @Override
     public void apply(ChessBoard.Board board) {
         assert board.containsKey(from);
+        assert board.containsKey(to);
         ChessPiece p = board.get(from);
         board.remove(from);
+        board.remove(to);
         p.setHasMoved(true);
         board.put(to, p);
     }

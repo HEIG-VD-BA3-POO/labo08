@@ -71,10 +71,8 @@ public class ChessBoard {
         if (board.containsKey(to) && board.get(to).getColor() == piece.getColor()) return null;
 
         // Check if piece can move to this position
-        if (!piece.check(from, to)) return null;
-
         // TODO: Check if along the path of piece if movement is allowed
         // TODO: Create different movement types based on the action (Capture, Promotion, etc.)
-        return new Move(from, to);
+        return piece.move(board, from, to);
     }
 }

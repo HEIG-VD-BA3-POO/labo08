@@ -101,7 +101,7 @@ enum PieceType<<provided>> {
     KING
 }
 
-abstract class ChessPiece {
+abstract class ChessPiece implements Moveable {
     - boolean: hasMoved
     + boolean check(Position from, Position to)
 }
@@ -135,6 +135,10 @@ enum Direction {
 
 class Move {
     + void apply(Board board);
+}
+
+interface Moveable {
+    + Move move(Board board, Position from, Position to);
 }
 
 class Capture extends Move {}
