@@ -1,10 +1,11 @@
 @startuml
+skinparam linetype ortho
 skinparam roundCorner 0
 skinparam classAttributeIconSize 0
-skinparam linetype ortho
 skinparam ClassBackgroundColor #OldLace
 skinparam NoteBackgroundColor #OldLace
 skinparam Shadowing false
+top to bottom direction
 
 package chess {
     enum PieceType {
@@ -44,7 +45,7 @@ package chess {
 
     note left of ChessView
         T implements User Choice: <T extends User Choice> in Java
-        end note
+    end note
 
     package view {
         abstract class "BaseView<E>" implements chess.ChessView {
@@ -77,24 +78,18 @@ package chess {
 
         enum GameState {
             IN_PROGRESS
-			CHECK
-			CHECKMATE
-			STALEMATE
-			DRAW
+            CHECK
+            CHECKMATE
+            STALEMATE
+            DRAW
         }
-
-        class GameState {}
-
-        class MoveValidator {}
-
-        class MoveGenerator {}
 
         class ChessBoard {}
 
         package piece {
             abstract class ChessPiece implements chess.UserChoice {
-            - boolean: hasMoved
-           }
+                - boolean: hasMoved
+            }
             class Pawn extends ChessPiece {}
             class Rook extends ChessPiece {}
             class Knight extends ChessPiece {}
@@ -106,7 +101,7 @@ package chess {
 
         package validation {
             interface MoveValidationStrategy {}
-            class DiagonaleValidationStrategy implements MoveValidationStrategy {}
+            class DiagonalValidationStrategy implements MoveValidationStrategy {}
             class StraightValidationStrategy implements MoveValidationStrategy {}
             class LValidationStrategy implements MoveValidationStrategy {}
             class DistanceValidationStrategy implements MoveValidationStrategy {}
@@ -114,6 +109,7 @@ package chess {
 
         package move {
             class Move {} 
+
             class Capture extends Move {}
             class Check extends Move {}
             class EnPassant extends Move {}
@@ -127,6 +123,7 @@ ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >
 "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
+ChessEngine "1" --> "1" ChessBoard : has >
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
 ChessBoard "1" --> "2..32" ChessPiece : has >
 
