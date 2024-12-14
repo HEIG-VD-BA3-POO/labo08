@@ -3,7 +3,7 @@ package chess.engine.validation;
 import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
 
-public class KnightValidationStrategy implements MoveValidationStrategy {
+public class KnightValidation implements MoveValidation {
 
     @Override
     public boolean check(Position from, Position to, ChessPiece piece) {

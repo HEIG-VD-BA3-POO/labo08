@@ -114,13 +114,13 @@ class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {}
 
 
-interface MoveValidationStrategy {
+interface MoveValidation {
     + boolean check(Position from, Position to, PlayerColor color);
 }
-class DirectionalValidationStrategy implements MoveValidationStrategy {}
-class KnightValidationStrategy implements MoveValidationStrategy {}
-class DistanceValidationStrategy implements MoveValidationStrategy {}
-class PawnDistanceValidationStrategy extends DistanceValidationStrategy {}
+class DirectionalValidation implements MoveValidation {}
+class KnightValidation implements MoveValidation {}
+class DistanceValidation implements MoveValidation {}
+class PawnDistanceValidation extends DistanceValidation {}
 
 enum Direction {
     FORWARDS
@@ -149,14 +149,14 @@ ChessController "1" --> "1" ChessView : manage >
 
 ChessEngine "1" --> "1" ChessBoard : has >
 ChessEngine "1" --> "1" ChessView : has >
-ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
+ChessPiece "1" --> "1..*" MoveValidation : has >
 ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
 ChessBoard +-- Board
 Board "1" --> "2..32" ChessPiece : has >
 Board "1" --> "2..32" Position : has >
 
-DirectionalValidationStrategy "*" --> "1..*" Direction : has >
+DirectionalValidation "*" --> "1..*" Direction : has >
 
 Move "1" --> "2" Position : has >
 

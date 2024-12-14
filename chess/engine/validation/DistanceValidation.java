@@ -3,10 +3,10 @@ package chess.engine.validation;
 import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
 
-public class DistanceValidationStrategy implements MoveValidationStrategy {
+public class DistanceValidation implements MoveValidation {
     private int maxDistance;
 
-    public DistanceValidationStrategy(int maxDistance) {
+    public DistanceValidation(int maxDistance) {
         this.maxDistance = maxDistance;
     }
 

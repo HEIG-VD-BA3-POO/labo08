@@ -5,9 +5,9 @@ import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Pawn;
 import chess.engine.piece.Position;
 
-public class PawnDistanceValidationStrategy extends DistanceValidationStrategy {
+public class PawnDistanceValidation extends DistanceValidation {
 
-    public PawnDistanceValidationStrategy() {
+    public PawnDistanceValidation() {
         super(2);
     }
 

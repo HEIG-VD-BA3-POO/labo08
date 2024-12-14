@@ -2,20 +2,20 @@ package chess.engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import chess.engine.validation.MoveValidationStrategy;
+import chess.engine.validation.MoveValidation;
 
 import java.util.List;
 
 public abstract class ChessPiece {
     protected final PieceType type;
     private final PlayerColor color;
-    private final List<MoveValidationStrategy> validationStrategyList;
+    private final List<MoveValidation> validationList;
     private boolean hasMoved = false;
 
-    public ChessPiece(PieceType type, PlayerColor color, List<MoveValidationStrategy> validationStrategyList) {
+    public ChessPiece(PieceType type, PlayerColor color, List<MoveValidation> validationList) {
         this.type = type;
         this.color = color;
-        this.validationStrategyList = validationStrategyList;
+        this.validationList = validationList;
     }
 
     public PieceType getType() {
@@ -35,8 +35,8 @@ public abstract class ChessPiece {
     }
 
     public boolean check(Position from, Position to) {
-        for (MoveValidationStrategy strategy : validationStrategyList) {
-            if (!strategy.check(from, to, this)) {
+        for (MoveValidation val : validationList) {
+            if (!val.check(from, to, this)) {
                 return false;
             }
         }

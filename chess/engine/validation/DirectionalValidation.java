@@ -5,10 +5,10 @@ import chess.engine.piece.Position;
 
 import java.util.List;
 
-public class DirectionalValidationStrategy implements MoveValidationStrategy {
+public class DirectionalValidation implements MoveValidation {
     private final List<Direction> dirs;
 
-    public DirectionalValidationStrategy(List<Direction> dirs) {
+    public DirectionalValidation(List<Direction> dirs) {
         this.dirs = dirs;
     }
 
