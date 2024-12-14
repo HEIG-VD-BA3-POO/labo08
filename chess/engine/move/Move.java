@@ -1,5 +1,6 @@
 package chess.engine.move;
 
+import chess.ChessView;
 import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
 
@@ -24,5 +25,10 @@ public class Move {
 
     public ChessPiece getPiece() {
         return piece;
+    }
+
+    public void apply(ChessView view) {
+        view.removePiece(from.x(), from.y());
+        view.putPiece(piece.getType(), piece.getColor(), to.x(), to.y());
     }
 }

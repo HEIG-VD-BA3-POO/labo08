@@ -1,4 +1,5 @@
 @startuml
+!pragma layout elk
 skinparam linetype ortho
 skinparam roundCorner 0
 skinparam classAttributeIconSize 0
@@ -116,7 +117,9 @@ enum Direction {
     BACKWARDS_RIGHT
 }
 
-class Move {} 
+class Move {
+    + void apply(ChessView view);
+}
 
 class Capture extends Move {}
 class Check extends Move {}
@@ -137,5 +140,8 @@ ChessBoard "1" --> "2..32" ChessPiece : has >
 ChessBoard "1" --> "2..32" Position : has >
 
 DirectionalValidationStrategy "*" --> "1..*" Direction : has >
+
+Move "1" --> "2" Position : has >
+Move "1" --> "1" ChessPiece : has >
 
 @enduml

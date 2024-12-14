@@ -25,9 +25,7 @@ public class ChessEngine implements ChessController {
         if (move == null) {
             return false;
         }
-
-        view.removePiece(move.getFrom().x(), move.getFrom().y());
-        view.putPiece(move.getPiece().getType(), move.getPiece().getColor(), toX, toY);
+        move.apply(view);
         return true;
     }
 
