@@ -125,6 +125,7 @@ ChessController "1" --> "1" ChessView : manage >
 
 ChessEngine "1" --> "1" ChessBoard : has >
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
+ChessPiece "1" --> "1" PieceType : has >
 ChessBoard "1" --> "2..32" ChessPiece : has >
 
 @enduml
