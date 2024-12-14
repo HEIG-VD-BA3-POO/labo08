@@ -1,6 +1,6 @@
 package chess.engine.validation;
 
-import chess.PlayerColor;
+import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
 
 import java.util.List;
@@ -13,13 +13,13 @@ public class DirectionalValidationStrategy implements MoveValidationStrategy {
     }
 
     @Override
-    public boolean check(Position from, Position to, PlayerColor color) {
+    public boolean check(Position from, Position to, ChessPiece piece) {
         for (Direction dir : dirs) {
             Position current = from;
 
             // Move repeatedly in the direction until out of bounds or the target is reached
             while (current.isValid()) {
-                current = dir.move(current, color);
+                current = dir.move(current, piece.getColor());
 
                 if (current.equals(to)) {
                     return true;

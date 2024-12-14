@@ -118,7 +118,7 @@ interface MoveValidationStrategy {
 class DirectionalValidationStrategy implements MoveValidationStrategy {}
 class KnightValidationStrategy implements MoveValidationStrategy {}
 class DistanceValidationStrategy implements MoveValidationStrategy {}
-class PawnValidationStrategy extends DistanceValidationStrategy {}
+class PawnDistanceValidationStrategy extends DistanceValidationStrategy {}
 
 enum Direction {
     FORWARDS
@@ -132,7 +132,7 @@ enum Direction {
 }
 
 class Move {
-    + void apply(ChessView view);
+    + void apply(Map<Position, ChessPiece> pieces, ChessView view);
 }
 
 class Capture extends Move {}
@@ -156,6 +156,5 @@ ChessBoard "1" --> "2..32" Position : has >
 DirectionalValidationStrategy "*" --> "1..*" Direction : has >
 
 Move "1" --> "2" Position : has >
-Move "1" --> "1" ChessPiece : has >
 
 @enduml

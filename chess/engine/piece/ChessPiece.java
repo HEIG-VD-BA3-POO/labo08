@@ -1,6 +1,5 @@
 package chess.engine.piece;
 
-import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.engine.validation.MoveValidationStrategy;
@@ -9,8 +8,9 @@ import java.util.List;
 
 public abstract class ChessPiece {
     protected final PieceType type;
-    protected final PlayerColor color;
+    private final PlayerColor color;
     private final List<MoveValidationStrategy> validationStrategyList;
+    private boolean hasMoved = false;
 
     public ChessPiece(PieceType type, PlayerColor color, List<MoveValidationStrategy> validationStrategyList) {
         this.type = type;
@@ -26,9 +26,17 @@ public abstract class ChessPiece {
         return color;
     }
 
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
     public boolean check(Position from, Position to) {
         for (MoveValidationStrategy strategy : validationStrategyList) {
-            if (!strategy.check(from, to, color)) {
+            if (!strategy.check(from, to, this)) {
                 return false;
             }
         }

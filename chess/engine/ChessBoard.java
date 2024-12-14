@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChessBoard {
+
     private final Map<Position, ChessPiece> pieces = new HashMap<>();
 
     public ChessBoard() {
@@ -34,10 +35,7 @@ public class ChessBoard {
 
         // TODO: Check if along the path of piece if movement is allowed
         // TODO: Create different movement types based on the action (Capture, Promotion, etc.)
-        ChessPiece p = getPiece(from);
-        pieces.remove(from);
-        pieces.put(to, p);
-        return new Move(from, to, p);
+        return new Move(from, to);
     }
 
     public ChessPiece getPiece(Position from) {

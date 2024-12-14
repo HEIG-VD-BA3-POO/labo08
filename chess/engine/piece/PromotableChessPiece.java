@@ -8,6 +8,7 @@ import chess.engine.validation.MoveValidationStrategy;
 import java.util.List;
 
 public abstract class PromotableChessPiece extends ChessPiece implements ChessView.UserChoice {
+
     public PromotableChessPiece(PieceType type, PlayerColor color, List<MoveValidationStrategy> validationStrategyList) {
         super(type, color, validationStrategyList);
     }

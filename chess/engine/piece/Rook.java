@@ -5,7 +5,6 @@ import chess.PlayerColor;
 import chess.engine.validation.Direction;
 import chess.engine.validation.DirectionalValidationStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends ChessPiece {

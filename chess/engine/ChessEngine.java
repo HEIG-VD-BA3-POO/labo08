@@ -3,7 +3,6 @@ package chess.engine;
 import chess.ChessController;
 import chess.ChessView;
 import chess.engine.move.Move;
-import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
 
 public class ChessEngine implements ChessController {
@@ -25,7 +24,7 @@ public class ChessEngine implements ChessController {
         if (move == null) {
             return false;
         }
-        move.apply(view);
+        move.apply(board.getPieces(), view);
         return true;
     }
 
