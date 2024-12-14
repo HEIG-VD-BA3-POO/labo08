@@ -81,6 +81,8 @@ enum GameState {
 
 class ChessBoard {}
 
+static class Board<<static>> {}
+
 static class ChessBoardInitialzer<<static>> {}
 
 class Position {}
@@ -132,7 +134,7 @@ enum Direction {
 }
 
 class Move {
-    + void apply(Map<Position, ChessPiece> pieces, ChessView view);
+    + void apply(Board board);
 }
 
 class Capture extends Move {}
@@ -150,8 +152,9 @@ ChessEngine "1" --> "1" ChessView : has >
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
 ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
-ChessBoard "1" --> "2..32" ChessPiece : has >
-ChessBoard "1" --> "2..32" Position : has >
+ChessBoard +-- Board
+Board "1" --> "2..32" ChessPiece : has >
+Board "1" --> "2..32" Position : has >
 
 DirectionalValidationStrategy "*" --> "1..*" Direction : has >
 

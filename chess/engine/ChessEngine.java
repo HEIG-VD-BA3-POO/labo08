@@ -6,12 +6,11 @@ import chess.engine.move.Move;
 import chess.engine.piece.Position;
 
 public class ChessEngine implements ChessController {
-    private final ChessBoard board = new ChessBoard();
-    private ChessView view;
+    private ChessBoard chessBoard;
 
     @Override
     public void start(ChessView view) {
-        this.view = view;
+        this.chessBoard = new ChessBoard(view);
         view.startView();
         newGame();
     }
@@ -20,22 +19,20 @@ public class ChessEngine implements ChessController {
     public boolean move(int fromX, int fromY, int toX, int toY) {
         final Position from = new Position(fromX, fromY);
         final Position to = new Position(toX, toY);
-        final Move move = board.move(from, to);
+        final Move move = chessBoard.move(from, to);
         if (move == null) {
             return false;
         }
-        move.apply(board.getPieces(), view);
+        move.apply(chessBoard.getBoard());
         return true;
     }
 
     @Override
     public void newGame() {
-        if (view == null) {
-            throw new RuntimeException("View must be set before calling newGame()");
+        if (chessBoard == null) {
+            throw new RuntimeException("Call ChessEngine.start() before reseting the game");
         }
-        board.reset();
-        board.getPieces().forEach((pos, chessPiece) ->
-                view.putPiece(chessPiece.getType(), chessPiece.getColor(), pos.x(), pos.y())
-        );
+        chessBoard.reset();
+        chessBoard.getBoard().sync();
     }
 }
