@@ -88,6 +88,7 @@ enum PieceType {
 
 abstract class ChessPiece implements UserChoice {
     - boolean: hasMoved
+    + boolean check(Position from, Position to)
 }
 class Pawn extends ChessPiece {}
 class Rook extends ChessPiece {}
@@ -97,11 +98,23 @@ class Queen extends ChessPiece {}
 class King extends ChessPiece {}
 
 
-interface MoveValidationStrategy {}
-class DiagonalValidationStrategy implements MoveValidationStrategy {}
-class StraightValidationStrategy implements MoveValidationStrategy {}
+interface MoveValidationStrategy {
+    + boolean check(Position from, Position to, PlayerColor color);
+}
+class DirectionalValidationStrategy implements MoveValidationStrategy {}
 class LValidationStrategy implements MoveValidationStrategy {}
 class DistanceValidationStrategy implements MoveValidationStrategy {}
+
+enum Direction {
+    FORWARDS
+    BACKWARDS
+    LEFT
+    RIGHT
+    FORWARDS_LEFT
+    FORWARDS_RIGHT
+    BACKWARDS_LEFT
+    BACKWARDS_RIGHT
+}
 
 class Move {} 
 
@@ -122,5 +135,7 @@ ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
 ChessBoard "1" --> "2..32" ChessPiece : has >
 ChessBoard "1" --> "2..32" Position : has >
+
+DirectionalValidationStrategy "*" --> "1..*" Direction : has >
 
 @enduml

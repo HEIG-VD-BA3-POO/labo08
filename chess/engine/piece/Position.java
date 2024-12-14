@@ -1,26 +1,27 @@
 package chess.engine.piece;
 
-public final class Position {
-    public final int x;
-    public final int y;
-
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
+public record Position(int x, int y) {
 
     public boolean equals(Position other) {
         return x == other.x && y == other.y;
     }
 
     @Override
-    public int hashCode() {
-        // 31 because it's a prime number
-        return x * 31 + y;
-    }
-
-    @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
+    }
+
+    public boolean isValid() {
+        return x >= 0 && y >= 0 && x < 9 && y < 9;
+    }
+
+    /**
+     * Calculate the chessboard-compatible distance to another position.
+     * The distance is defined as the maximum of horizontal or vertical steps.
+     */
+    public int dist(Position other) {
+        final int dx = Math.abs(x - other.x);
+        final int dy = Math.abs(y - other.y);
+        return Math.max(dx, dy);
     }
 }

@@ -2,12 +2,9 @@ package chess.engine;
 
 import chess.ChessController;
 import chess.ChessView;
-import chess.PieceType;
-import chess.PlayerColor;
+import chess.engine.move.Move;
 import chess.engine.piece.ChessPiece;
 import chess.engine.piece.Position;
-
-import java.util.Map;
 
 public class ChessEngine implements ChessController {
     private final ChessBoard board = new ChessBoard();
@@ -22,7 +19,16 @@ public class ChessEngine implements ChessController {
 
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
-        return false;
+        final Position from = new Position(fromX, fromY);
+        final Position to = new Position(toX, toY);
+        final Move move = board.move(from, to);
+        if (move == null) {
+            return false;
+        }
+
+        view.removePiece(move.getFrom().x(), move.getFrom().y());
+        view.putPiece(move.getPiece().getType(), move.getPiece().getColor(), toX, toY);
+        return true;
     }
 
     @Override
@@ -32,7 +38,7 @@ public class ChessEngine implements ChessController {
         }
         board.reset();
         board.getPieces().forEach((pos, chessPiece) ->
-                view.putPiece(chessPiece.getType(), chessPiece.getColor(), pos.x, pos.y)
+                view.putPiece(chessPiece.getType(), chessPiece.getColor(), pos.x(), pos.y())
         );
     }
 }
