@@ -99,15 +99,16 @@ enum PieceType<<provided>> {
     KING
 }
 
-abstract class ChessPiece implements UserChoice {
+abstract class ChessPiece {
     - boolean: hasMoved
     + boolean check(Position from, Position to)
 }
+abstract class PromotableChessPiece extends ChessPiece implements UserChoice {}
 class Pawn extends ChessPiece {}
-class Rook extends ChessPiece {}
-class Knight extends ChessPiece {}
-class Bishop extends ChessPiece {}
-class Queen extends ChessPiece {}
+class Rook extends PromotableChessPiece {}
+class Knight extends PromotableChessPiece {}
+class Bishop extends PromotableChessPiece {}
+class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {}
 
 
@@ -115,8 +116,9 @@ interface MoveValidationStrategy {
     + boolean check(Position from, Position to, PlayerColor color);
 }
 class DirectionalValidationStrategy implements MoveValidationStrategy {}
-class LValidationStrategy implements MoveValidationStrategy {}
+class KnightValidationStrategy implements MoveValidationStrategy {}
 class DistanceValidationStrategy implements MoveValidationStrategy {}
+class PawnValidationStrategy extends DistanceValidationStrategy {}
 
 enum Direction {
     FORWARDS

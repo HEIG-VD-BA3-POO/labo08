@@ -1,5 +1,6 @@
 package chess.engine.piece;
 
+import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.engine.validation.MoveValidationStrategy;
