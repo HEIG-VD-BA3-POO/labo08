@@ -7,125 +7,120 @@ skinparam NoteBackgroundColor #OldLace
 skinparam Shadowing false
 top to bottom direction
 
-package chess {
-    enum PieceType {
-        PAWN
-        ROOK
-        KNIGHT
-        BISHOP
-        QUEEN
-        KING
-    }
-
-    enum PlayerColor {
-        WHITE
-        BLACK
-    }
-
-    interface ChessController {
-        + start(view: ChessView): void
-        + newGame(): void
-        + move(fromX: int, fromY: int, toX: int, toY: int): boolean
-    }
-
-    interface UserChoice {
-        + textValue(): String
-    }
-
-    interface "DrawableResource<E>" {
-        + getResource(): E
-    }
-
-    interface ChessView {
-        + startView(): void
-        + removePiece(x: int, y: int): void
-        + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
-        + displayMessage(msg: String): void
-    }
-
-    note left of ChessView
-        T implements User Choice: <T extends User Choice> in Java
-    end note
-
-    package view {
-        abstract class "BaseView<E>" implements chess.ChessView {
-            + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
-            # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
-        }
-
-        class GUIView extends "BaseView<E>" {
-            + startView(): void
-            + removePiece(x: int, y: int): void
-            + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-            + displayMessage(msg: String): void
-            + askUser<T>(title: String, question: String, possibilities: ...T): T
-        }
-
-        class ConsoleView extends "BaseView<E>" {
-            + startView(): void
-            + removePiece(x: int, y: int): void
-            + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-            + displayMessage(msg: String): void
-            + askUser<T>(title: String, question: String, possibilities: ...T): T
-        }
-    }
-
-    package engine {
-        class ChessEngine {
-            + startGame(): void
-            + movePiece(fromX: int, fromY: int, x: int, y: int): void
-        }
-
-        enum GameState {
-            IN_PROGRESS
-            CHECK
-            CHECKMATE
-            STALEMATE
-            DRAW
-        }
-
-        class ChessBoard {}
-
-        package piece {
-            abstract class ChessPiece implements chess.UserChoice {
-                - boolean: hasMoved
-            }
-            class Pawn extends ChessPiece {}
-            class Rook extends ChessPiece {}
-            class Knight extends ChessPiece {}
-            class Bishop extends ChessPiece {}
-            class Queen extends ChessPiece {}
-            class King extends ChessPiece {}
-
-        }
-
-        package validation {
-            interface MoveValidationStrategy {}
-            class DiagonalValidationStrategy implements MoveValidationStrategy {}
-            class StraightValidationStrategy implements MoveValidationStrategy {}
-            class LValidationStrategy implements MoveValidationStrategy {}
-            class DistanceValidationStrategy implements MoveValidationStrategy {}
-        }
-
-        package move {
-            class Move {} 
-
-            class Capture extends Move {}
-            class Check extends Move {}
-            class EnPassant extends Move {}
-            class Castling extends Move {}
-            class Promotion extends Move {}
-        }
-    }
+interface ChessController {
+    + start(view: ChessView): void
+    + newGame(): void
+    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
 }
+
+interface UserChoice {
+    + textValue(): String
+}
+
+interface "DrawableResource<E>" {
+    + getResource(): E
+}
+
+interface ChessView {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(type: PieceType, color: PlayerColor, x: int, y: int): void
+    + displayMessage(msg: String): void
+}
+
+note left of ChessView
+    T implements User Choice: <T extends User Choice> in Java
+end note
+
+abstract class "BaseView<E>" implements ChessView {
+    + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
+    # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
+}
+
+class GUIView extends "BaseView<E>" {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+    + displayMessage(msg: String): void
+    + askUser<T>(title: String, question: String, possibilities: ...T): T
+}
+
+class ConsoleView extends "BaseView<E>" {
+    + startView(): void
+    + removePiece(x: int, y: int): void
+    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+    + displayMessage(msg: String): void
+    + askUser<T>(title: String, question: String, possibilities: ...T): T
+}
+
+class ChessEngine implements ChessController {
+    + startGame(): void
+    + movePiece(fromX: int, fromY: int, x: int, y: int): void
+}
+
+enum GameState {
+    IN_PROGRESS
+    CHECK
+    CHECKMATE
+    STALEMATE
+    DRAW
+}
+
+class ChessBoard {}
+
+static class ChessBoardInitialzer<<static>> {}
+
+class Position {}
+
+enum PlayerColor {
+    WHITE
+    BLACK
+}
+
+enum PieceType {
+    PAWN
+    ROOK
+    KNIGHT
+    BISHOP
+    QUEEN
+    KING
+}
+
+abstract class ChessPiece implements UserChoice {
+    - boolean: hasMoved
+}
+class Pawn extends ChessPiece {}
+class Rook extends ChessPiece {}
+class Knight extends ChessPiece {}
+class Bishop extends ChessPiece {}
+class Queen extends ChessPiece {}
+class King extends ChessPiece {}
+
+
+interface MoveValidationStrategy {}
+class DiagonalValidationStrategy implements MoveValidationStrategy {}
+class StraightValidationStrategy implements MoveValidationStrategy {}
+class LValidationStrategy implements MoveValidationStrategy {}
+class DistanceValidationStrategy implements MoveValidationStrategy {}
+
+class Move {} 
+
+class Capture extends Move {}
+class Check extends Move {}
+class EnPassant extends Move {}
+class Castling extends Move {}
+class Promotion extends Move {}
 
 ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >
 "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
 ChessEngine "1" --> "1" ChessBoard : has >
+ChessEngine "1" --> "1" ChessView : has >
 ChessPiece "1" --> "1..*" MoveValidationStrategy : has >
 ChessPiece "1" --> "1" PieceType : has >
+ChessPiece "1" --> "1" PlayerColor : has >
 ChessBoard "1" --> "2..32" ChessPiece : has >
+ChessBoard "1" --> "2..32" Position : has >
 
 @enduml
