@@ -39,7 +39,12 @@ public enum Direction {
      * Calculates a new position by applying this direction to the given position,
      * taking the piece color into account.
      */
-    public Position move(Position position, PlayerColor color) {
+    public Position add(Position position, PlayerColor color) {
         return new Position(position.x() + getDx(color), position.y() + getDy(color));
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " (" + dx + ", " + dy + ")";
     }
 }

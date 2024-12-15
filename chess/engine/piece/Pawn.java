@@ -3,17 +3,18 @@ package chess.engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.engine.ChessBoard;
+import chess.engine.move.Capture;
 import chess.engine.move.Move;
+import chess.engine.move.MoveType;
 import chess.engine.validation.Direction;
 import chess.engine.validation.DirectionalValidation;
+import chess.engine.validation.DistanceValidation;
 import chess.engine.validation.PawnDistanceValidation;
-
-import java.util.List;
 
 public class Pawn extends ChessPiece {
 
     public Pawn(PlayerColor color) {
-        super(PieceType.PAWN, color, List.of(new DirectionalValidation(List.of(Direction.FORWARDS, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT)), new PawnDistanceValidation()));
+        super(PieceType.PAWN, color, new PawnDistanceValidation(), new DistanceValidation(1, new DirectionalValidation(false, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT)));
     }
 
     @Override
@@ -22,7 +23,16 @@ public class Pawn extends ChessPiece {
         if (move == null) {
             return null;
         }
-        // TODO: Check for diagonal captures && en passant capture
+        if (move.getType() == MoveType.DIAGONAL) {
+            // TODO: Check for en passant capture
+
+            if (board.containsKey(to)) {
+                return new Capture(from, to);
+            } else {
+                return null;
+            }
+        } else if (move instanceof Capture) return null;
+
         return move;
     }
 }

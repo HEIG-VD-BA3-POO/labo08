@@ -1,12 +1,12 @@
 package chess.engine.validation;
 
-import chess.engine.piece.ChessPiece;
+import chess.engine.ChessBoard;
 import chess.engine.piece.Position;
 
 public class KnightValidation implements MoveValidation {
 
     @Override
-    public boolean check(Position from, Position to, ChessPiece piece) {
+    public boolean check(ChessBoard.Board board, Position from, Position to) {
         int dx = Math.abs(from.x() - to.x());
         int dy = Math.abs(from.y() - to.y());
 

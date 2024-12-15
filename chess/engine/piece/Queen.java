@@ -5,11 +5,9 @@ import chess.PlayerColor;
 import chess.engine.validation.Direction;
 import chess.engine.validation.DirectionalValidation;
 
-import java.util.List;
-
 public class Queen extends PromotableChessPiece {
 
     public Queen(PlayerColor color) {
-        super(PieceType.QUEEN, color, List.of(new DirectionalValidation(Direction.ALL)));
+        super(PieceType.QUEEN, color, new DirectionalValidation(false, Direction.ALL));
     }
 }

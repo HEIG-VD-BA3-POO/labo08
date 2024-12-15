@@ -1,21 +1,21 @@
 package chess.engine.validation;
 
-import chess.PlayerColor;
+import chess.engine.ChessBoard;
 import chess.engine.piece.ChessPiece;
-import chess.engine.piece.Pawn;
 import chess.engine.piece.Position;
 
 public class PawnDistanceValidation extends DistanceValidation {
 
     public PawnDistanceValidation() {
-        super(2);
+        super(2, new DirectionalValidation(false, Direction.FORWARDS));
     }
 
     @Override
-    public boolean check(Position from, Position to, ChessPiece piece) {
+    public boolean check(ChessBoard.Board board, Position from, Position to) {
+        final ChessPiece piece = board.get(from);
         if (piece.hasMoved() && getMaxDistance() == 2) {
             setMaxDistance(1);
         }
-        return super.check(from, to, piece);
+        return super.check(board, from, to);
     }
 }

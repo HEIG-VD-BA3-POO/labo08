@@ -63,16 +63,20 @@ public class ChessBoard {
     }
 
     public Move move(Position from, Position to) {
-        // Check if piece exists at source position
-        if (!board.containsKey(from)) return null;
-
         final ChessPiece piece = board.get(from);
-        // Check if same color piece is at destination
-        if (board.containsKey(to) && board.get(to).getColor() == piece.getColor()) return null;
+        if (piece == null) return null;
+
+        boolean validPos = from.isValid() && to.isValid();
+        boolean startPieceExists = board.containsKey(from);
+        boolean toOppositeColor = (!board.containsKey(to) || board.get(to).getColor() != piece.getColor());
+
+        if (!validPos || !startPieceExists || !toOppositeColor) return null;
 
         // Check if piece can move to this position
         // TODO: Check if along the path of piece if movement is allowed
         // TODO: Create different movement types based on the action (Capture, Promotion, etc.)
-        return piece.move(board, from, to);
+        Move move = piece.move(board, from, to);
+        System.out.println(move);
+        return move;
     }
 }

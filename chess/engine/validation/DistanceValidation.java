@@ -1,13 +1,17 @@
 package chess.engine.validation;
 
-import chess.engine.piece.ChessPiece;
+import chess.engine.ChessBoard;
 import chess.engine.piece.Position;
+
+import java.util.List;
 
 public class DistanceValidation implements MoveValidation {
     private int maxDistance;
+    private final List<DirectionalValidation> directionalValidations;
 
-    public DistanceValidation(int maxDistance) {
+    public DistanceValidation(int maxDistance, DirectionalValidation... directionalValidations) {
         this.maxDistance = maxDistance;
+        this.directionalValidations = List.of(directionalValidations);
     }
 
     public int getMaxDistance() {
@@ -19,7 +23,12 @@ public class DistanceValidation implements MoveValidation {
     }
 
     @Override
-    public boolean check(Position from, Position to, ChessPiece piece) {
-        return (from.dist(to) <= maxDistance);
+    public boolean check(ChessBoard.Board board, Position from, Position to) {
+        for (MoveValidation val : directionalValidations) {
+            if (val.check(board, from, to)) {
+                return from.dist(to) <= maxDistance;
+            }
+        }
+        return false;
     }
 }

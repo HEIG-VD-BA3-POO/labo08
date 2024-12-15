@@ -1,8 +1,8 @@
 package chess.engine.validation;
 
-import chess.engine.piece.ChessPiece;
+import chess.engine.ChessBoard;
 import chess.engine.piece.Position;
 
-public interface MoveValidation{
-    boolean check(Position from, Position to, ChessPiece piece);
+public interface MoveValidation {
+    boolean check(ChessBoard.Board board, Position from, Position to);
 }

@@ -115,9 +115,10 @@ class King extends ChessPiece {}
 
 
 interface MoveValidation {
-    + boolean check(Position from, Position to, PlayerColor color);
+    + boolean check(Board board, Position from, Position to);
 }
 class DirectionalValidation implements MoveValidation {}
+class CastlingDirectionalValidation extends DirectionalValidation {}
 class KnightValidation implements MoveValidation {}
 class DistanceValidation implements MoveValidation {}
 class PawnDistanceValidation extends DistanceValidation {}
@@ -141,6 +142,13 @@ interface Moveable {
     + Move move(Board board, Position from, Position to);
 }
 
+enum MoveType {
+    VERTICAL
+    HORIZONTAL
+    DIAGONAL
+    OTHER
+}
+
 class Capture extends Move {}
 class Check extends Move {}
 class EnPassant extends Move {}
@@ -153,6 +161,7 @@ ChessController "1" --> "1" ChessView : manage >
 
 ChessEngine "1" --> "1" ChessBoard : has >
 ChessEngine "1" --> "1" ChessView : has >
+ChessEngine "1" --> "1" PlayerColor : has >
 ChessPiece "1" --> "1..*" MoveValidation : has >
 ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
@@ -161,7 +170,9 @@ Board "1" --> "2..32" ChessPiece : has >
 Board "1" --> "2..32" Position : has >
 
 DirectionalValidation "*" --> "1..*" Direction : has >
+DistanceValidation "1" --> "*" DirectionalValidation : has >
 
 Move "1" --> "2" Position : has >
+Move "1" --> "1" MoveType : has >
 
 @enduml

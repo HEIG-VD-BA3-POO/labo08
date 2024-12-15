@@ -3,8 +3,6 @@ package chess.engine;
 import chess.PlayerColor;
 import chess.engine.piece.*;
 
-import java.util.Map;
-
 class ChessBoardInitializer {
     public static void initializeBoard(ChessBoard.Board board) {
         board.clear();

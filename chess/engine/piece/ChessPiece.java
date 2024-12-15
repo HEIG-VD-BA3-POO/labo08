@@ -16,10 +16,10 @@ public abstract class ChessPiece implements Moveable {
     private final List<MoveValidation> validationList;
     private boolean hasMoved = false;
 
-    public ChessPiece(PieceType type, PlayerColor color, List<MoveValidation> validationList) {
+    public ChessPiece(PieceType type, PlayerColor color, MoveValidation... validationList) {
         this.type = type;
         this.color = color;
-        this.validationList = validationList;
+        this.validationList = List.of(validationList);
     }
 
     public PieceType getType() {
@@ -39,15 +39,15 @@ public abstract class ChessPiece implements Moveable {
     }
 
     public Move move(ChessBoard.Board board, Position from, Position to) {
-        if (!from.isValid() || !to.isValid() || (board.containsKey(to) && board.get(to).getColor() == color)) {
-            return null;
-        }
+
         // Check if legal move
+        boolean valid = false;
         for (MoveValidation val : validationList) {
-            if (!val.check(from, to, board.get(from))) {
-                return null;
+            if (val.check(board, from, to)) {
+                valid = true;
             }
         }
+        if (!valid) return null;
         if (!board.containsKey(to)) {
             return new Move(from, to);
         } else {
