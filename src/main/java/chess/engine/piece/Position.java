@@ -8,7 +8,7 @@ public record Position(int x, int y) {
     }
 
     public boolean isValid() {
-        return x >= 0 && y >= 0 && x < 9 && y < 9;
+        return x >= 0 && y >= 0 && x < 8 && y < 8;
     }
 
     /**
