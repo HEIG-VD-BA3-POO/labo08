@@ -32,11 +32,11 @@ public enum Direction {
     }
 
     public int getDx(PlayerColor color) {
-        return color == PlayerColor.BLACK ? dx : -dx;
+        return color == PlayerColor.WHITE ? dx : -dx;
     }
 
     public int getDy(PlayerColor color) {
-        return color == PlayerColor.BLACK ? dy : -dy;
+        return color == PlayerColor.WHITE ? dy : -dy;
     }
 
     /**
