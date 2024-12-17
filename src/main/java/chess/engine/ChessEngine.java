@@ -8,8 +8,7 @@ import chess.engine.piece.Position;
 
 public class ChessEngine implements ChessController {
     private ChessBoard chessBoard;
-    private PlayerColor turn;
-
+    private PlayerColor turnColor;
 
     @Override
     public void start(ChessView view) {
@@ -21,6 +20,10 @@ public class ChessEngine implements ChessController {
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
         final Position from = new Position(fromX, fromY);
+        if (!chessBoard.getBoard().containsKey(from) ||
+                chessBoard.getBoard().get(from).getColor() != turnColor) {
+            return false;
+        }
         final Position to = new Position(toX, toY);
         final Move move = chessBoard.move(from, to);
         if (move == null) {
@@ -33,7 +36,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        turn = PlayerColor.WHITE;
+        turnColor = PlayerColor.WHITE;
         if (chessBoard == null) {
             throw new RuntimeException("Call ChessEngine.start() before reseting the game");
         }
@@ -42,10 +45,10 @@ public class ChessEngine implements ChessController {
     }
 
     private void nextTurn() {
-        if (turn == PlayerColor.WHITE) {
-            turn = PlayerColor.BLACK;
+        if (turnColor == PlayerColor.WHITE) {
+            turnColor = PlayerColor.BLACK;
         } else {
-            turn = PlayerColor.WHITE;
+            turnColor = PlayerColor.WHITE;
         }
     }
 }
