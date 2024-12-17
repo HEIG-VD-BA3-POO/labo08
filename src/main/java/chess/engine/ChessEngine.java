@@ -51,4 +51,11 @@ public class ChessEngine implements ChessController {
             turnColor = PlayerColor.WHITE;
         }
     }
+
+    @Override
+    public void select(int x, int y) {
+        Position from = new Position(x, y);
+        if (chessBoard.getBoard().get(from).getColor() == turnColor)
+            chessBoard.select(from);
+    }
 }

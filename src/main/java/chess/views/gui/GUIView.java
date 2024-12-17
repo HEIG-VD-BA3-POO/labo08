@@ -1,6 +1,5 @@
 package chess.views.gui;
 
-import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +33,7 @@ import chess.ChessController;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.assets.GuiAssets;
+import chess.engine.piece.Position;
 import chess.views.BaseView;
 import chess.views.DrawableResource;
 
@@ -76,7 +75,7 @@ public class GUIView extends BaseView<ImageIcon> {
   }
 
   public static DrawableResource<ImageIcon> createResource(BufferedImage originalImage, int displayWidth,
-      int displayHeight, int sourceWidth, int sourceHeight) throws IOException {
+      int displayHeight, int sourceWidth, int sourceHeight) {
     // Create a new buffered image with the desired size
     BufferedImage resizedImage = new BufferedImage(sourceWidth, sourceHeight, BufferedImage.TYPE_INT_ARGB);
 
@@ -99,13 +98,10 @@ public class GUIView extends BaseView<ImageIcon> {
 
     // Create a custom DrawableResource that returns the scaled image but maintains
     // the display size
-    return new DrawableResource<ImageIcon>() {
-      @Override
-      public ImageIcon getResource() {
-        // Resize the icon to the display size while keeping the high-resolution image
-        Image scaledImage = scaledIcon.getImage().getScaledInstance(displayWidth, displayHeight, Image.SCALE_SMOOTH);
-        return new ImageIcon(scaledImage);
-      }
+    return () -> {
+      // Resize the icon to the display size while keeping the high-resolution image
+      Image scaledImage = scaledIcon.getImage().getScaledInstance(displayWidth, displayHeight, Image.SCALE_SMOOTH);
+      return new ImageIcon(scaledImage);
     };
   }
 
@@ -118,7 +114,7 @@ public class GUIView extends BaseView<ImageIcon> {
 
   private ChessSquare lastPressed = null;
 
-  private final static ImageIcon EMPTY_ICON = new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+  public final static ImageIcon EMPTY_ICON = new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
   private final static ImageIcon UNKNOWN_ICON;
 
   static { // Damier pour absence de texture au cas où
@@ -137,6 +133,26 @@ public class GUIView extends BaseView<ImageIcon> {
     }
     UNKNOWN_ICON = new ImageIcon(img);
   }
+
+  private ImageIcon createHighlightIcon() {
+    BufferedImage highlightImage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = highlightImage.createGraphics();
+
+    // Enable antialiasing for smoother circle
+    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // Create a semi-transparent green circle
+    g2d.setColor(new Color(124, 186, 39, 128));
+    int diameter = 20;
+    int x = (64 - diameter) / 2;
+    int y = (64 - diameter) / 2;
+    g2d.fillOval(x, y, diameter, diameter);
+
+    g2d.dispose();
+    return new ImageIcon(highlightImage);
+  }
+
+  private final ImageIcon HIGHLIGHT_ICON = createHighlightIcon();
 
   public GUIView(ChessController controller) {
     super(controller);
@@ -191,6 +207,26 @@ public class GUIView extends BaseView<ImageIcon> {
   }
 
   @Override
+  public void highlightPositions(List<Position> pos) {
+    // First, clear any existing highlights
+    clearHighlights();
+
+    // Highlight the specified positions
+    for (Position p : pos) {
+      chessBoardSquares[p.x()][p.y()].overlayIcon(HIGHLIGHT_ICON);
+    }
+  }
+
+  private void clearHighlights() {
+    // Remove any existing highlight icons from all squares
+    for (ChessSquare[] chessBoardSquare : chessBoardSquares) {
+      for (ChessSquare chessSquare : chessBoardSquare) {
+        chessSquare.clearOverlay();
+      }
+    }
+  }
+
+  @Override
   public void displayMessage(String msg) {
     messageLabel.setText(msg);
   }
@@ -218,6 +254,10 @@ public class GUIView extends BaseView<ImageIcon> {
         removePiece(i, j);
       }
     }
+    if (lastPressed != null) {
+      lastPressed.deselect();
+      lastPressed = null;
+    }
   }
 
   private void move(ChessSquare from, ChessSquare to) {
@@ -230,9 +270,11 @@ public class GUIView extends BaseView<ImageIcon> {
     if (lastPressed == null && b.getIcon() != EMPTY_ICON) {
       lastPressed = b;
       b.select();
+      controller.select(b.x, b.y);
     }
     // Smth was already selected
     else if (lastPressed != null) {
+      clearHighlights();
       move(lastPressed, b);
       lastPressed.deselect();
       lastPressed = null;

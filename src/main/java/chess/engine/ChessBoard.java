@@ -1,12 +1,15 @@
 package chess.engine;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import chess.ChessView;
 import chess.engine.move.Move;
 import chess.engine.move.Moves;
-import chess.engine.piece.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import chess.engine.piece.ChessPiece;
+import chess.engine.piece.Position;
 
 public class ChessBoard {
     public static class Board {
@@ -49,9 +52,11 @@ public class ChessBoard {
     }
 
     private final Board board;
+    private final ChessView view;
 
     public ChessBoard(ChessView view) {
         this.board = new Board(view);
+        this.view = view;
         reset();
     }
 
@@ -72,9 +77,26 @@ public class ChessBoard {
             return null;
 
         Moves moves = piece.getMoves(board, from);
+
         Move move = moves.getMove(to);
         System.out.println(moves);
         System.out.println(move);
         return move;
+    }
+
+    public void select(Position from) {
+        if (!from.isValid())
+            return;
+
+        final ChessPiece piece = board.get(from);
+        if (piece == null)
+            return;
+
+        Moves moves = piece.getMoves(board, from);
+        List<Position> positions = new ArrayList<>();
+        for (Move move : moves.getAllMoves()) {
+            positions.add(move.getTo());
+        }
+        view.highlightPositions(positions);
     }
 }
