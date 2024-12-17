@@ -1,6 +1,6 @@
 package app;
 
-import chess.engine.ChessEngine;
+import engine.ChessEngine;
 import chess.views.gui.GUIView;
 
 public class Main {

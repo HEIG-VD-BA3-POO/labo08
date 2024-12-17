@@ -1,6 +1,6 @@
-package chess.engine.move;
+package engine.move;
 
-import chess.engine.piece.Position;
+import engine.piece.Position;
 
 public enum MoveType {
     VERTICAL,

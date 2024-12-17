@@ -1,9 +1,9 @@
-package chess.engine.move;
+package engine.move;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import chess.engine.piece.Position;
+import engine.piece.Position;
 
 public class Moves {
     private final Map<Position, Move> movesMap;

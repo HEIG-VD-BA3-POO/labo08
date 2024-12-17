@@ -1,4 +1,4 @@
-package chess.engine;
+package engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import chess.ChessView;
-import chess.engine.move.Move;
-import chess.engine.move.Moves;
-import chess.engine.piece.ChessPiece;
-import chess.engine.piece.Position;
+import engine.move.Move;
+import engine.move.Moves;
+import engine.piece.ChessPiece;
+import engine.piece.Position;
 
 public class ChessBoard {
     public static class Board {
@@ -93,7 +93,7 @@ public class ChessBoard {
             return;
 
         Moves moves = piece.getMoves(board, from);
-        List<Position> positions = new ArrayList<>();
+        List<Position> positions = new ArrayList<Position>();
         for (Move move : moves.getAllMoves()) {
             positions.add(move.getTo());
         }

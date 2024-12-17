@@ -2,7 +2,7 @@ package chess;
 
 import java.util.List;
 
-import chess.engine.piece.Position;
+import engine.piece.Position;
 
 /**
  * Méthodes fournies par les vues.

@@ -1,4 +1,4 @@
-package chess.engine.piece;
+package engine.piece;
 
 public record Position(int x, int y) {
 

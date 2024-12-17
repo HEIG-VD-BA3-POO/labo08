@@ -1,9 +1,9 @@
-package chess.engine.piece;
+package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import chess.engine.generator.Direction;
-import chess.engine.generator.DirectionalGenerator;
+import engine.generator.Direction;
+import engine.generator.DirectionalGenerator;
 
 public class Bishop extends PromotableChessPiece {
 

@@ -1,9 +1,9 @@
-package chess.engine.piece;
+package engine.piece;
 
 import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
-import chess.engine.generator.MoveGenerator;
+import engine.generator.MoveGenerator;
 
 public abstract class PromotableChessPiece extends ChessPiece implements ChessView.UserChoice {
 

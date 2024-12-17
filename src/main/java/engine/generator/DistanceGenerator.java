@@ -1,9 +1,9 @@
-package chess.engine.generator;
+package engine.generator;
 
-import chess.engine.ChessBoard;
-import chess.engine.move.Move;
-import chess.engine.move.Moves;
-import chess.engine.piece.Position;
+import engine.ChessBoard;
+import engine.move.Move;
+import engine.move.Moves;
+import engine.piece.Position;
 
 import java.util.List;
 

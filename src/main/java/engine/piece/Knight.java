@@ -1,8 +1,8 @@
-package chess.engine.piece;
+package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import chess.engine.generator.KnightGenerator;
+import engine.generator.KnightGenerator;
 
 public class Knight extends PromotableChessPiece {
 

@@ -1,9 +1,9 @@
-package chess.engine.generator;
+package engine.generator;
 
-import chess.engine.ChessBoard;
-import chess.engine.move.Moves;
-import chess.engine.piece.ChessPiece;
-import chess.engine.piece.Position;
+import engine.ChessBoard;
+import engine.move.Moves;
+import engine.piece.ChessPiece;
+import engine.piece.Position;
 
 public class PawnDistanceGenerator extends DistanceGenerator {
 

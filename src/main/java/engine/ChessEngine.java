@@ -1,10 +1,10 @@
-package chess.engine;
+package engine;
 
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
-import chess.engine.move.Move;
-import chess.engine.piece.Position;
+import engine.move.Move;
+import engine.piece.Position;
 
 public class ChessEngine implements ChessController {
     private ChessBoard chessBoard;

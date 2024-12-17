@@ -1,16 +1,16 @@
-package chess.engine.piece;
+package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import chess.engine.ChessBoard;
-import chess.engine.move.Capture;
-import chess.engine.move.Move;
-import chess.engine.move.MoveType;
-import chess.engine.move.Moves;
-import chess.engine.generator.Direction;
-import chess.engine.generator.DirectionalGenerator;
-import chess.engine.generator.DistanceGenerator;
-import chess.engine.generator.PawnDistanceGenerator;
+import engine.ChessBoard;
+import engine.move.Capture;
+import engine.move.Move;
+import engine.move.MoveType;
+import engine.move.Moves;
+import engine.generator.Direction;
+import engine.generator.DirectionalGenerator;
+import engine.generator.DistanceGenerator;
+import engine.generator.PawnDistanceGenerator;
 
 public class Pawn extends ChessPiece {
 

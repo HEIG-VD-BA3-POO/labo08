@@ -1,8 +1,8 @@
-package chess.engine.move;
+package engine.move;
 
-import chess.engine.ChessBoard;
-import chess.engine.piece.ChessPiece;
-import chess.engine.piece.Position;
+import engine.ChessBoard;
+import engine.piece.ChessPiece;
+import engine.piece.Position;
 
 public class Capture extends Move {
 

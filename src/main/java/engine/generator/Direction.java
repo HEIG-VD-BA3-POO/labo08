@@ -1,7 +1,7 @@
-package chess.engine.generator;
+package engine.generator;
 
 import chess.PlayerColor;
-import chess.engine.piece.Position;
+import engine.piece.Position;
 
 import java.util.List;
 

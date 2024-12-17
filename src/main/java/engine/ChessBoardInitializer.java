@@ -1,7 +1,7 @@
-package chess.engine;
+package engine;
 
 import chess.PlayerColor;
-import chess.engine.piece.*;
+import engine.piece.*;
 
 class ChessBoardInitializer {
     public static void initializeBoard(ChessBoard.Board board) {

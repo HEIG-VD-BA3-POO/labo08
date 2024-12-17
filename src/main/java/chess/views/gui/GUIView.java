@@ -33,7 +33,7 @@ import chess.ChessController;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.assets.GuiAssets;
-import chess.engine.piece.Position;
+import engine.piece.Position;
 import chess.views.BaseView;
 import chess.views.DrawableResource;
 
