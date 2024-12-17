@@ -1,11 +1,10 @@
 package chess.views.gui;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
+import java.awt.Color;
+import javax.swing.JButton;
 
 class ChessSquare extends JButton {
-    //coordinates
+    // coordinates
     final int x;
     final int y;
 
@@ -14,21 +13,29 @@ class ChessSquare extends JButton {
         assert (y < 8 && y >= 0);
         this.x = x;
         this.y = y;
-        if ((x % 2 ^ y % 2) == 0) {
-            this.setBackground(Color.LIGHT_GRAY);
-            this.setBorder(new LineBorder(Color.LIGHT_GRAY, 4));
-        } else {
-            this.setBackground(Color.WHITE);
-            this.setBorder(new LineBorder(Color.WHITE, 4));
-        }
-        this.setOpaque(true);
+        setDefaultColor();
+        setOpaque(true);
+        setBorder(null);
+        setFocusPainted(false);
     }
 
     void select() {
-        this.setBorder(new LineBorder(Color.GREEN, 4));
+        if ((x % 2 ^ y % 2) == 0) {
+            this.setBackground(new Color(170, 162, 86));
+        } else {
+            this.setBackground(new Color(206, 210, 134));
+        }
     }
 
     void deselect() {
-        this.setBorder(null);
+        setDefaultColor();
+    }
+
+    private void setDefaultColor() {
+        if ((x % 2 ^ y % 2) == 0) {
+            this.setBackground(new Color(174, 138, 104));
+        } else {
+            this.setBackground(new Color(236, 218, 185));
+        }
     }
 }
