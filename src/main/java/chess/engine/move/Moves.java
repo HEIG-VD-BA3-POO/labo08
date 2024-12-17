@@ -6,7 +6,7 @@ import java.util.Map;
 import chess.engine.piece.Position;
 
 public class Moves {
-    private Map<Position, Move> movesMap;
+    private final Map<Position, Move> movesMap;
 
     public Moves() {
         movesMap = new HashMap<>();
@@ -26,16 +26,8 @@ public class Moves {
         return movesMap.get(to);
     }
 
-    public boolean containsPosition(Position to) {
-        return movesMap.containsKey(to);
-    }
-
     public Iterable<Move> getAllMoves() {
         return movesMap.values();
-    }
-
-    public void clear() {
-        movesMap.clear();
     }
 
     @Override
