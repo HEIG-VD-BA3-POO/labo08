@@ -24,4 +24,8 @@ public record Position(int x, int y) {
         final int dy = Math.abs(y - other.y);
         return Math.max(dx, dy);
     }
+
+    public Position add(int xp, int yp) {
+        return new Position(x + xp, y + yp);
+    }
 }

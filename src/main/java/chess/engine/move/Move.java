@@ -19,6 +19,10 @@ public class Move {
         return type;
     }
 
+    public Position getTo() {
+        return to;
+    }
+
     public void apply(ChessBoard.Board board) {
         assert board.containsKey(from);
         ChessPiece p = board.get(from);

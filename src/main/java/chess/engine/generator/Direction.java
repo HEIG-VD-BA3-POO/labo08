@@ -1,4 +1,4 @@
-package chess.engine.validation;
+package chess.engine.generator;
 
 import chess.PlayerColor;
 import chess.engine.piece.Position;
@@ -15,9 +15,13 @@ public enum Direction {
     BACKWARDS_LEFT(-1, -1),
     BACKWARDS_RIGHT(1, -1);
 
-    public static final List<Direction> ALL = List.of(Direction.FORWARDS, Direction.BACKWARDS, Direction.LEFT, Direction.RIGHT, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT, Direction.BACKWARDS_LEFT, Direction.BACKWARDS_RIGHT);
-    public static final List<Direction> STRAIGHT = List.of(Direction.FORWARDS, Direction.BACKWARDS, Direction.LEFT, Direction.RIGHT);
-    public static final List<Direction> DIAGONAL = List.of(Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT, Direction.BACKWARDS_LEFT, Direction.BACKWARDS_RIGHT);
+    public static final List<Direction> ALL = List.of(Direction.FORWARDS, Direction.BACKWARDS, Direction.LEFT,
+            Direction.RIGHT, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT, Direction.BACKWARDS_LEFT,
+            Direction.BACKWARDS_RIGHT);
+    public static final List<Direction> STRAIGHT = List.of(Direction.FORWARDS, Direction.BACKWARDS, Direction.LEFT,
+            Direction.RIGHT);
+    public static final List<Direction> DIAGONAL = List.of(Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT,
+            Direction.BACKWARDS_LEFT, Direction.BACKWARDS_RIGHT);
 
     private final int dx;
     private final int dy;

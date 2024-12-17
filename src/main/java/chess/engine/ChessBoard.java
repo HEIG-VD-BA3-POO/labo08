@@ -2,6 +2,7 @@ package chess.engine;
 
 import chess.ChessView;
 import chess.engine.move.Move;
+import chess.engine.move.Moves;
 import chess.engine.piece.*;
 
 import java.util.HashMap;
@@ -63,19 +64,16 @@ public class ChessBoard {
     }
 
     public Move move(Position from, Position to) {
+        if (!from.isValid() || !to.isValid())
+            return null;
+
         final ChessPiece piece = board.get(from);
-        if (piece == null) return null;
+        if (piece == null)
+            return null;
 
-        boolean validPos = from.isValid() && to.isValid();
-        boolean startPieceExists = board.containsKey(from);
-        boolean toOppositeColor = (!board.containsKey(to) || board.get(to).getColor() != piece.getColor());
-
-        if (!validPos || !startPieceExists || !toOppositeColor) return null;
-
-        // Check if piece can move to this position
-        // TODO: Check if along the path of piece if movement is allowed
-        // TODO: Create different movement types based on the action (Capture, Promotion, etc.)
-        Move move = piece.move(board, from, to);
+        Moves moves = piece.getMoves(board, from);
+        Move move = moves.getMove(to);
+        System.out.println(moves);
         System.out.println(move);
         return move;
     }

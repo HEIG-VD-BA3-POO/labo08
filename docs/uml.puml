@@ -101,9 +101,9 @@ enum PieceType<<provided>> {
     KING
 }
 
-abstract class ChessPiece implements Moveable {
+abstract class ChessPiece {
     - boolean: hasMoved
-    + boolean check(Position from, Position to)
+    + Moves getMoves(Board board, Position from)
 }
 abstract class PromotableChessPiece extends ChessPiece implements UserChoice {}
 class Pawn extends ChessPiece {}
@@ -114,14 +114,14 @@ class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {}
 
 
-interface MoveValidation {
-    + boolean check(Board board, Position from, Position to);
+interface MoveGenerator {
+    + Moves generate(Board board, Position from)
 }
-class DirectionalValidation implements MoveValidation {}
-class CastlingDirectionalValidation extends DirectionalValidation {}
-class KnightValidation implements MoveValidation {}
-class DistanceValidation implements MoveValidation {}
-class PawnDistanceValidation extends DistanceValidation {}
+class DirectionalGenerator implements MoveGenerator {}
+class CastlingDirectionalGenerator extends DirectionalGenerator {}
+class KnightGenerator implements MoveGenerator {}
+class DistanceGenerator implements MoveGenerator {}
+class PawnDistanceGenerator extends DistanceGenerator {}
 
 enum Direction {
     FORWARDS
@@ -135,12 +135,10 @@ enum Direction {
 }
 
 class Move {
-    + void apply(Board board);
+    + void apply(Board board)
 }
 
-interface Moveable {
-    + Move move(Board board, Position from, Position to);
-}
+class Moves {}
 
 enum MoveType {
     VERTICAL
@@ -162,17 +160,18 @@ ChessController "1" --> "1" ChessView : manage >
 ChessEngine "1" --> "1" ChessBoard : has >
 ChessEngine "1" --> "1" ChessView : has >
 ChessEngine "1" --> "1" PlayerColor : has >
-ChessPiece "1" --> "1..*" MoveValidation : has >
+ChessPiece "1" --> "1..*" MoveGenerator : has >
 ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
 ChessBoard +-- Board
 Board "1" --> "2..32" ChessPiece : has >
 Board "1" --> "2..32" Position : has >
 
-DirectionalValidation "*" --> "1..*" Direction : has >
-DistanceValidation "1" --> "*" DirectionalValidation : has >
+DirectionalGenerator "*" --> "1..*" Direction : has >
+DistanceGenerator "1" --> "*" DirectionalGenerator : has >
 
 Move "1" --> "2" Position : has >
 Move "1" --> "1" MoveType : has >
+Moves "1" --> "*" Move : has >
 
 @enduml
