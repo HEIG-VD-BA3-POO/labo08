@@ -1,5 +1,6 @@
 package engine.move;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class Moves {
         return movesMap.get(to);
     }
 
-    public Iterable<Move> getAllMoves() {
+    public Collection<Move> getAllMoves() {
         return movesMap.values();
     }
 
