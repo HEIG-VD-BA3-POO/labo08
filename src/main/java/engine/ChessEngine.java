@@ -3,12 +3,16 @@ package engine;
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
+import engine.evaluation.ChessEvaluator;
 import engine.move.Move;
 import engine.piece.Position;
+import engine.solver.ChessSolver;
 
 public class ChessEngine implements ChessController {
     private ChessBoard chessBoard;
     private PlayerColor turnColor;
+    private final ChessEvaluator evaluator = new ChessEvaluator();
+    private final ChessSolver solver = new ChessSolver();
 
     @Override
     public void start(ChessView view) {
@@ -30,6 +34,8 @@ public class ChessEngine implements ChessController {
             return false;
         }
         move.apply(chessBoard.getBoard());
+        nextTurn();
+        solver.findBestMove(chessBoard.getBoard(), turnColor).apply(chessBoard.getBoard());
         nextTurn();
         return true;
     }

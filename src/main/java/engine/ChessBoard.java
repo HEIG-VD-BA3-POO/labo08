@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import chess.ChessView;
+import chess.PlayerColor;
 import engine.move.Move;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
@@ -22,7 +24,8 @@ public class ChessBoard {
 
         public void put(Position pos, ChessPiece piece) {
             pieces.put(pos, piece);
-            view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
+            if (view != null)
+                view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
         }
 
         public ChessPiece get(Position pos) {
@@ -31,7 +34,8 @@ public class ChessBoard {
 
         public void remove(Position pos) {
             pieces.remove(pos);
-            view.removePiece(pos.x(), pos.y());
+            if (view != null)
+                view.removePiece(pos.x(), pos.y());
         }
 
         public boolean containsKey(Position pos) {
@@ -43,11 +47,34 @@ public class ChessBoard {
         }
 
         public void sync() {
+            if (view != null)
+                for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+                    final Position pos = entry.getKey();
+                    final ChessPiece piece = entry.getValue();
+                    view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
+                }
+        }
+
+        public List<Map.Entry<Position, ChessPiece>> getPieces(PlayerColor color) {
+            return pieces.entrySet().stream()
+                    .filter(entry -> entry.getValue().getColor() == color)
+                    .collect(Collectors.toList());
+        }
+
+        public Board deepCopy() {
+            Board newBoard = new Board(null); // Create a new board with the same view (or null if needed)
             for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-                final Position pos = entry.getKey();
-                final ChessPiece piece = entry.getValue();
-                view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
+                Position originalPos = entry.getKey();
+                ChessPiece originalPiece = entry.getValue();
+
+                // Clone the position and the piece
+                Position clonedPos = new Position(originalPos.x(), originalPos.y());
+                ChessPiece clonedPiece = originalPiece.clone();
+
+                // Add the cloned piece to the new board
+                newBoard.put(clonedPos, clonedPiece);
             }
+            return newBoard;
         }
     }
 

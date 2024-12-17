@@ -8,16 +8,20 @@ import engine.generator.MoveGenerator;
 
 import java.util.List;
 
-public abstract class ChessPiece {
+public abstract class ChessPiece implements Cloneable {
     protected final PieceType type;
     private final PlayerColor color;
     private final List<MoveGenerator> generators;
     private boolean hasMoved = false;
 
     public ChessPiece(PieceType type, PlayerColor color, MoveGenerator... generators) {
+        this(type, color, List.of(generators));
+    }
+
+    public ChessPiece(PieceType type, PlayerColor color, List<MoveGenerator> generators) {
         this.type = type;
         this.color = color;
-        this.generators = List.of(generators);
+        this.generators = generators;
     }
 
     public PieceType getType() {
@@ -46,5 +50,15 @@ public abstract class ChessPiece {
             moves.extendMoves(gen.generate(board, from));
         }
         return moves;
+    }
+
+    public ChessPiece clone() {
+        try {
+            ChessPiece cloned = (ChessPiece) super.clone();
+            cloned.setHasMoved(this.hasMoved);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Cloning not supported for ChessPiece");
+        }
     }
 }
