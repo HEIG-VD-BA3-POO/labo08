@@ -40,7 +40,7 @@ public class DirectionalGenerator implements MoveGenerator {
                 if (board.containsKey(current)) {
                     // If there's a piece at the current position
                     ChessPiece otherPiece = board.get(current);
-                    if (otherPiece.getColor() != piece.getColor()) {
+                    if (otherPiece.isOpponent(piece)) {
                         // Add a capture if it's an opponent's piece
                         possibleMoves.addMove(new Capture(from, current));
                     }

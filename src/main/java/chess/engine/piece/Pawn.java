@@ -29,7 +29,7 @@ public class Pawn extends ChessPiece {
 
             if (move.getType() == MoveType.DIAGONAL) {
                 // Handle diagonal moves (captures or en passant)
-                if (board.containsKey(to) && board.get(to).getColor() != this.getColor()) {
+                if (board.containsKey(to) && board.get(to).isOpponent(this)) {
                     // Regular capture
                     possibleMoves.addMove(new Capture(from, to));
                     // TODO: Implement En Passant

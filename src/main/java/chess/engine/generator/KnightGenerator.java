@@ -25,7 +25,7 @@ public class KnightGenerator implements MoveGenerator {
             if (to.isValid()) {
                 if (!board.containsKey(to)) {
                     moves.addMove(new Move(from, to));
-                } else if (board.get(to).getColor() != piece.getColor()) {
+                } else if (board.get(to).isOpponent(piece)) {
                     moves.addMove(new Capture(from, to));
                 }
             }

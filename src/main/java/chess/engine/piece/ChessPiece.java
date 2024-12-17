@@ -28,6 +28,10 @@ public abstract class ChessPiece {
         return color;
     }
 
+    public boolean isOpponent(ChessPiece other) {
+        return color != other.color;
+    }
+
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
