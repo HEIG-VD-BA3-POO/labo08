@@ -7,27 +7,27 @@ import java.util.Map;
 import engine.piece.Position;
 
 public class Moves {
-    private final Map<Position, Move> movesMap;
+    private final Map<Position, ChessMove> movesMap;
 
     public Moves() {
         movesMap = new HashMap<>();
     }
 
-    public void addMove(Move move) {
+    public void addMove(ChessMove move) {
         movesMap.put(move.getTo(), move);
     }
 
     public void extendMoves(Moves moves) {
-        for (Move move : moves.getAllMoves()) {
+        for (ChessMove move : moves.getAllMoves()) {
             this.addMove(move);
         }
     }
 
-    public Move getMove(Position to) {
+    public ChessMove getMove(Position to) {
         return movesMap.get(to);
     }
 
-    public Collection<Move> getAllMoves() {
+    public Collection<ChessMove> getAllMoves() {
         return movesMap.values();
     }
 

@@ -4,19 +4,17 @@ import engine.ChessBoard;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class Capture extends ChessMove {
+public class StandardMove extends ChessMove {
 
-    public Capture(Position from, Position to) {
+    public StandardMove(Position from, Position to) {
         super(from, to);
     }
 
     @Override
     public void execute(ChessBoard board) {
         assert board.containsKey(from);
-        assert board.containsKey(to);
         ChessPiece p = board.get(from);
         board.remove(from);
-        board.remove(to);
         p.setHasMoved(true);
         board.put(to, p);
     }

@@ -106,7 +106,7 @@ enum PieceType<<provided>> {
 
 abstract class ChessPiece {
     - boolean: hasMoved
-    + Moves getMoves(ChessBoardView board, Position from)
+    + Moves getPossibleMoves(ChessBoardView board, Position from)
 }
 abstract class PromotableChessPiece extends ChessPiece implements UserChoice {}
 class Pawn extends ChessPiece {}
@@ -137,11 +137,12 @@ enum Direction {
     BACKWARDS_RIGHT
 }
 
-class Move {
-    + void apply(ChessBoard board)
-}
 
 class Moves {}
+
+abstract class ChessMove {
+    + void execute(ChessBoard board)
+}
 
 enum MoveType {
     VERTICAL
@@ -150,11 +151,12 @@ enum MoveType {
     OTHER
 }
 
-class Capture extends Move {}
-class Check extends Move {}
-class EnPassant extends Move {}
-class Castling extends Move {}
-class Promotion extends Move {}
+class StandardMove extends ChessMove {}
+class Capture extends ChessMove {}
+class Check extends ChessMove {}
+class EnPassant extends ChessMove {}
+class Castling extends ChessMove {}
+class Promotion extends ChessMove {}
 
 ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >
@@ -172,8 +174,8 @@ ChessPiece "1" --> "1" PlayerColor : has >
 DirectionalGenerator "*" --> "1..*" Direction : has >
 DistanceGenerator "1" --> "*" DirectionalGenerator : has >
 
-Move "1" --> "2" Position : has >
-Move "1" --> "1" MoveType : has >
-Moves "1" --> "*" Move : has >
+ChessMove "1" --> "2" Position : has >
+ChessMove "1" --> "1" MoveType : has >
+Moves "1" --> "*" ChessMove : has >
 
 @enduml

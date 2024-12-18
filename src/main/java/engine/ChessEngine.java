@@ -6,7 +6,7 @@ import java.util.List;
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
-import engine.move.Move;
+import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
@@ -35,19 +35,10 @@ public class ChessEngine implements ChessController {
         }
 
         final ChessPiece piece = board.get(from);
-        Moves moves = piece.getMoves(board, from);
+        Moves moves = piece.getPossibleMoves(board, from);
 
-        Move move = moves.getMove(to);
-
-        System.out.println(moves);
-        System.out.println(move);
-
-        if (move == null) {
-            return false;
-        }
-        move.apply(board);
-        nextTurn();
-        return true;
+        ChessMove move = moves.getMove(to);
+        return makeMove(move);
     }
 
     @Override
@@ -58,14 +49,6 @@ public class ChessEngine implements ChessController {
         }
         ChessBoardInitializer.initializeBoard(board);
         board.sync();
-    }
-
-    private void nextTurn() {
-        if (turnColor == PlayerColor.WHITE) {
-            turnColor = PlayerColor.BLACK;
-        } else {
-            turnColor = PlayerColor.WHITE;
-        }
     }
 
     @Override
@@ -81,12 +64,33 @@ public class ChessEngine implements ChessController {
         if (piece == null)
             return;
 
-        Moves moves = piece.getMoves(board, from);
-        List<Position> positions = new ArrayList<Position>();
-        for (Move move : moves.getAllMoves()) {
+        Moves moves = piece.getPossibleMoves(board, from);
+        List<Position> positions = new ArrayList<>();
+        for (ChessMove move : moves.getAllMoves()) {
             positions.add(move.getTo());
         }
 
         board.getView().highlightPositions(positions);
+    }
+
+    private boolean makeMove(ChessMove move) {
+        if (move == null)
+            return false;
+        updateGameState();
+        move.execute(board);
+        nextTurn();
+        return true;
+    }
+
+    private void updateGameState() {
+        // Logic to determine and set new game state
+    }
+
+    private void nextTurn() {
+        if (turnColor == PlayerColor.WHITE) {
+            turnColor = PlayerColor.BLACK;
+        } else {
+            turnColor = PlayerColor.WHITE;
+        }
     }
 }

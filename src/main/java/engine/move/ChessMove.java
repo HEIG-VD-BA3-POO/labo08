@@ -1,15 +1,14 @@
 package engine.move;
 
 import engine.ChessBoard;
-import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class Move {
+public abstract class ChessMove {
     protected final Position from;
     protected final Position to;
     private final MoveType type;
 
-    public Move(Position from, Position to) {
+    public ChessMove(Position from, Position to) {
         this.from = from;
         this.to = to;
         type = MoveType.fromPos(from, to);
@@ -23,13 +22,7 @@ public class Move {
         return to;
     }
 
-    public void apply(ChessBoard board) {
-        assert board.containsKey(from);
-        ChessPiece p = board.get(from);
-        board.remove(from);
-        p.setHasMoved(true);
-        board.put(to, p);
-    }
+    public abstract void execute(ChessBoard board);
 
     @Override
     public String toString() {

@@ -4,7 +4,7 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.ChessBoardView;
 import engine.move.Capture;
-import engine.move.Move;
+import engine.move.ChessMove;
 import engine.move.MoveType;
 import engine.move.Moves;
 import engine.generator.Direction;
@@ -20,11 +20,11 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public Moves getMoves(ChessBoardView board, Position from) {
-        Moves moves = super.getMoves(board, from);
+    public Moves getPossibleMoves(ChessBoardView board, Position from) {
+        Moves moves = super.getPossibleMoves(board, from);
         Moves possibleMoves = new Moves();
 
-        for (Move move : moves.getAllMoves()) {
+        for (ChessMove move : moves.getAllMoves()) {
             Position to = move.getTo();
 
             if (move.getType() == MoveType.DIAGONAL) {

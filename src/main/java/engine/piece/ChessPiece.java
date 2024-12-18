@@ -42,7 +42,7 @@ public abstract class ChessPiece {
         return hasMoved;
     }
 
-    public Moves getMoves(ChessBoardView board, Position from) {
+    public Moves getPossibleMoves(ChessBoardView board, Position from) {
         Moves moves = new Moves();
         for (MoveGenerator gen : generators) {
             moves.extendMoves(gen.generate(board, from));

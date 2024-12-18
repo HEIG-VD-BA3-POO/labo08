@@ -2,8 +2,8 @@ package engine.generator;
 
 import engine.ChessBoardView;
 import engine.move.Capture;
-import engine.move.Move;
 import engine.move.Moves;
+import engine.move.StandardMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
@@ -49,7 +49,7 @@ public class DirectionalGenerator implements MoveGenerator {
                     }
                 } else {
                     // Add the move if the square is empty
-                    possibleMoves.addMove(new Move(from, current));
+                    possibleMoves.addMove(new StandardMove(from, current));
                 }
             }
         }

@@ -1,7 +1,7 @@
 package engine.generator;
 
 import engine.ChessBoardView;
-import engine.move.Move;
+import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.Position;
 
@@ -31,7 +31,7 @@ public class DistanceGenerator implements MoveGenerator {
         for (DirectionalGenerator gen : directionalGenerators) {
             Moves generatedMoves = gen.generate(board, from);
 
-            for (Move move : generatedMoves.getAllMoves()) {
+            for (ChessMove move : generatedMoves.getAllMoves()) {
                 if (from.dist(move.getTo()) <= maxDistance) {
                     possibleMoves.addMove(move);
                 }

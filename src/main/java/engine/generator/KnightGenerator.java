@@ -2,8 +2,8 @@ package engine.generator;
 
 import engine.ChessBoardView;
 import engine.move.Capture;
-import engine.move.Move;
 import engine.move.Moves;
+import engine.move.StandardMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
@@ -24,7 +24,7 @@ public class KnightGenerator implements MoveGenerator {
 
             if (to.isValid()) {
                 if (!board.containsKey(to)) {
-                    moves.addMove(new Move(from, to));
+                    moves.addMove(new StandardMove(from, to));
                 } else if (board.get(to).isOpponent(piece)) {
                     moves.addMove(new Capture(from, to));
                 }
