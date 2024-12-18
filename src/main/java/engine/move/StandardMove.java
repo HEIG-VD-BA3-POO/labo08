@@ -15,7 +15,7 @@ public class StandardMove extends ChessMove {
         assert board.containsKey(from);
         ChessPiece p = board.get(from);
         board.remove(from);
-        p.setHasMoved(true);
+        p.markMoved();
         board.put(to, p);
     }
 }

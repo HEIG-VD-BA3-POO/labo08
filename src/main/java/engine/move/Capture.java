@@ -17,7 +17,7 @@ public class Capture extends ChessMove {
         ChessPiece p = board.get(from);
         board.remove(from);
         board.remove(to);
-        p.setHasMoved(true);
+        p.markMoved();
         board.put(to, p);
     }
 }

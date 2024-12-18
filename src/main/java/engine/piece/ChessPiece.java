@@ -34,8 +34,8 @@ public abstract class ChessPiece {
 
     // TODO: Better encapulate this, currently is can be called anywhere, but
     // we only want to allow this to be called from the MoveGenerator
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+    public void markMoved() {
+        this.hasMoved = true;
     }
 
     public boolean hasMoved() {
