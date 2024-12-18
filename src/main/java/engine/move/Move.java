@@ -23,7 +23,7 @@ public class Move {
         return to;
     }
 
-    public void apply(ChessBoard.Board board) {
+    public void apply(ChessBoard board) {
         assert board.containsKey(from);
         ChessPiece p = board.get(from);
         board.remove(from);

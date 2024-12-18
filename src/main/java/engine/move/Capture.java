@@ -11,7 +11,7 @@ public class Capture extends Move {
     }
 
     @Override
-    public void apply(ChessBoard.Board board) {
+    public void apply(ChessBoard board) {
         assert board.containsKey(from);
         assert board.containsKey(to);
         ChessPiece p = board.get(from);

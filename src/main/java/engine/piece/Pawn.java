@@ -2,7 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.ChessBoard;
+import engine.ChessBoardView;
 import engine.move.Capture;
 import engine.move.Move;
 import engine.move.MoveType;
@@ -20,7 +20,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public Moves getMoves(ChessBoard.Board board, Position from) {
+    public Moves getMoves(ChessBoardView board, Position from) {
         Moves moves = super.getMoves(board, from);
         Moves possibleMoves = new Moves();
 

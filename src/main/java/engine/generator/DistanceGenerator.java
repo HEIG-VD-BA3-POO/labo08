@@ -1,6 +1,6 @@
 package engine.generator;
 
-import engine.ChessBoard;
+import engine.ChessBoardView;
 import engine.move.Move;
 import engine.move.Moves;
 import engine.piece.Position;
@@ -25,7 +25,7 @@ public class DistanceGenerator implements MoveGenerator {
     }
 
     @Override
-    public Moves generate(ChessBoard.Board board, Position from) {
+    public Moves generate(ChessBoardView board, Position from) {
         Moves possibleMoves = new Moves();
 
         for (DirectionalGenerator gen : directionalGenerators) {

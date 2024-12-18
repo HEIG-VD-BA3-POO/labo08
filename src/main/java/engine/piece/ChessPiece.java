@@ -2,7 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.ChessBoard;
+import engine.ChessBoardView;
 import engine.move.Moves;
 import engine.generator.MoveGenerator;
 
@@ -32,6 +32,8 @@ public abstract class ChessPiece {
         return color != other.color;
     }
 
+    // TODO: Better encapulate this, currently is can be called anywhere, but
+    // we only want to allow this to be called from the MoveGenerator
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
@@ -40,7 +42,7 @@ public abstract class ChessPiece {
         return hasMoved;
     }
 
-    public Moves getMoves(ChessBoard.Board board, Position from) {
+    public Moves getMoves(ChessBoardView board, Position from) {
         Moves moves = new Moves();
         for (MoveGenerator gen : generators) {
             moves.extendMoves(gen.generate(board, from));

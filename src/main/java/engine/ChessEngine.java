@@ -1,18 +1,23 @@
 package engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
 import engine.move.Move;
+import engine.move.Moves;
+import engine.piece.ChessPiece;
 import engine.piece.Position;
 
 public class ChessEngine implements ChessController {
-    private ChessBoard chessBoard;
+    private ChessBoard board;
     private PlayerColor turnColor;
 
     @Override
     public void start(ChessView view) {
-        this.chessBoard = new ChessBoard(view);
+        this.board = new ChessBoard(view);
         view.startView();
         newGame();
     }
@@ -20,16 +25,27 @@ public class ChessEngine implements ChessController {
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
         final Position from = new Position(fromX, fromY);
-        if (!chessBoard.getBoard().containsKey(from) ||
-                chessBoard.getBoard().get(from).getColor() != turnColor) {
+        final Position to = new Position(toX, toY);
+        assert from.isValid() : "Invalid from position in move()";
+        assert to.isValid() : "Invalid to position in move()";
+
+        if (!board.containsKey(from) ||
+                board.get(from).getColor() != turnColor) {
             return false;
         }
-        final Position to = new Position(toX, toY);
-        final Move move = chessBoard.move(from, to);
+
+        final ChessPiece piece = board.get(from);
+        Moves moves = piece.getMoves(board, from);
+
+        Move move = moves.getMove(to);
+
+        System.out.println(moves);
+        System.out.println(move);
+
         if (move == null) {
             return false;
         }
-        move.apply(chessBoard.getBoard());
+        move.apply(board);
         nextTurn();
         return true;
     }
@@ -37,11 +53,11 @@ public class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         turnColor = PlayerColor.WHITE;
-        if (chessBoard == null) {
+        if (board == null) {
             throw new RuntimeException("Call ChessEngine.start() before reseting the game");
         }
-        chessBoard.reset();
-        chessBoard.getBoard().sync();
+        ChessBoardInitializer.initializeBoard(board);
+        board.sync();
     }
 
     private void nextTurn() {
@@ -55,7 +71,22 @@ public class ChessEngine implements ChessController {
     @Override
     public void select(int x, int y) {
         Position from = new Position(x, y);
-        if (chessBoard.getBoard().get(from).getColor() == turnColor)
-            chessBoard.select(from);
+        assert from.isValid() : "Invalid from position in select()";
+
+        if (board.get(from).getColor() != turnColor) {
+            return;
+        }
+
+        final ChessPiece piece = board.get(from);
+        if (piece == null)
+            return;
+
+        Moves moves = piece.getMoves(board, from);
+        List<Position> positions = new ArrayList<Position>();
+        for (Move move : moves.getAllMoves()) {
+            positions.add(move.getTo());
+        }
+
+        board.getView().highlightPositions(positions);
     }
 }

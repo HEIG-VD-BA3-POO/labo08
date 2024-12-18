@@ -1,6 +1,6 @@
 package engine.generator;
 
-import engine.ChessBoard;
+import engine.ChessBoardView;
 import engine.move.Capture;
 import engine.move.Move;
 import engine.move.Moves;
@@ -15,7 +15,7 @@ public class KnightGenerator implements MoveGenerator {
     };
 
     @Override
-    public Moves generate(ChessBoard.Board board, Position from) {
+    public Moves generate(ChessBoardView board, Position from) {
         Moves moves = new Moves();
         ChessPiece piece = board.get(from);
 
