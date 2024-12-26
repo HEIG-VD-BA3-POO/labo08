@@ -59,10 +59,6 @@ public final class Pawn extends ChessPiece {
                     } else {
                         // Regular capture
                         possibleMoves.addMove(new Capture(from, to));
-                        // TODO: Implement En Passant
-                        // } else if (canEnPassant(board, from, to)) {
-                        // // En passant capture
-                        // filteredMoves.addMove(new Capture(from, to));
                     }
                 // En passant capture
                 } else if (canEnPassant(board, from, to)) {
@@ -93,7 +89,7 @@ public final class Pawn extends ChessPiece {
 
         // Check if a pawn is next to this position
         if (board.get(from.add(new Position(1, 0))) instanceof Pawn || board.get(from.add(new Position(-1, 0))) instanceof Pawn) {
-            return Math.abs(lastFrom.y() - lastTo.y()) == 2 && board.get(lastTo).getType() == PieceType.PAWN;
+            return Math.abs(lastFrom.y() - lastTo.y()) == 2 && board.get(lastTo) instanceof Pawn;
         }
         return false;
     }

@@ -8,6 +8,7 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.move.Moves;
+import engine.move.StandardMove;
 import engine.piece.Bishop;
 import engine.piece.ChessPiece;
 import engine.piece.Knight;
@@ -69,6 +70,15 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     @Override
     public ChessMove getLastMove() {
         return lastMove;
+    }
+
+    /**
+     * Sets the last move that was made on the chessboard.
+     *
+     * @param chessMove the last move that was made
+     */
+    public void setLastMove(ChessMove chessMove) {
+        lastMove = chessMove;
     }
 
     /**
@@ -248,9 +258,5 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError("Cloning failed", e);
         }
-    }
-
-    public void setLastMove(ChessMove chessMove) {
-        this.lastMove = chessMove;
     }
 }
