@@ -9,14 +9,35 @@ import engine.piece.Position;
 
 import java.util.List;
 
+/**
+ * Generates possible moves for pieces that move in specific directions.
+ * Supports the concept of "jumping" over pieces.
+ * 
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public class DirectionalGenerator implements MoveGenerator {
     private final List<Direction> dirs;
     private final boolean canJump;
 
+    /**
+     * Constructs a DirectionalGenerator with specified directions and jump
+     * capability.
+     * 
+     * @param canJump whether the piece can jump over other pieces
+     * @param dirs    the directions the piece can move in
+     */
     public DirectionalGenerator(boolean canJump, Direction... dirs) {
         this(canJump, List.of(dirs));
     }
 
+    /**
+     * Constructs a DirectionalGenerator with specified directions and jump
+     * capability.
+     * 
+     * @param canJump whether the piece can jump over other pieces
+     * @param dirs    the directions the piece can move in
+     */
     public DirectionalGenerator(boolean canJump, List<Direction> dirs) {
         this.canJump = canJump;
         this.dirs = dirs;

@@ -13,13 +13,39 @@ import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
 import engine.generator.PawnDistanceGenerator;
 
+/**
+ * Represents the Pawn chess piece.
+ * The Pawn can move one or two squares forward, but captures diagonally.
+ * It also has the option to promote upon reaching the opposite end of the
+ * board.
+ * 
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public final class Pawn extends ChessPiece {
 
+    /**
+     * Constructs a Pawn chess piece with the specified color.
+     * Uses a {@link PawnDistanceGenerator} for forward movement and a
+     * {@link DirectionalGenerator}
+     * for diagonal captures.
+     * 
+     * @param color the color of the Pawn
+     */
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color, new PawnDistanceGenerator(), new DistanceGenerator(1,
                 new DirectionalGenerator(false, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT)));
     }
 
+    /**
+     * Gets all possible moves for the Pawn from the given position.
+     * Handles regular moves, captures, and promotions (including promotion with
+     * capture).
+     * 
+     * @param board the chess board
+     * @param from  the starting position of the Pawn
+     * @return a {@link Moves} object containing all valid moves for the Pawn
+     */
     @Override
     public Moves getPossibleMoves(ChessBoardView board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
@@ -56,11 +82,24 @@ public final class Pawn extends ChessPiece {
         return possibleMoves;
     }
 
+    /**
+     * Checks if the move is diagonal.
+     * 
+     * @param from the starting position
+     * @param to   the destination position
+     * @return true if the move is diagonal
+     */
     private boolean isDiagonalMove(Position from, Position to) {
         Position dpos = from.sub(to).abs();
         return dpos.x() == dpos.y();
     }
 
+    /**
+     * Checks if the Pawn is at the edge of the board (where promotion is possible).
+     * 
+     * @param y the y-coordinate of the Pawn's position
+     * @return true if the Pawn is at the promotion edge
+     */
     private boolean isAtEdge(int y) {
         return color == PlayerColor.WHITE ? y == Position.MAX_Y : y == 0;
     }

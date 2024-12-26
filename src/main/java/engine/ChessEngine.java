@@ -11,10 +11,23 @@ import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
+/**
+ * Main engine class responsible for managing the chess game logic, turns, and
+ * interactions with the view.
+ * Implements the {@link ChessController} interface.
+ * 
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public final class ChessEngine implements ChessController {
     private ChessBoard board;
     private PlayerColor turnColor;
 
+    /**
+     * Starts the chess game, initializes the board, and starts the view.
+     *
+     * @param view the {@link ChessView} used for displaying the game
+     */
     @Override
     public void start(ChessView view) {
         this.board = new ChessBoard(view);
@@ -22,6 +35,15 @@ public final class ChessEngine implements ChessController {
         newGame();
     }
 
+    /**
+     * Attempts to make a move on the chessboard from the given coordinates.
+     *
+     * @param fromX the starting X-coordinate
+     * @param fromY the starting Y-coordinate
+     * @param toX   the destination X-coordinate
+     * @param toY   the destination Y-coordinate
+     * @return true if the move is successful, false otherwise
+     */
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
         final Position from = new Position(fromX, fromY);
@@ -29,8 +51,7 @@ public final class ChessEngine implements ChessController {
         assert from.isValid() : "Invalid from position in move()";
         assert to.isValid() : "Invalid to position in move()";
 
-        if (!board.containsKey(from) ||
-                board.get(from).getColor() != turnColor) {
+        if (!board.containsKey(from) || board.get(from).getColor() != turnColor) {
             return false;
         }
 
@@ -41,6 +62,9 @@ public final class ChessEngine implements ChessController {
         return makeMove(move);
     }
 
+    /**
+     * Resets the game state to start a new game.
+     */
     @Override
     public void newGame() {
         turnColor = PlayerColor.WHITE;
@@ -51,6 +75,13 @@ public final class ChessEngine implements ChessController {
         board.sync();
     }
 
+    /**
+     * Highlights valid moves for a piece at the given position if it belongs to the
+     * current player.
+     *
+     * @param x the X-coordinate of the piece
+     * @param y the Y-coordinate of the piece
+     */
     @Override
     public void select(int x, int y) {
         Position from = new Position(x, y);
@@ -77,6 +108,13 @@ public final class ChessEngine implements ChessController {
         board.getView().highlightPositions(positions);
     }
 
+    /**
+     * Executes the given move if it is valid and updates the game state
+     * accordingly.
+     *
+     * @param move the move to be executed
+     * @return true if the move is successful, false otherwise
+     */
     private boolean makeMove(ChessMove move) {
         if (move == null) {
             return false;
@@ -103,10 +141,18 @@ public final class ChessEngine implements ChessController {
         return true;
     }
 
+    /**
+     * Switches to the next player's turn.
+     */
     private void nextTurn() {
         turnColor = oppositePlayer();
     }
 
+    /**
+     * Determines the color of the opposing player.
+     *
+     * @return the color of the opposing player
+     */
     private PlayerColor oppositePlayer() {
         return turnColor == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
