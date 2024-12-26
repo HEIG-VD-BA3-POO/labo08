@@ -90,7 +90,11 @@ public class ChessEngine implements ChessController {
         }
 
         move.execute(board); // Execute the move on the real board
+
         nextTurn();
+        if (board.isKingInCheck(turnColor)) {
+            board.getView().displayMessage("Check!");
+        }
         return true;
     }
 
