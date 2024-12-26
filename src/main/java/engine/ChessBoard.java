@@ -4,8 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chess.ChessView;
+import chess.PlayerColor;
+import engine.piece.Bishop;
 import engine.piece.ChessPiece;
+import engine.piece.Knight;
 import engine.piece.Position;
+import engine.piece.PromotableChessPiece;
+import engine.piece.Queen;
+import engine.piece.Rook;
 
 public class ChessBoard implements ChessBoardView {
     private final Map<Position, ChessPiece> pieces = new HashMap<>();
@@ -49,5 +55,13 @@ public class ChessBoard implements ChessBoardView {
 
     public ChessView getView() {
         return view;
+    }
+
+    public void handlePawnPromotion(Position pos, PlayerColor color) {
+        PromotableChessPiece chosen = view.askUser(
+                "Promotion",
+                "Choose piece for promotion:",
+                new Queen(color), new Rook(color), new Bishop(color), new Knight(color));
+        put(pos, chosen);
     }
 }

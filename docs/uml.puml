@@ -144,19 +144,13 @@ abstract class ChessMove {
     + void execute(ChessBoard board)
 }
 
-enum MoveType {
-    VERTICAL
-    HORIZONTAL
-    DIAGONAL
-    OTHER
-}
-
 class StandardMove extends ChessMove {}
 class Capture extends ChessMove {}
 class Check extends ChessMove {}
 class EnPassant extends ChessMove {}
 class Castling extends ChessMove {}
-class Promotion extends ChessMove {}
+class Promotion extends StandardMove {}
+class PromotionWithCapture extends Capture {}
 
 ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >
@@ -175,7 +169,6 @@ DirectionalGenerator "*" --> "1..*" Direction : has >
 DistanceGenerator "1" --> "*" DirectionalGenerator : has >
 
 ChessMove "1" --> "2" Position : has >
-ChessMove "1" --> "1" MoveType : has >
 Moves "1" --> "*" ChessMove : has >
 
 @enduml

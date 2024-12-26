@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class ChessPiece {
     protected final PieceType type;
-    private final PlayerColor color;
+    protected final PlayerColor color;
     private final List<MoveGenerator> generators;
     private boolean hasMoved = false;
 
