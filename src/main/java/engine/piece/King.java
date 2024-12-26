@@ -31,6 +31,16 @@ public final class King extends ChessPiece {
                 new KingDistanceGenerator());
     }
 
+    /**
+     * Determines if the King can castle with the Rook at the given positions.
+     * The King and Rook must not have moved, and the squares between them must be
+     * empty.
+     *
+     * @param board the chess board
+     * @param from  the position of the King
+     * @param to    the position of the Rook
+     * @return true if the King can castle with the Rook, false otherwise
+     */
     private boolean canCastle(ChessBoardView board, Position from, Position to) {
         if (hasMoved()) return false;
 
@@ -55,6 +65,14 @@ public final class King extends ChessPiece {
         return true;
     }
 
+    /**
+     * Gets all possible moves for the King from the given position.
+     * Handles regular moves and castling moves.
+     *
+     * @param board the chess board
+     * @param from  the starting position of the King
+     * @return a {@link Moves} object containing all valid moves for the King
+     */
     @Override
     public Moves getPossibleMoves(ChessBoardView board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
