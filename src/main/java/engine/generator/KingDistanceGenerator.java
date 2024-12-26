@@ -11,14 +11,14 @@ import engine.piece.Position;
 public class KingDistanceGenerator extends DistanceGenerator {
 
     public KingDistanceGenerator() {
-        super(2, new DirectionalGenerator(false, Direction.LEFT, Direction.RIGHT));
+        super(1, new DirectionalGenerator(false, Direction.LEFT, Direction.RIGHT));
     }
 
     @Override
     public Moves generate(ChessBoardView board, Position from) {
         final ChessPiece piece = board.get(from);
-        // If the king has moved, restrict its maximum distance to 1
-        if (piece.hasMoved() && getMaxDistance() == 2) {
+        // Checks if a castling move is possible
+        if (piece.hasMoved()) {
             setMaxDistance(1);
         }
         return super.generate(board, from);
