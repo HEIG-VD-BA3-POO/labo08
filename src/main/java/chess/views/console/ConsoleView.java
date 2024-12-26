@@ -4,11 +4,9 @@ import chess.ChessController;
 import chess.PieceType;
 import chess.PlayerColor;
 import chess.assets.ConsoleAssets;
-import engine.piece.Position;
 import chess.views.BaseView;
 import chess.views.DrawableResource;
 
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -92,13 +90,15 @@ public class ConsoleView extends BaseView<String> {
             result = possibilities[userChoice];
           else
             userChoice = -1;
-        } catch (NumberFormatException e) { // nothing
+        }
+        catch (NumberFormatException e) { // nothing
         }
 
         if (userChoice < 0)
           System.out.println("Error. Choose a value between 0 and " + (possibilities.length - 1));
 
-      } while (userChoice < 0);
+      }
+      while (userChoice < 0);
     }
     return result;
   }
@@ -114,6 +114,8 @@ public class ConsoleView extends BaseView<String> {
       }
     }
   }
+
+
 
   private void printBoard() {
     for (int y = 7; y >= 0; --y) {
@@ -138,7 +140,7 @@ public class ConsoleView extends BaseView<String> {
     while (in == null) {
       System.out.println(text);
       in = scanner.findInLine(pattern);
-      scanner.nextLine();// clean buffer
+      scanner.nextLine();//clean buffer
     }
     return in;
 
@@ -162,12 +164,6 @@ public class ConsoleView extends BaseView<String> {
         printBoard();
       }
     }
-  }
-
-  @Override
-  public void highlightPositions(List<Position> pos) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'highlightPositions'");
   }
 
 }

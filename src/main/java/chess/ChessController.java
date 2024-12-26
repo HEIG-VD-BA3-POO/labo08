@@ -8,16 +8,13 @@ public interface ChessController {
   /**
    * Démarre la logique (contrôleur) du programme.
    * Appelé une fois (voir Chess.main())
-   *
    * @param view la vue à utiliser
    */
   void start(ChessView view);
 
   /**
-   * Appelé lorsque l'utilisateur a demandé un déplacement de la position X à la
-   * position Y.
+   * Appelé lorsque l'utilisateur a demandé un déplacement de la position X à la position Y.
    * La position 0, 0 est en bas à gauche de l'échiquier.
-   *
    * @param fromX
    * @param fromY
    * @param toX
@@ -26,11 +23,8 @@ public interface ChessController {
    */
   boolean move(int fromX, int fromY, int toX, int toY);
 
-  void select(int x, int y);
-
   /**
-   * Démarre une nouvelle partie. L'échiquier doit être remis dans sa position
-   * initiale.
+   * Démarre une nouvelle partie. L'échiquier doit être remis dans sa position initiale.
    */
   void newGame();
 

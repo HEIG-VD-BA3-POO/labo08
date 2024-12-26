@@ -1,8 +1,5 @@
 package engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
@@ -73,39 +70,6 @@ public final class ChessEngine implements ChessController {
         }
         ChessBoardInitializer.initializeBoard(board);
         board.sync();
-    }
-
-    /**
-     * Highlights valid moves for a piece at the given position if it belongs to the
-     * current player.
-     *
-     * @param x the X-coordinate of the piece
-     * @param y the Y-coordinate of the piece
-     */
-    @Override
-    public void select(int x, int y) {
-        Position from = new Position(x, y);
-        assert from.isValid() : "Invalid from position in select()";
-
-        if (board.get(from).getColor() != turnColor) {
-            return;
-        }
-
-        final ChessPiece piece = board.get(from);
-        if (piece == null)
-            return;
-
-        Moves moves = piece.getPossibleMoves(board, from);
-        List<Position> positions = new ArrayList<>();
-        for (ChessMove move : moves.getAllMoves()) {
-            ChessBoard clonedBoard = board.clone();
-            move.execute(clonedBoard);
-            if (!clonedBoard.isKingInCheck(turnColor)) {
-                positions.add(move.getTo());
-            }
-        }
-
-        board.getView().highlightPositions(positions);
     }
 
     /**
