@@ -11,7 +11,7 @@ import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class ChessEngine implements ChessController {
+public final class ChessEngine implements ChessController {
     private ChessBoard board;
     private PlayerColor turnColor;
 
@@ -45,7 +45,7 @@ public class ChessEngine implements ChessController {
     public void newGame() {
         turnColor = PlayerColor.WHITE;
         if (board == null) {
-            throw new RuntimeException("Call ChessEngine.start() before reseting the game");
+            throw new RuntimeException("Call ChessEngine.start() before resetting the game");
         }
         ChessBoardInitializer.initializeBoard(board);
         board.sync();

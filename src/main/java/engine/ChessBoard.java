@@ -16,7 +16,7 @@ import engine.piece.PromotableChessPiece;
 import engine.piece.Queen;
 import engine.piece.Rook;
 
-public class ChessBoard implements ChessBoardView, Cloneable {
+public final class ChessBoard implements ChessBoardView, Cloneable {
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private ChessView view;
     private Map<PlayerColor, Position> kings = new HashMap<>();
@@ -102,7 +102,7 @@ public class ChessBoard implements ChessBoardView, Cloneable {
 
     /**
      * Checks if a player is in checkmate.
-     * A player is in checkmate if their king is in check and they have no legal
+     * A player is in checkmate if their king is in check, and they have no legal
      * moves.
      * 
      * @param color The color of the player to check for checkmate
@@ -168,10 +168,7 @@ public class ChessBoard implements ChessBoardView, Cloneable {
             }
 
             // Deep copy the kings map
-            clonedBoard.kings = new HashMap<>();
-            for (Map.Entry<PlayerColor, Position> entry : kings.entrySet()) {
-                clonedBoard.kings.put(entry.getKey(), entry.getValue());
-            }
+            clonedBoard.kings = new HashMap<>(kings);
 
             // Set the view to null to decouple the cloned board from the view
             clonedBoard.view = null;

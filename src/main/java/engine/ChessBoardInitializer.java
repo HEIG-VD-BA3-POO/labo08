@@ -3,7 +3,7 @@ package engine;
 import chess.PlayerColor;
 import engine.piece.*;
 
-class ChessBoardInitializer {
+final class ChessBoardInitializer {
     public static void initializeBoard(ChessBoard board) {
         board.clear();
         placePawns(board);

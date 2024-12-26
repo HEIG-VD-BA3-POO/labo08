@@ -7,7 +7,7 @@ import engine.move.StandardMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class KnightGenerator implements MoveGenerator {
+public final class KnightGenerator implements MoveGenerator {
     private static final int[][] KNIGHT_MOVES = {
             { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
             { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }

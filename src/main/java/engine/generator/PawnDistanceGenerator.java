@@ -5,7 +5,7 @@ import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class PawnDistanceGenerator extends DistanceGenerator {
+public final class PawnDistanceGenerator extends DistanceGenerator {
 
     public PawnDistanceGenerator() {
         super(2, new DirectionalGenerator(false, Direction.FORWARDS));

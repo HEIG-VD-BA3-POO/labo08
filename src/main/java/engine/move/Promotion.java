@@ -4,7 +4,7 @@ import engine.ChessBoard;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class Promotion extends StandardMove {
+public final class Promotion extends StandardMove {
 
     public Promotion(Position from, Position to) {
         super(from, to);
