@@ -3,16 +3,17 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.ChessBoardView;
-import engine.move.Capture;
-import engine.move.ChessMove;
-import engine.move.Moves;
-import engine.move.Promotion;
-import engine.move.PromotionWithCapture;
-import engine.move.EnPassant;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
 import engine.generator.PawnDistanceGenerator;
+import engine.move.Capture;
+import engine.move.ChessMove;
+import engine.move.EnPassant;
+import engine.move.Moves;
+import engine.move.Promotion;
+import engine.move.PromotionWithCapture;
+import engine.move.StandardMove;
 
 /**
  * Represents the Pawn chess piece.
@@ -49,82 +50,175 @@ public final class Pawn extends ChessPiece {
      */
     @Override
     public Moves getPossibleMoves(ChessBoardView board, Position from) {
-        Moves moves = super.getPossibleMoves(board, from);
-        Moves possibleMoves = new Moves();
+        Moves candidateMoves = super.getPossibleMoves(board, from);
+        Moves validMoves = new Moves();
 
-        for (ChessMove move : moves.getAllMoves()) {
+        for (ChessMove move : candidateMoves.getAllMoves()) {
             Position to = move.getTo();
-
-            if (isDiagonalMove(from, to)) {
-                // Handle diagonal moves (captures or en passant)
-                if (board.containsKey(to) && board.get(to).isOpponent(this)) {
-                    // Promotion with capture
-                    if (isAtEdge(to.y())) {
-                        possibleMoves.addMove(new PromotionWithCapture(from, to));
-                    } else {
-                        // Regular capture
-                        possibleMoves.addMove(new Capture(from, to));
-                    }
-                // En passant capture
-                } else if (canEnPassant(board, from, to)) {
-                    if (color == PlayerColor.WHITE && board.containsKey(to.sub(new Position(0, 1))) && board.get(to.sub(new Position(0, 1))).isOpponent(this)) {
-                        possibleMoves.addMove(new EnPassant(from, to));
-                    } else if (color == PlayerColor.BLACK && board.containsKey(to.add(new Position(0, 1))) && board.get(to.add(new Position(0, 1))).isOpponent(this)) {
-                        possibleMoves.addMove(new EnPassant(from, to));
-                    }
-                }
-            } else if (!board.containsKey(to)) {
-                if (isAtEdge(to.y())) {
-                    possibleMoves.addMove(new Promotion(from, to));
-                } else {
-                    possibleMoves.addMove(move);
-                }
+            if (isValidMove(board, from, to)) {
+                validMoves.addMove(createAppropriateMove(board, from, to));
             }
         }
 
-        return possibleMoves;
+        addEnPassantMoves(board, from, validMoves);
+        return validMoves;
     }
 
     /**
-     * Checks if an en passant capture is possible.
+     * Validates whether a move is legal according to pawn movement rules.
+     * Checks both forward moves and diagonal captures.
      *
-     * @param from the starting position
-     * @param to   the destination position
-     * @return true if an en passant capture is possible
+     * @param board The current state of the chess board
+     * @param from  The starting position of the pawn
+     * @param to    The target position for the move
+     * @return true if the move is legal, false otherwise
      */
-    private boolean canEnPassant(ChessBoardView board, Position from, Position to) {
-        ChessMove lastMove = board.getLastMove();
-        if (lastMove == null) return false;
-
-        Position lastFrom = lastMove.getFrom();
-        Position lastTo = lastMove.getTo();
-
-        // Check if a pawn is next to this position
-        if (board.get(from.add(new Position(1, 0))) instanceof Pawn || board.get(from.add(new Position(-1, 0))) instanceof Pawn) {
-            return Math.abs(lastFrom.y() - lastTo.y()) == 2 && board.get(lastTo) instanceof Pawn;
+    private boolean isValidMove(ChessBoardView board, Position from, Position to) {
+        if (isDiagonalCapture(from, to)) {
+            return isValidCapture(board, to);
         }
-        return false;
+        return !board.containsKey(to); // Forward moves require empty square
     }
 
     /**
-     * Checks if the move is diagonal.
-     * 
-     * @param from the starting position
-     * @param to   the destination position
-     * @return true if the move is diagonal
+     * Creates the appropriate type of move based on the movement type and position.
+     * Handles standard moves, captures, and promotions.
+     *
+     * @param board The current state of the chess board
+     * @param from  The starting position of the pawn
+     * @param to    The target position for the move
+     * @return The appropriate ChessMove object for the given move
      */
-    private boolean isDiagonalMove(Position from, Position to) {
-        Position dpos = from.sub(to).abs();
-        return dpos.x() == dpos.y();
+    private ChessMove createAppropriateMove(ChessBoardView board, Position from, Position to) {
+        if (isDiagonalCapture(from, to)) {
+            return createCaptureMove(from, to);
+        }
+        return createForwardMove(from, to);
     }
 
     /**
-     * Checks if the Pawn is at the edge of the board (where promotion is possible).
-     * 
-     * @param y the y-coordinate of the Pawn's position
-     * @return true if the Pawn is at the promotion edge
+     * Creates a capture move, either as a regular capture or a promotion with
+     * capture.
+     *
+     * @param from The starting position of the pawn
+     * @param to   The target position for the capture
+     * @return A Capture or PromotionWithCapture move
      */
-    private boolean isAtEdge(int y) {
-        return color == PlayerColor.WHITE ? y == Position.MAX_Y : y == 0;
+    private ChessMove createCaptureMove(Position from, Position to) {
+        return isAtPromotionRank(to)
+                ? new PromotionWithCapture(from, to)
+                : new Capture(from, to);
+    }
+
+    /**
+     * Creates a forward move, either as a standard move or a promotion.
+     *
+     * @param from The starting position of the pawn
+     * @param to   The target position for the move
+     * @return A StandardMove or Promotion move
+     */
+    private ChessMove createForwardMove(Position from, Position to) {
+        return isAtPromotionRank(to)
+                ? new Promotion(from, to)
+                : new StandardMove(from, to);
+    }
+
+    /**
+     * Adds any possible en passant captures to the list of valid moves.
+     * Checks adjacent squares for opponent pawns that have just moved two squares.
+     *
+     * @param board The current state of the chess board
+     * @param from  The current position of the pawn
+     * @param moves The collection of moves to add to
+     */
+    private void addEnPassantMoves(ChessBoardView board, Position from, Moves moves) {
+        Position[] adjacentPositions = {
+                Direction.LEFT.add(from, color),
+                Direction.RIGHT.add(from, color)
+        };
+        for (Position adjacent : adjacentPositions) {
+            if (isValidEnPassantPosition(board, from, adjacent)) {
+                Position captureSquare = Direction.FORWARDS.add(adjacent, color);
+                moves.addMove(new EnPassant(from, captureSquare));
+            }
+        }
+    }
+
+    /**
+     * Checks if an en passant capture is valid from the given position.
+     * Validates that there is an opponent's pawn in the correct position
+     * and that it just moved two squares forward.
+     *
+     * @param board    The current state of the chess board
+     * @param from     The current position of the pawn
+     * @param adjacent The position adjacent to the pawn
+     * @return true if an en passant capture is possible, false otherwise
+     */
+    private boolean isValidEnPassantPosition(ChessBoardView board, Position from, Position adjacent) {
+        if (!isPawnAtPosition(board, adjacent))
+            return false;
+        ChessMove lastMove = board.getLastMove();
+        return lastMove != null &&
+                wasDoublePawnAdvance(lastMove) &&
+                adjacent.equals(lastMove.getTo()) &&
+                board.get(adjacent).isOpponent(this);
+    }
+
+    /**
+     * Determines if a move is a diagonal capture based on the positions.
+     *
+     * @param from The starting position
+     * @param to   The target position
+     * @return true if the move is diagonal, false otherwise
+     */
+    private boolean isDiagonalCapture(Position from, Position to) {
+        Position delta = from.sub(to).abs();
+        return delta.x() == delta.y();
+    }
+
+    /**
+     * Checks if a capture is valid at the target position.
+     * Verifies that there is an opponent's piece at the target square.
+     *
+     * @param board The current state of the chess board
+     * @param to    The target position for the capture
+     * @return true if the capture is valid, false otherwise
+     */
+    private boolean isValidCapture(ChessBoardView board, Position to) {
+        return board.containsKey(to) && board.get(to).isOpponent(this);
+    }
+
+    /**
+     * Checks if there is a pawn at the given position.
+     *
+     * @param board The current state of the chess board
+     * @param pos   The position to check
+     * @return true if there is a pawn at the position, false otherwise
+     */
+    private boolean isPawnAtPosition(ChessBoardView board, Position pos) {
+        return board.containsKey(pos) && board.get(pos).getType() == PieceType.PAWN;
+    }
+
+    /**
+     * Determines if a move was a double square pawn advance.
+     *
+     * @param move The move to check
+     * @return true if the move was a double square advance, false otherwise
+     */
+    private boolean wasDoublePawnAdvance(ChessMove move) {
+        return Math.abs(move.getFrom().y() - move.getTo().y()) == 2;
+    }
+
+    /**
+     * Checks if a position is on the promotion rank for this pawn's color.
+     * White pawns promote on rank 8 (MAX_Y), black pawns promote on rank 1 (0).
+     *
+     * @param pos The position to check
+     * @return true if the position is on the promotion rank, false otherwise
+     */
+    private boolean isAtPromotionRank(Position pos) {
+        return color == PlayerColor.WHITE
+                ? pos.y() == Position.MAX_Y
+                : pos.y() == 0;
     }
 }
