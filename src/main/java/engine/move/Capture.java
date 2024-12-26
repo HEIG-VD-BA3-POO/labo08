@@ -36,13 +36,7 @@ public class Capture extends ChessMove {
      */
     @Override
     public void execute(ChessBoard board) {
-        assert board.containsKey(from);
         assert board.containsKey(to);
-        board.setLastMove(this);
-        ChessPiece p = board.get(from);
-        board.remove(from);
-        board.remove(to);
-        p.markMoved();
-        board.put(to, p);
+        super.execute(board);
     }
 }
