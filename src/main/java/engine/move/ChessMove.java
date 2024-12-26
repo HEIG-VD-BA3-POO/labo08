@@ -36,6 +36,15 @@ public abstract class ChessMove {
     }
 
     /**
+     * Gets the starting position of the move.
+     *
+     * @return the starting position
+     */
+    public Position getFrom() {
+        return from;
+    }
+
+    /**
      * Executes the move on the given chess board.
      * This method must be implemented by subclasses to define the specific behavior
      * of the move.

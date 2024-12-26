@@ -1,5 +1,6 @@
 package engine;
 
+import engine.move.ChessMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
@@ -28,4 +29,11 @@ public interface ChessBoardView {
      * @return true if a piece is present at the given position, false otherwise
      */
     boolean containsKey(Position pos);
+
+    /**
+     * Retrieves the last move that was made on the chessboard.
+     *
+     * @return the last move that was made on the chessboard
+     */
+    ChessMove getLastMove();
 }

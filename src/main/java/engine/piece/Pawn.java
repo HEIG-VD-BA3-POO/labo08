@@ -3,11 +3,7 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.ChessBoardView;
-import engine.move.Capture;
-import engine.move.ChessMove;
-import engine.move.Moves;
-import engine.move.Promotion;
-import engine.move.PromotionWithCapture;
+import engine.move.*;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
@@ -67,7 +63,13 @@ public final class Pawn extends ChessPiece {
                         // } else if (canEnPassant(board, from, to)) {
                         // // En passant capture
                         // filteredMoves.addMove(new Capture(from, to));
-
+                    }
+                // En passant capture
+                } else if (canEnPassant(board, from, to)) {
+                    if (color == PlayerColor.WHITE && board.containsKey(to.sub(new Position(0, 1))) && board.get(to.sub(new Position(0, 1))).isOpponent(this)) {
+                        possibleMoves.addMove(new EnPassant(from, to));
+                    } else if (color == PlayerColor.BLACK && board.containsKey(to.add(new Position(0, 1))) && board.get(to.add(new Position(0, 1))).isOpponent(this)) {
+                        possibleMoves.addMove(new EnPassant(from, to));
                     }
                 }
             } else if (!board.containsKey(to)) {
@@ -80,6 +82,20 @@ public final class Pawn extends ChessPiece {
         }
 
         return possibleMoves;
+    }
+
+    private boolean canEnPassant(ChessBoardView board, Position from, Position to) {
+        ChessMove lastMove = board.getLastMove();
+        if (lastMove == null) return false;
+
+        Position lastFrom = lastMove.getFrom();
+        Position lastTo = lastMove.getTo();
+
+        // Check if a pawn is next to this position
+        if (board.get(from.add(new Position(1, 0))) instanceof Pawn || board.get(from.add(new Position(-1, 0))) instanceof Pawn) {
+            return Math.abs(lastFrom.y() - lastTo.y()) == 2 && board.get(lastTo).getType() == PieceType.PAWN;
+        }
+        return false;
     }
 
     /**
