@@ -80,6 +80,13 @@ public final class Pawn extends ChessPiece {
         return possibleMoves;
     }
 
+    /**
+     * Checks if an en passant capture is possible.
+     *
+     * @param from the starting position
+     * @param to   the destination position
+     * @return true if an en passant capture is possible
+     */
     private boolean canEnPassant(ChessBoardView board, Position from, Position to) {
         ChessMove lastMove = board.getLastMove();
         if (lastMove == null) return false;
