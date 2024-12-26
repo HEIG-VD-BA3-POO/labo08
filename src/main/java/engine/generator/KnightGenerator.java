@@ -8,7 +8,6 @@ import engine.piece.ChessPiece;
 import engine.piece.Position;
 
 public class KnightGenerator implements MoveGenerator {
-
     private static final int[][] KNIGHT_MOVES = {
             { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
             { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }
@@ -20,7 +19,7 @@ public class KnightGenerator implements MoveGenerator {
         ChessPiece piece = board.get(from);
 
         for (int[] move : KNIGHT_MOVES) {
-            Position to = from.add(move[0], move[1]);
+            Position to = from.add(new Position(move[0], move[1]));
 
             if (to.isValid()) {
                 if (!board.containsKey(to)) {

@@ -18,8 +18,16 @@ public record Position(int x, int y) {
         return Math.max(dx, dy);
     }
 
-    public Position add(int xp, int yp) {
-        return new Position(x + xp, y + yp);
+    public Position add(Position other) {
+        return new Position(x + other.x, y + other.y);
+    }
+
+    public Position sub(Position other) {
+        return new Position(x - other.x, y - other.y);
+    }
+
+    public Position abs() {
+        return new Position(Math.abs(x), Math.abs(y));
     }
 
     @Override

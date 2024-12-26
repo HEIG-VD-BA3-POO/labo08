@@ -144,13 +144,6 @@ abstract class ChessMove {
     + void execute(ChessBoard board)
 }
 
-enum MoveType {
-    VERTICAL
-    HORIZONTAL
-    DIAGONAL
-    OTHER
-}
-
 class StandardMove extends ChessMove {}
 class Capture extends ChessMove {}
 class Check extends ChessMove {}
@@ -176,7 +169,6 @@ DirectionalGenerator "*" --> "1..*" Direction : has >
 DistanceGenerator "1" --> "*" DirectionalGenerator : has >
 
 ChessMove "1" --> "2" Position : has >
-ChessMove "1" --> "1" MoveType : has >
 Moves "1" --> "*" ChessMove : has >
 
 @enduml

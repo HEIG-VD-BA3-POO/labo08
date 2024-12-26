@@ -5,7 +5,6 @@ import chess.PlayerColor;
 import engine.ChessBoardView;
 import engine.move.Capture;
 import engine.move.ChessMove;
-import engine.move.MoveType;
 import engine.move.Moves;
 import engine.move.Promotion;
 import engine.move.PromotionWithCapture;
@@ -29,7 +28,7 @@ public class Pawn extends ChessPiece {
         for (ChessMove move : moves.getAllMoves()) {
             Position to = move.getTo();
 
-            if (move.getType() == MoveType.DIAGONAL) {
+            if (isDiagonalMove(from, to)) {
                 // Handle diagonal moves (captures or en passant)
                 if (board.containsKey(to) && board.get(to).isOpponent(this)) {
                     // Pomotion with capture
@@ -55,6 +54,11 @@ public class Pawn extends ChessPiece {
         }
 
         return possibleMoves;
+    }
+
+    private boolean isDiagonalMove(Position from, Position to) {
+        Position dpos = from.sub(to).abs();
+        return dpos.x() == dpos.y();
     }
 
     private boolean isAtEdge(int y) {
