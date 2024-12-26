@@ -6,7 +6,7 @@ import java.util.Map;
 
 import engine.piece.Position;
 
-public class Moves {
+public final class Moves {
     private final Map<Position, ChessMove> movesMap;
 
     public Moves() {

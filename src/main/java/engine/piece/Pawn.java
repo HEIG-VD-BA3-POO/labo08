@@ -13,7 +13,7 @@ import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
 import engine.generator.PawnDistanceGenerator;
 
-public class Pawn extends ChessPiece {
+public final class Pawn extends ChessPiece {
 
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color, new PawnDistanceGenerator(), new DistanceGenerator(1,
@@ -31,7 +31,7 @@ public class Pawn extends ChessPiece {
             if (isDiagonalMove(from, to)) {
                 // Handle diagonal moves (captures or en passant)
                 if (board.containsKey(to) && board.get(to).isOpponent(this)) {
-                    // Pomotion with capture
+                    // Promotion with capture
                     if (isAtEdge(to.y())) {
                         possibleMoves.addMove(new PromotionWithCapture(from, to));
                     } else {

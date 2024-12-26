@@ -4,7 +4,7 @@ import engine.ChessBoard;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-public class PromotionWithCapture extends Capture {
+public final class PromotionWithCapture extends Capture {
 
     public PromotionWithCapture(Position from, Position to) {
         super(from, to);
