@@ -90,19 +90,24 @@ public class ChessEngine implements ChessController {
         }
 
         move.execute(board); // Execute the move on the real board
-
         nextTurn();
-        if (board.isKingInCheck(turnColor)) {
+
+        if (board.isCheckmate(turnColor)) {
+            board.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
+        } else if (board.isStalemate(turnColor)) {
+            board.getView().displayMessage("Stalemate... It's a draw");
+        } else if (board.isKingInCheck(turnColor)) {
             board.getView().displayMessage("Check!");
         }
+
         return true;
     }
 
     private void nextTurn() {
-        if (turnColor == PlayerColor.WHITE) {
-            turnColor = PlayerColor.BLACK;
-        } else {
-            turnColor = PlayerColor.WHITE;
-        }
+        turnColor = oppositePlayer();
+    }
+
+    private PlayerColor oppositePlayer() {
+        return turnColor == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
 }

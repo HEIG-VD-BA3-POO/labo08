@@ -7,6 +7,7 @@ import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.Moves;
+import engine.move.ChessMove;
 import engine.piece.Bishop;
 import engine.piece.ChessPiece;
 import engine.piece.Knight;
@@ -73,6 +74,10 @@ public class ChessBoard implements ChessBoardView, Cloneable {
     }
 
     public void handlePawnPromotion(Position pos, PlayerColor color) {
+        if (view == null) {
+            put(pos, new Queen(color));
+            return;
+        }
         PromotableChessPiece chosen = view.askUser(
                 "Promotion",
                 "Choose piece for promotion:",
@@ -93,6 +98,62 @@ public class ChessBoard implements ChessBoardView, Cloneable {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if a player is in checkmate.
+     * A player is in checkmate if their king is in check and they have no legal
+     * moves.
+     * 
+     * @param color The color of the player to check for checkmate
+     * @return true if the player is in checkmate
+     */
+    public boolean isCheckmate(PlayerColor color) {
+        return isKingInCheck(color) && hasNoLegalMoves(color);
+    }
+
+    /**
+     * Checks if a player is in stalemate.
+     * A player is in stalemate if they are not in check but have no legal moves.
+     * 
+     * @param color The color of the player to check for stalemate
+     * @return true if the player is in stalemate
+     */
+    public boolean isStalemate(PlayerColor color) {
+        return !isKingInCheck(color) && hasNoLegalMoves(color);
+    }
+
+    /**
+     * Helper method to check if a player has any legal moves available.
+     * 
+     * @param color The color of the player to check
+     * @return true if the player has no legal moves
+     */
+    private boolean hasNoLegalMoves(PlayerColor color) {
+        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+            ChessPiece piece = entry.getValue();
+            if (piece.getColor() == color) {
+                Position pos = entry.getKey();
+                Moves possibleMoves = piece.getPossibleMoves(this, pos);
+
+                // Check each possible move
+                for (ChessMove move : possibleMoves.getAllMoves()) {
+                    // Create a clone to test the move
+                    ChessBoard testBoard = this.clone();
+                    ChessPiece movingPiece = testBoard.get(pos);
+
+                    // Make the move on the test board
+                    testBoard.remove(pos);
+                    testBoard.put(move.getTo(), movingPiece);
+
+                    // If this move doesn't leave/put the king in check, it's a legal move
+                    if (!testBoard.isKingInCheck(color)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override
