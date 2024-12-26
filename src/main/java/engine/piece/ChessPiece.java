@@ -8,7 +8,7 @@ import engine.generator.MoveGenerator;
 
 import java.util.List;
 
-public abstract class ChessPiece {
+public abstract class ChessPiece implements Cloneable {
     protected final PieceType type;
     protected final PlayerColor color;
     private final List<MoveGenerator> generators;
@@ -48,5 +48,12 @@ public abstract class ChessPiece {
             moves.extendMoves(gen.generate(board, from));
         }
         return moves;
+    }
+
+    @Override
+    public ChessPiece clone() throws CloneNotSupportedException {
+        ChessPiece clonedPiece = (ChessPiece) super.clone();
+        clonedPiece.hasMoved = this.hasMoved;
+        return clonedPiece;
     }
 }
