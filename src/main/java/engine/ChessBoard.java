@@ -8,6 +8,7 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.move.Moves;
+import engine.move.StandardMove;
 import engine.piece.Bishop;
 import engine.piece.ChessPiece;
 import engine.piece.Knight;
@@ -27,6 +28,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private ChessView view;
     private Map<PlayerColor, Position> kings = new HashMap<>();
+    private ChessMove lastMove = null;
 
     /**
      * Constructs a ChessBoard with an associated view for display updates.
@@ -58,6 +60,25 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     @Override
     public boolean containsKey(Position pos) {
         return pieces.containsKey(pos);
+    }
+
+    /**
+     * Retrieves the last move that was made on the chessboard.
+     *
+     * @return the last move that was made on the chessboard
+     */
+    @Override
+    public ChessMove getLastMove() {
+        return lastMove;
+    }
+
+    /**
+     * Sets the last move that was made on the chessboard.
+     *
+     * @param chessMove the last move that was made
+     */
+    public void setLastMove(ChessMove chessMove) {
+        lastMove = chessMove;
     }
 
     /**

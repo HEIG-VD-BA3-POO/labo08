@@ -34,10 +34,7 @@ public class StandardMove extends ChessMove {
      */
     @Override
     public void execute(ChessBoard board) {
-        assert board.containsKey(from);
-        ChessPiece p = board.get(from);
-        board.remove(from);
-        p.markMoved();
-        board.put(to, p);
+        assert !board.containsKey(to);
+        super.execute(board);
     }
 }

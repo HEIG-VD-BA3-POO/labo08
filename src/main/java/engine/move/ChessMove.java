@@ -1,6 +1,7 @@
 package engine.move;
 
 import engine.ChessBoard;
+import engine.piece.ChessPiece;
 import engine.piece.Position;
 
 /**
@@ -36,13 +37,29 @@ public abstract class ChessMove {
     }
 
     /**
+     * Gets the starting position of the move.
+     *
+     * @return the starting position
+     */
+    public Position getFrom() {
+        return from;
+    }
+
+    /**
      * Executes the move on the given chess board.
-     * This method must be implemented by subclasses to define the specific behavior
+     * This method must be overriden by subclasses to define the specific behavior
      * of the move.
      * 
      * @param board the chessboard on which the move is executed
      */
-    public abstract void execute(ChessBoard board);
+    public void execute(ChessBoard board) {
+        assert board.containsKey(from);
+        ChessPiece p = board.get(from);
+        board.remove(from);
+        p.markMoved();
+        board.put(to, p);
+        board.setLastMove(this);
+    }
 
     /**
      * Returns a string representation of the move, including the class name and the
