@@ -156,7 +156,8 @@ class Capture extends ChessMove {}
 class Check extends ChessMove {}
 class EnPassant extends ChessMove {}
 class Castling extends ChessMove {}
-class Promotion extends ChessMove {}
+class Promotion extends StandardMove {}
+class PromotionWithCapture extends Capture {}
 
 ChessController "1" --> "1" ChessView : manage >
 "BaseView<E>" "1" --> "1" ChessController : callback >

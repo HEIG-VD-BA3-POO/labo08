@@ -7,6 +7,8 @@ import engine.move.Capture;
 import engine.move.ChessMove;
 import engine.move.MoveType;
 import engine.move.Moves;
+import engine.move.Promotion;
+import engine.move.PromotionWithCapture;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
@@ -30,18 +32,32 @@ public class Pawn extends ChessPiece {
             if (move.getType() == MoveType.DIAGONAL) {
                 // Handle diagonal moves (captures or en passant)
                 if (board.containsKey(to) && board.get(to).isOpponent(this)) {
-                    // Regular capture
-                    possibleMoves.addMove(new Capture(from, to));
-                    // TODO: Implement En Passant
-                    // } else if (canEnPassant(board, from, to)) {
-                    // // En passant capture
-                    // filteredMoves.addMove(new Capture(from, to));
+                    // Pomotion with capture
+                    if (isAtEdge(to.y())) {
+                        possibleMoves.addMove(new PromotionWithCapture(from, to));
+                    } else {
+                        // Regular capture
+                        possibleMoves.addMove(new Capture(from, to));
+                        // TODO: Implement En Passant
+                        // } else if (canEnPassant(board, from, to)) {
+                        // // En passant capture
+                        // filteredMoves.addMove(new Capture(from, to));
+
+                    }
                 }
             } else if (!board.containsKey(to)) {
-                possibleMoves.addMove(move);
+                if (isAtEdge(to.y())) {
+                    possibleMoves.addMove(new Promotion(from, to));
+                } else {
+                    possibleMoves.addMove(move);
+                }
             }
         }
 
         return possibleMoves;
+    }
+
+    private boolean isAtEdge(int y) {
+        return color == PlayerColor.WHITE ? y == Position.MAX_Y : y == 0;
     }
 }

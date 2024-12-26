@@ -44,7 +44,7 @@ public enum Direction {
      * taking the piece color into account.
      */
     public Position add(Position position, PlayerColor color) {
-        return new Position(position.x() + getDx(color), position.y() + getDy(color));
+        return position.add(getDx(color), getDy(color));
     }
 
     @Override
