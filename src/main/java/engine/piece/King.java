@@ -6,7 +6,6 @@ import engine.ChessBoardView;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
-import engine.generator.KingDistanceGenerator;
 import engine.move.Castling;
 import engine.move.Moves;
 
@@ -27,8 +26,7 @@ public final class King extends ChessPiece {
      * @param color the color of the King
      */
     public King(PlayerColor color) {
-        super(PieceType.KING, color, new DistanceGenerator(1, new DirectionalGenerator(false, Direction.ALL)),
-                new KingDistanceGenerator());
+        super(PieceType.KING, color, new DistanceGenerator(1, new DirectionalGenerator(false, Direction.ALL)));
     }
 
     /**
