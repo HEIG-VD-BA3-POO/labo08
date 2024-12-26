@@ -1,5 +1,6 @@
 package engine;
 
+import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
@@ -36,4 +37,9 @@ public interface ChessBoardView {
      * @return the last move that was made on the chessboard
      */
     ChessMove getLastMove();
+
+
+    boolean isKingInCheck(PlayerColor color);
+
+    boolean isSquareAttacked(Position position, PlayerColor color);
 }

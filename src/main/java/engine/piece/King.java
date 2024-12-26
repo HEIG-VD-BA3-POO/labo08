@@ -56,11 +56,14 @@ public final class King extends ChessPiece {
             if (board.containsKey(new Position(x, y))) return false;
         }
 
-        //TODO: Check if the king is in check
+        // Check if the king is in check
+        if (board.isKingInCheck(getColor())) return false;
 
-        //TODO: Check if the square the king moves through are attacked
 
-        // Additional checks for check conditions can be added here
+        //Check if the squares the king moves through are attacked
+        for (int x = from.x(); x != to.x() + xDirection; x += xDirection) {
+            if (board.isSquareAttacked(new Position(x, y), getColor())) return false;
+        }
 
         return true;
     }
