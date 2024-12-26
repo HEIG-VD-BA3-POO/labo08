@@ -71,14 +71,6 @@ class ChessEngine implements ChessController {
     + movePiece(fromX: int, fromY: int, x: int, y: int): void
 }
 
-enum GameState {
-    IN_PROGRESS
-    CHECK
-    CHECKMATE
-    STALEMATE
-    DRAW
-}
-
 interface ChessBoardView {
     ChessPiece get(Position pos)
     boolean containsKey(Position pos)

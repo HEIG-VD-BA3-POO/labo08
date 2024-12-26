@@ -67,23 +67,31 @@ public class ChessEngine implements ChessController {
         Moves moves = piece.getPossibleMoves(board, from);
         List<Position> positions = new ArrayList<>();
         for (ChessMove move : moves.getAllMoves()) {
-            positions.add(move.getTo());
+            ChessBoard clonedBoard = board.clone();
+            move.execute(clonedBoard);
+            if (!clonedBoard.isKingInCheck(turnColor)) {
+                positions.add(move.getTo());
+            }
         }
 
         board.getView().highlightPositions(positions);
     }
 
     private boolean makeMove(ChessMove move) {
-        if (move == null)
+        if (move == null) {
             return false;
-        updateGameState();
-        move.execute(board);
+        }
+
+        ChessBoard clonedBoard = board.clone();
+        move.execute(clonedBoard);
+
+        if (clonedBoard.isKingInCheck(turnColor)) {
+            return false; // Illegal move, leaves the king in check
+        }
+
+        move.execute(board); // Execute the move on the real board
         nextTurn();
         return true;
-    }
-
-    private void updateGameState() {
-        // Logic to determine and set new game state
     }
 
     private void nextTurn() {
