@@ -166,6 +166,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      * @param kingColor the color of the king to check
      * @return true if the king is in check, false otherwise
      */
+    @Override
     public boolean isKingInCheck(PlayerColor kingColor) {
         Position kingPosition = kings.get(kingColor);
 
@@ -174,6 +175,28 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
             if (piece.getColor() != kingColor) {
                 Moves opponentMoves = piece.getPossibleMoves(this, pos);
                 if (opponentMoves.getMove(kingPosition) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the square at the given position is attacked by any piece of the
+     * given color.
+     *
+     * @param position the position to check
+     * @param color    the color of the attacking pieces
+     * @return true if the square is attacked, false otherwise
+     */
+    @Override
+    public boolean isSquareAttacked(Position position, PlayerColor color) {
+        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+            ChessPiece piece = entry.getValue();
+            if (piece.getColor() != color) {
+                Moves possibleMoves = piece.getPossibleMoves(this, entry.getKey());
+                if (possibleMoves.getMove(position) != null) {
                     return true;
                 }
             }

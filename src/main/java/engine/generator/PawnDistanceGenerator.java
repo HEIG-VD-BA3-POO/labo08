@@ -9,7 +9,8 @@ import engine.piece.Position;
  * Generates possible moves for a pawn piece on the chessboard.
  * The pawn can move one or two squares forward on its first move, and one
  * square forward thereafter.
- * It does not consider diagonal captures, which are handled elsewhere.
+ * It does not consider diagonal captures, which are handled in the
+ * {@link Pawn}.
  * 
  * @author Leonard Cseres
  * @author Aladin Iseni
