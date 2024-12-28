@@ -40,27 +40,31 @@ public final class King extends ChessPiece {
      * @return true if the King can castle with the Rook, false otherwise
      */
     private boolean canCastle(ChessBoardView board, Position from, Position to) {
-        if (hasMoved()) return false;
+        if (hasMoved())
+            return false;
 
         int y = from.y();
         int xDirection = to.x() > from.x() ? 1 : -1;
         Position rookPosition = new Position(xDirection > 0 ? Position.MAX_X : 0, y);
         ChessPiece rook = board.get(rookPosition);
 
-        if (rook == null || rook.hasMoved() || rook.getType() != PieceType.ROOK) return false;
+        if (rook == null || rook.hasMoved() || rook.getType() != PieceType.ROOK)
+            return false;
 
         // Check if the squares between the king and the rook are empty
         for (int x = from.x() + xDirection; x != to.x(); x += xDirection) {
-            if (board.containsKey(new Position(x, y))) return false;
+            if (board.containsKey(new Position(x, y)))
+                return false;
         }
 
         // Check if the king is in check
-        if (board.isKingInCheck(getColor())) return false;
+        if (board.isKingInCheck(getColor()))
+            return false;
 
-
-        //Check if the squares the king moves through are attacked
+        // Check if the squares the king moves through are attacked
         for (int x = from.x(); x != to.x() + xDirection; x += xDirection) {
-            if (board.isSquareAttacked(new Position(x, y), getColor())) return false;
+            if (board.isSquareAttacked(new Position(x, y), getColor()))
+                return false;
         }
 
         return true;
