@@ -1,0 +1,132 @@
+@startuml
+!pragma layout elk
+hide empty methods
+hide empty attributes
+skinparam linetype ortho
+skinparam roundCorner 0
+skinparam classAttributeIconSize 0
+skinparam ClassBackgroundColor #OldLace
+skinparam NoteBackgroundColor #OldLace
+skinparam Shadowing false
+top to bottom direction
+
+<style>
+    classDiagram {
+        .provided {
+            BackgroundColor GhostWhite
+            LineColor DimGrey
+            FontColor DimGrey
+        }
+    }
+</style>
+
+hide <<provided>> stereotype
+
+interface ChessController<<provided>> {}
+
+interface UserChoice<<provided>> {}
+
+' interface "DrawableResource<E>"<<provided>> {
+' }
+
+interface ChessView<<provided>> {}
+
+' abstract class "BaseView<E>"<<provided>> implements ChessView {
+' }
+
+' class GUIView<<provided>> extends "BaseView<E>" {
+' }
+
+' class ConsoleView<<provided>> extends "BaseView<E>" {
+' }
+
+class ChessEngine implements ChessController {}
+
+interface ChessBoardView {}
+
+interface Cloneable<<provided>> {}
+
+class ChessBoard implements ChessBoardView, Cloneable {}
+
+abstract class ChessBoardInitialzer {}
+
+class Position {}
+
+enum PlayerColor<<provided>> {
+    WHITE
+    BLACK
+}
+
+enum PieceType<<provided>> {
+    PAWN
+    ROOK
+    KNIGHT
+    BISHOP
+    QUEEN
+    KING
+}
+
+abstract class ChessPiece implements Cloneable {}
+abstract class PromotableChessPiece extends ChessPiece implements UserChoice {}
+class Pawn extends ChessPiece {}
+class Rook extends PromotableChessPiece {}
+class Knight extends PromotableChessPiece {}
+class Bishop extends PromotableChessPiece {}
+class Queen extends PromotableChessPiece {}
+class King extends ChessPiece {}
+
+
+interface MoveGenerator {}
+class DirectionalGenerator implements MoveGenerator {}
+class KnightGenerator implements MoveGenerator {}
+class DistanceGenerator implements MoveGenerator {}
+class PawnDistanceGenerator extends DistanceGenerator {}
+
+enum Direction {
+    FORWARDS
+    BACKWARDS
+    LEFT
+    RIGHT
+    FORWARDS_LEFT
+    FORWARDS_RIGHT
+    BACKWARDS_LEFT
+    BACKWARDS_RIGHT
+}
+
+
+class Moves {}
+
+abstract class ChessMove {}
+
+class StandardMove extends ChessMove {}
+class Capture extends ChessMove {}
+class EnPassant extends ChessMove {}
+class Castling extends ChessMove {}
+class Promotion extends StandardMove {}
+class PromotionWithCapture extends Capture {}
+
+ChessController "1" --> "1" ChessView : manage >
+' "BaseView<E>" "1" --> "1" ChessController : callback >
+' "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
+
+ChessEngine "1" --> "1" ChessBoard : has >
+ChessEngine "1" --> "1" PlayerColor : has >
+ChessEngine --> ChessBoardInitialzer : uses statically >
+ChessBoard "1" --> "1" ChessView : has >
+ChessBoard "1" --> "2..32" ChessPiece : has >
+ChessBoard "1" --> "2..32" Position : has >
+ChessBoard "1" --> "2" PlayerColor : has >
+ChessBoard "1" --> "2" Position : has >
+ChessPiece "1" --> "1" PieceType : has >
+ChessPiece "1" --> "1" PlayerColor : has >
+ChessPiece "1" --> "1..*" MoveGenerator : has >
+
+DirectionalGenerator "*" --> "1..*" Direction : has >
+DistanceGenerator "1" --> "1..*" DirectionalGenerator : has >
+
+ChessMove "1" --> "1" Position : has from >
+ChessMove "1" --> "1" Position : has to >
+Moves "1" --> "*" Position : has >
+Moves "1" --> "*" ChessMove : has >
+
+@enduml
