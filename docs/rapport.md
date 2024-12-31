@@ -23,9 +23,9 @@ Dans le cadre de ce laboratoire, nous...
 
 # Conception
 
-## Schéma UML
+![Schéma UML (Vue simplifiée)](./uml-simple.svg)
 
-![UML](./uml.svg)
+![Schéma UML (Vue détaillée)](./uml.svg)
 
 # Extensions
 
