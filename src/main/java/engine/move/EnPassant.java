@@ -13,18 +13,20 @@ import engine.piece.Position;
  * @author Aladin Iseni
  */
 public final class EnPassant extends StandardMove {
-    private final Position pawnPosition;
+    private final Position capturePawnPosition;
 
     /**
      * Constructs an En Passant move with the specified starting and destination
      * positions.
      * 
-     * @param from the starting position of the capturing pawn
-     * @param to   the destination position where the capturing pawn moves to
+     * @param from                the starting position of the capturing pawn
+     * @param to                  the destination position where the capturing pawn
+     *                            moves to
+     * @param capturePawnPosition the position of the captured pawn
      */
-    public EnPassant(Position from, Position to, Position pawnPosition) {
+    public EnPassant(Position from, Position to, Position capturePawnPosition) {
         super(from, to);
-        this.pawnPosition = pawnPosition;
+        this.capturePawnPosition = capturePawnPosition;
     }
 
     /**
@@ -37,7 +39,7 @@ public final class EnPassant extends StandardMove {
     @Override
     public void execute(ChessBoard board) {
         super.execute(board);
-        assert board.containsKey(pawnPosition);
-        board.remove(pawnPosition);
+        assert board.containsKey(capturePawnPosition);
+        board.remove(capturePawnPosition);
     }
 }
