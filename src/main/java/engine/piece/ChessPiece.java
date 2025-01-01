@@ -63,8 +63,6 @@ public abstract class ChessPiece implements Cloneable {
         return color != other.color;
     }
 
-    // TODO: Better encapsulate this, currently is can be called anywhere, but
-    // we only want to allow this to be called from the MoveGenerator
     public void markMoved() {
         this.hasMoved = true;
     }
