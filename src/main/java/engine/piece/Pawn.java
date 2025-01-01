@@ -85,8 +85,8 @@ public final class Pawn extends ChessPiece {
      * Creates the appropriate type of move based on the movement type and position.
      * Handles standard moves, captures, and promotions.
      *
-     * @param from  The starting position of the pawn
-     * @param to    The target position for the move
+     * @param from The starting position of the pawn
+     * @param to   The target position for the move
      * @return The appropriate ChessMove object for the given move
      */
     private ChessMove createAppropriateMove(Position from, Position to) {
@@ -139,7 +139,7 @@ public final class Pawn extends ChessPiece {
         for (Position adjacent : adjacentPositions) {
             if (isValidEnPassantPosition(board, adjacent)) {
                 Position captureSquare = Direction.FORWARDS.add(adjacent, color);
-                moves.addMove(new EnPassant(from, captureSquare));
+                moves.addMove(new EnPassant(from, captureSquare, adjacent));
             }
         }
     }

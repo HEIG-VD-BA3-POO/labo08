@@ -16,7 +16,7 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class Castling extends ChessMove {
+public final class Castling extends ChessMove {
     private static final int QUEEN_SIDE_ROOK_INITIAL_X = 0;
     private static final int KING_SIDE_ROOK_INITIAL_X = Position.MAX_X;
     private static final int QUEEN_SIDE_ROOK_FINAL_X = 3;

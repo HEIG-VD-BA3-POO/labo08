@@ -1,7 +1,6 @@
 package engine.move;
 
 import engine.ChessBoard;
-import engine.piece.ChessPiece;
 import engine.piece.Position;
 
 /**
@@ -13,7 +12,8 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class EnPassant extends Capture {
+public final class EnPassant extends StandardMove {
+    private final Position pawnPosition;
 
     /**
      * Constructs an En Passant move with the specified starting and destination
@@ -22,8 +22,9 @@ public class EnPassant extends Capture {
      * @param from the starting position of the capturing pawn
      * @param to   the destination position where the capturing pawn moves to
      */
-    public EnPassant(Position from, Position to) {
+    public EnPassant(Position from, Position to, Position pawnPosition) {
         super(from, to);
+        this.pawnPosition = pawnPosition;
     }
 
     /**
@@ -35,12 +36,8 @@ public class EnPassant extends Capture {
      */
     @Override
     public void execute(ChessBoard board) {
-        assert board.containsKey(from);
-        assert board.containsKey(to.sub(new Position(0, 1)));
-        ChessPiece p = board.get(from);
-        board.remove(from);
-        board.remove(to.sub(new Position(0, 1)));
-        p.markMoved();
-        board.put(to, p);
+        super.execute(board);
+        assert board.containsKey(pawnPosition);
+        board.remove(pawnPosition);
     }
 }
