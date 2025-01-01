@@ -31,47 +31,6 @@ public final class King extends ChessPiece {
     }
 
     /**
-     * Determines if the King can castle with the Rook at the given positions.
-     * The King and Rook must not have moved, and the squares between them must be
-     * empty.
-     *
-     * @param board the chess board
-     * @param from  the position of the King
-     * @param to    the position of the Rook
-     * @return true if the King can castle with the Rook, false otherwise
-     */
-    private boolean canCastle(ChessBoardView board, Position from, Position to) {
-        if (hasMoved())
-            return false;
-
-        int y = from.y();
-        int xDirection = to.x() > from.x() ? 1 : -1;
-        Position rookPosition = new Position(xDirection > 0 ? Position.MAX_X : 0, y);
-        ChessPiece rook = board.get(rookPosition);
-
-        if (rook == null || rook.hasMoved() || rook.getType() != PieceType.ROOK)
-            return false;
-
-        // Check if the squares between the king and the rook are empty
-        for (int x = from.x() + xDirection; x != to.x(); x += xDirection) {
-            if (board.containsKey(new Position(x, y)))
-                return false;
-        }
-
-        // Check if the king is in check
-        if (board.isKingInCheck(getColor()))
-            return false;
-
-        // Check if the squares the king moves through are attacked
-        for (int x = from.x(); x != to.x() + xDirection; x += xDirection) {
-            if (board.isSquareAttacked(new Position(x, y), getColor()))
-                return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Gets all possible moves for the King from the given position.
      * Handles regular moves and castling moves.
      *
@@ -83,16 +42,124 @@ public final class King extends ChessPiece {
     public Moves getPossibleMoves(ChessBoardView board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
 
-        // Add castling moves
-        Position shortCastlingPosition = new Position(from.x() + 2, from.y());
-        if (canCastle(board, from, shortCastlingPosition)) {
-            moves.addMove(new ShortCastling(from, shortCastlingPosition));
-        }
-        Position longCastlingPosition = new Position(from.x() - 2, from.y());
-        if (canCastle(board, from, longCastlingPosition)) {
-            moves.addMove(new LongCastling(from, longCastlingPosition));
+        if (!board.isInAttackCalculationMode()) {
+            // Add castling moves
+            moves.extendMoves(getCastlingMoves(board, from));
         }
 
         return moves;
+    }
+
+    /**
+     * Calculates the possible castling moves for the king from the given position.
+     *
+     * @param board the chessboard used to evaluate castling conditions
+     * @param from  the current position of the king
+     * @return a Moves object containing valid castling moves, or empty if
+     *         no castling is possible
+     */
+    private Moves getCastlingMoves(ChessBoardView board, Position from) {
+        Moves castlingMoves = new Moves();
+        Position shortCastlingPosition = new Position(from.x() + 2, from.y());
+        if (canCastle(board, from, shortCastlingPosition)) {
+            castlingMoves.addMove(new ShortCastling(from, shortCastlingPosition));
+        }
+        Position longCastlingPosition = new Position(from.x() - 2, from.y());
+        if (canCastle(board, from, longCastlingPosition)) {
+            castlingMoves.addMove(new LongCastling(from, longCastlingPosition));
+        }
+        return castlingMoves;
+    }
+
+    /**
+     * Determines if the King can castle with the Rook at the given positions.
+     * The King and Rook must not have moved, the squares between them must be
+     * empty and not attacked, and the King must not currently be in check.
+     *
+     * @param board the chess board
+     * @param from  the position of the King
+     * @param to    the target position for the King (castling destination)
+     * @return true if the King can castle, false otherwise
+     */
+    private boolean canCastle(ChessBoardView board, Position from, Position to) {
+        if (hasMoved()) {
+            return false;
+        }
+
+        Direction direction = to.x() > from.x() ? Direction.RIGHT : Direction.LEFT;
+        Position rookPosition = getRookPosition(from, direction);
+        ChessPiece rook = board.get(rookPosition);
+
+        if (!isValidRook(rook)) {
+            return false;
+        }
+
+        if (!areSquaresBetweenEmptyAndSafe(board, from, rookPosition, direction)) {
+            return false;
+        }
+
+        if (!isRookPositionSafe(board, rookPosition)) {
+            return false;
+        }
+
+        return !board.isKingInCheck(color);
+    }
+
+    /**
+     * Calculates the position of the Rook based on the King's position and the
+     * castling direction.
+     *
+     * @param from      the starting position of the King
+     * @param direction the direction of castling (RIGHT or LEFT)
+     * @return the position of the Rook involved in castling
+     */
+    private Position getRookPosition(Position from, Direction direction) {
+        return direction == Direction.RIGHT
+                ? new Position(Position.MAX_X, from.y())
+                : new Position(0, from.y());
+    }
+
+    /**
+     * Checks if the Rook at the given position is valid for castling.
+     * The Rook must exist, must not have moved, and must be of type ROOK.
+     *
+     * @param rook the chess piece at the Rook's position
+     * @return true if the Rook is valid for castling, false otherwise
+     */
+    private boolean isValidRook(ChessPiece rook) {
+        return rook != null && !rook.hasMoved() && rook.getType() == PieceType.ROOK;
+    }
+
+    /**
+     * Checks if the squares between the King and the Rook are both empty and not
+     * attacked.
+     *
+     * @param board     the chess board
+     * @param from      the position of the King
+     * @param rookPos   the position of the Rook
+     * @param direction the direction of castling (RIGHT or LEFT)
+     * @return true if the squares between are empty and safe, false otherwise
+     */
+    private boolean areSquaresBetweenEmptyAndSafe(ChessBoardView board, Position from, Position rookPos,
+            Direction direction) {
+        Position current = direction.add(from, color);
+        while (!current.equals(rookPos)) {
+            if (board.containsKey(current) || board.isSquareAttacked(current, color)) {
+                return false;
+            }
+            current = direction.add(current, color);
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the Rook's position is safe from attack.
+     *
+     * @param board   the chess board
+     * @param rookPos the position of the Rook
+     * @return true if the Rook's position is not attacked, false otherwise
+     */
+    private boolean isRookPositionSafe(ChessBoardView board, Position rookPos) {
+        return !board.isSquareAttacked(rookPos, color);
     }
 }

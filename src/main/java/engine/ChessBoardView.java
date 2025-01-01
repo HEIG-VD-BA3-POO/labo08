@@ -38,8 +38,30 @@ public interface ChessBoardView {
      */
     ChessMove getLastMove();
 
-
+    /**
+     * Determines if the king of the specified color is currently in check.
+     *
+     * @param color the color of the king to check
+     * @return true if the king of the specified color is in check, false otherwise
+     */
     boolean isKingInCheck(PlayerColor color);
 
+    /**
+     * Checks if the specified square is attacked by any pieces of the opposing
+     * player.
+     *
+     * @param position the position to check
+     * @param color    the color of the player whose pieces should not attack the
+     *                 square
+     * @return true if the square is attacked, false otherwise
+     */
     boolean isSquareAttacked(Position position, PlayerColor color);
+
+    /**
+     * Determines if the board is in a mode where it is evaluating positions for
+     * check or attack scenarios, ignoring certain rules like special moves.
+     *
+     * @return true if the board is in check calculation mode, false otherwise
+     */
+    boolean isInAttackCalculationMode();
 }
