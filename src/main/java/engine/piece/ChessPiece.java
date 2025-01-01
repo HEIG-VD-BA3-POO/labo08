@@ -6,6 +6,7 @@ import engine.ChessBoardView;
 import engine.move.Moves;
 import engine.generator.MoveGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
 public abstract class ChessPiece implements Cloneable {
     protected final PieceType type;
     protected final PlayerColor color;
-    private final List<MoveGenerator> generators;
+    private List<MoveGenerator> generators;
     private boolean hasMoved = false;
 
     /**
@@ -105,6 +106,13 @@ public abstract class ChessPiece implements Cloneable {
     public ChessPiece clone() throws CloneNotSupportedException {
         ChessPiece clonedPiece = (ChessPiece) super.clone();
         clonedPiece.hasMoved = this.hasMoved;
+
+        List<MoveGenerator> clonedGenerators = new ArrayList<>();
+        for (MoveGenerator generator : this.generators) {
+            clonedGenerators.add(generator.clone());
+        }
+        clonedPiece.generators = clonedGenerators;
+
         return clonedPiece;
     }
 }

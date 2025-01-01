@@ -16,13 +16,20 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public final class KnightGenerator implements MoveGenerator {
+public final class KnightGenerator extends MoveGenerator {
     // Possible moves for a knight (8 directions)
     private static final int[][] KNIGHT_MOVES = {
             { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
             { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }
     };
 
+    /**
+     * Generates all possible moves the knight at a specified position
+     * 
+     * @param board the current state of the chessboard
+     * @param from  the position of the piece on the board
+     * @return a collection of possible moves
+     */
     @Override
     public Moves generate(ChessBoardView board, Position from) {
         Moves moves = new Moves();
