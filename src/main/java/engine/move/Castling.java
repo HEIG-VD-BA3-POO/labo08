@@ -17,6 +17,10 @@ import engine.piece.Position;
  * @author Aladin Iseni
  */
 public class Castling extends ChessMove {
+    private static final int QUEEN_SIDE_ROOK_INITIAL_X = 0;
+    private static final int KING_SIDE_ROOK_INITIAL_X = Position.MAX_X;
+    private static final int QUEEN_SIDE_ROOK_FINAL_X = 3;
+    private static final int KING_SIDE_ROOK_FINAL_X = 5;
 
     /**
      * Constructs a Castling move with the specified starting and destination
@@ -41,25 +45,39 @@ public class Castling extends ChessMove {
         assert board.containsKey(from);
         ChessPiece king = board.get(from);
 
-        // Determine the rook's starting and ending positions based on the king's
-        // destination
-        Position fromRook = new Position(to.x() == 2 ? 0 : Position.MAX_X, from.y());
-        Position toRook = new Position(to.x() == 2 ? 3 : 5, from.y());
+        Position fromRook = getRookInitialPosition();
+        Position toRook = getRookFinalPosition();
         ChessPiece rook = board.get(fromRook);
 
-        // Remove the king and rook from their original positions
         board.remove(from);
         board.remove(fromRook);
 
-        // Mark both the king and rook as moved
         king.markMoved();
         rook.markMoved();
 
-        // Place the king and rook in their new positions
         board.put(to, king);
         board.put(toRook, rook);
 
-        // Set this move as the last move on the board
         board.setLastMove(this);
+    }
+
+    /**
+     * Determines the initial position of the rook based on the castling direction.
+     * 
+     * @return the initial position of the rook
+     */
+    private Position getRookInitialPosition() {
+        int rookX = to.x() == 2 ? QUEEN_SIDE_ROOK_INITIAL_X : KING_SIDE_ROOK_INITIAL_X;
+        return new Position(rookX, from.y());
+    }
+
+    /**
+     * Determines the final position of the rook based on the castling direction.
+     * 
+     * @return the final position of the rook
+     */
+    private Position getRookFinalPosition() {
+        int rookX = to.x() == 2 ? QUEEN_SIDE_ROOK_FINAL_X : KING_SIDE_ROOK_FINAL_X;
+        return new Position(rookX, from.y());
     }
 }
