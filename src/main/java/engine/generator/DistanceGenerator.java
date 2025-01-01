@@ -16,7 +16,7 @@ import java.util.List;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class DistanceGenerator implements MoveGenerator {
+public class DistanceGenerator extends MoveGenerator {
     private int maxDistance;
     private final List<DirectionalGenerator> directionalGenerators;
 
@@ -51,6 +51,14 @@ public class DistanceGenerator implements MoveGenerator {
         this.maxDistance = maxDistance;
     }
 
+    /**
+     * Generates all possible moves at a specified position given a max distance and
+     * directions
+     * 
+     * @param board the current state of the chessboard
+     * @param from  the position of the piece on the board
+     * @return a collection of possible moves
+     */
     @Override
     public Moves generate(ChessBoardView board, Position from) {
         Moves possibleMoves = new Moves();
@@ -68,5 +76,18 @@ public class DistanceGenerator implements MoveGenerator {
         }
 
         return possibleMoves;
+    }
+
+    /**
+     * Creates a deep clone of the move generator
+     * 
+     * @return a cloned instance of the move generator
+     * @throws CloneNotSupportedException if the cloning process fails
+     */
+    @Override
+    public DistanceGenerator clone() throws CloneNotSupportedException {
+        DistanceGenerator dg = (DistanceGenerator) super.clone();
+        dg.maxDistance = maxDistance;
+        return dg;
     }
 }

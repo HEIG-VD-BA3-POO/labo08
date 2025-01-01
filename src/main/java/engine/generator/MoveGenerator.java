@@ -12,7 +12,7 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public interface MoveGenerator {
+public abstract class MoveGenerator implements Cloneable {
     /**
      * Generates all possible moves for a given piece from a specific position.
      * 
@@ -20,5 +20,16 @@ public interface MoveGenerator {
      * @param from  the position of the piece on the board
      * @return a collection of possible moves
      */
-    Moves generate(ChessBoardView board, Position from);
+    public abstract Moves generate(ChessBoardView board, Position from);
+
+    /**
+     * Creates a deep clone of the move generator
+     * 
+     * @return a cloned instance of the move generator
+     * @throws CloneNotSupportedException if the cloning process fails
+     */
+    @Override
+    public MoveGenerator clone() throws CloneNotSupportedException {
+        return (MoveGenerator) super.clone();
+    }
 }

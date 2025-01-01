@@ -6,8 +6,9 @@ import engine.ChessBoardView;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
-import engine.move.Castling;
+import engine.move.LongCastling;
 import engine.move.Moves;
+import engine.move.ShortCastling;
 
 /**
  * Represents the King chess piece.
@@ -85,11 +86,11 @@ public final class King extends ChessPiece {
         // Add castling moves
         Position shortCastlingPosition = new Position(from.x() + 2, from.y());
         if (canCastle(board, from, shortCastlingPosition)) {
-            moves.addMove(new Castling(from, shortCastlingPosition));
+            moves.addMove(new ShortCastling(from, shortCastlingPosition));
         }
         Position longCastlingPosition = new Position(from.x() - 2, from.y());
         if (canCastle(board, from, longCastlingPosition)) {
-            moves.addMove(new Castling(from, longCastlingPosition));
+            moves.addMove(new LongCastling(from, longCastlingPosition));
         }
 
         return moves;

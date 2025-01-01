@@ -16,7 +16,7 @@ import java.util.List;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class DirectionalGenerator implements MoveGenerator {
+public class DirectionalGenerator extends MoveGenerator {
     private final List<Direction> dirs;
     private final boolean canJump;
 
@@ -43,6 +43,13 @@ public class DirectionalGenerator implements MoveGenerator {
         this.dirs = dirs;
     }
 
+    /**
+     * Generates all possible moves at a specified position at given directions
+     * 
+     * @param board the current state of the chessboard
+     * @param from  the position of the piece on the board
+     * @return a collection of possible moves
+     */
     @Override
     public Moves generate(ChessBoardView board, Position from) {
         Moves possibleMoves = new Moves();
