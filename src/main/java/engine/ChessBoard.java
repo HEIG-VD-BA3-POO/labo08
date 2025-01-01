@@ -8,7 +8,6 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.move.Moves;
-import engine.move.StandardMove;
 import engine.piece.Bishop;
 import engine.piece.ChessPiece;
 import engine.piece.Knight;
