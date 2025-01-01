@@ -76,10 +76,10 @@ class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {}
 
 
-interface MoveGenerator {}
-class DirectionalGenerator implements MoveGenerator {}
-class KnightGenerator implements MoveGenerator {}
-class DistanceGenerator implements MoveGenerator {}
+abstract class MoveGenerator implements Cloneable {}
+class DirectionalGenerator extends MoveGenerator {}
+class KnightGenerator extends MoveGenerator {}
+class DistanceGenerator extends MoveGenerator {}
 class PawnDistanceGenerator extends DistanceGenerator {}
 
 enum Direction {
@@ -101,7 +101,9 @@ abstract class ChessMove {}
 class StandardMove extends ChessMove {}
 class Capture extends ChessMove {}
 class EnPassant extends StandardMove {}
-class Castling extends ChessMove {}
+abstract class Castling extends ChessMove {}
+class LongCastling extends Castling {}
+class ShortCastling extends Castling {}
 class Promotion extends StandardMove {}
 class PromotionWithCapture extends Capture {}
 
