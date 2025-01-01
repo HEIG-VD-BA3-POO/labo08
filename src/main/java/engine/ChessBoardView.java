@@ -47,14 +47,6 @@ public interface ChessBoardView {
     boolean isKingInCheck(PlayerColor color);
 
     /**
-     * Determines if the board is in a mode where it is evaluating positions for
-     * check or attack scenarios, ignoring certain rules like special moves.
-     *
-     * @return true if the board is in check calculation mode, false otherwise
-     */
-    boolean shouldSkipCastlingMoves();
-
-    /**
      * Checks if the specified square is attacked by any pieces of the opposing
      * player.
      *
@@ -64,4 +56,12 @@ public interface ChessBoardView {
      * @return true if the square is attacked, false otherwise
      */
     boolean isSquareAttacked(Position position, PlayerColor color);
+
+    /**
+     * Determines if the board is in a mode where it is evaluating positions for
+     * check or attack scenarios, ignoring certain rules like special moves.
+     *
+     * @return true if the board is in check calculation mode, false otherwise
+     */
+    boolean isInAttackCalculationMode();
 }

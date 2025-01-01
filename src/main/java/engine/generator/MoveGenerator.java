@@ -5,8 +5,8 @@ import engine.move.Moves;
 import engine.piece.Position;
 
 /**
- * Interface for generating possible moves for a chess piece.
- * Implementations of this interface will define how to generate moves
+ * Abstract class for generating possible moves for a chess piece.
+ * Implementations of this class will define how to generate moves
  * for specific types of chess pieces.
  * 
  * @author Leonard Cseres

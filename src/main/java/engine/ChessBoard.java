@@ -28,7 +28,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     private ChessView view;
     private Map<PlayerColor, Position> kings = new HashMap<>();
     private ChessMove lastMove = null;
-    private boolean shouldSkipCastlingMoves = false;
+    private boolean inAttackCalculationMode = false;
 
     /**
      * Constructs a ChessBoard with an associated view for display updates.
@@ -170,7 +170,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     public boolean isKingInCheck(PlayerColor kingColor) {
         Position kingPosition = kings.get(kingColor);
 
-        shouldSkipCastlingMoves = true;
+        inAttackCalculationMode = true;
         try {
             for (Position pos : pieces.keySet()) {
                 ChessPiece piece = get(pos);
@@ -182,21 +182,9 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
                 }
             }
         } finally {
-            shouldSkipCastlingMoves = false;
+            inAttackCalculationMode = false;
         }
         return false;
-    }
-
-    /**
-     * Determines if the board is in a mode where it is evaluating positions for
-     * check or attack scenarios, ignoring certain rules like special moves.
-     *
-     * @return true if the board is in check calculation mode, false otherwise
-     */
-
-    @Override
-    public boolean shouldSkipCastlingMoves() {
-        return shouldSkipCastlingMoves;
     }
 
     /**
@@ -209,7 +197,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      */
     @Override
     public boolean isSquareAttacked(Position position, PlayerColor color) {
-        shouldSkipCastlingMoves = true;
+        inAttackCalculationMode = true;
         try {
 
             for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
@@ -222,9 +210,21 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
                 }
             }
         } finally {
-            shouldSkipCastlingMoves = false;
+            inAttackCalculationMode = false;
         }
         return false;
+    }
+
+    /**
+     * Determines if the board is in a mode where it is evaluating positions for
+     * check or attack scenarios, ignoring certain rules like special moves.
+     *
+     * @return true if the board is in check calculation mode, false otherwise
+     */
+
+    @Override
+    public boolean isInAttackCalculationMode() {
+        return inAttackCalculationMode;
     }
 
     /**
@@ -300,7 +300,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
 
             // Set the view to null to decouple the cloned board from the view
             clonedBoard.view = null;
-            clonedBoard.shouldSkipCastlingMoves = shouldSkipCastlingMoves;
+            clonedBoard.inAttackCalculationMode = inAttackCalculationMode;
 
             return clonedBoard;
         } catch (CloneNotSupportedException e) {

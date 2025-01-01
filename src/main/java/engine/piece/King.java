@@ -42,7 +42,7 @@ public final class King extends ChessPiece {
     public Moves getPossibleMoves(ChessBoardView board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
 
-        if (!board.shouldSkipCastlingMoves()) {
+        if (!board.isInAttackCalculationMode()) {
             // Add castling moves
             moves.extendMoves(getCastlingMoves(board, from));
         }
