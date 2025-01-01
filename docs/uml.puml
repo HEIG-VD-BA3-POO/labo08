@@ -294,12 +294,12 @@ ChessController "1" --> "1" ChessView : manage >
 ' "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
 ChessEngine "1" --> "1" ChessBoard : has >
-ChessEngine "1" --> "1" PlayerColor : has >
+ChessEngine "1" --> "1" PlayerColor : has turnColor >
 ChessEngine --> ChessBoardInitialzer : uses statically >
 ChessBoard "1" --> "1" ChessView : has >
 ChessBoard "1" --> "2..32" ChessPiece : has >
-ChessBoard "1" --> "2..32" Position : has >
-ChessBoard "1" --> "2" PlayerColor : has >
+' ChessBoard "1" --> "2..32" Position : has >
+' ChessBoard "1" --> "2" PlayerColor : has >
 ChessBoard "1" --> "2" Position : has >
 ChessPiece "1" --> "1" PieceType : has >
 ChessPiece "1" --> "1" PlayerColor : has >
@@ -310,7 +310,7 @@ DistanceGenerator "1" --> "1..*" DirectionalGenerator : has >
 
 ChessMove "1" --> "1" Position : has from >
 ChessMove "1" --> "1" Position : has to >
-Moves "1" --> "*" Position : has >
+' Moves "1" --> "*" Position : has >
 Moves "1" --> "*" ChessMove : has >
 EnPassant "1" --> "1" Position : has capture pawn >
 
