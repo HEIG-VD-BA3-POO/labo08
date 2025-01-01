@@ -295,18 +295,18 @@ ChessEngine "1" --> "1" ChessBoard : manages >
 ChessEngine "1" --> "1" PlayerColor : hasTurn >
 ChessEngine --> ChessBoardInitialzer : usesStatically >
 ChessBoard "1" --> "1" ChessView : has >
-ChessBoard "1" --> "2..32" ChessPiece : contains >
-ChessBoard "1" --> "2" Position : tracks >
+ChessBoard "1" *-- "2..32" ChessPiece : composedOf
+ChessBoard "1" *-- "2" Position : tracks >
 ChessPiece "1" --> "1" PieceType : represents >
 ChessPiece "1" --> "1" PlayerColor : belongsTo >
-ChessPiece "1" --> "1..*" MoveGenerator : generates >
+ChessPiece "1" *-- "1..*" MoveGenerator : composedOf >
 
-DirectionalGenerator "*" --> "1..*" Direction : defines >
-DistanceGenerator "1" --> "1..*" DirectionalGenerator : uses >
+DirectionalGenerator "1" *-- "1..*" Direction : defines >
+DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses >
 
 ChessMove "1" --> "1" Position : startsAt >
 ChessMove "1" --> "1" Position : endsAt >
-Moves "1" --> "*" ChessMove : includes >
+Moves "1" *-- "*" ChessMove : includes >
 EnPassant "1" --> "1" Position : captures >
 
 @enduml
