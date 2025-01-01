@@ -155,12 +155,12 @@ class Pawn extends ChessPiece {
     + getPossibleMoves(board: ChessBoardView, from: Position): Moves
 
     - isValidMove(board: ChessBoardView, from: Position, to: Position): boolean
-    - createAppropriateMove(board: ChessBoardView, from: Position, to: Position): ChessMove
+    - createAppropriateMove(from: Position, to: Position): ChessMove
     - createCaptureMove(from: Position, to: Position): ChessMove
     - createForwardMove(from: Position, to: Position): ChessMove
     - addEnPassantMoves(board: ChessBoardView, from: Position, moves: Moves): void
-    - isValidEnPassantPosition(board: ChessBoardView, from: Position, adjacent: Position): boolean
-    - isDiagonalCapture(from: Position, to: Position): boolean
+    - isValidEnPassantPosition(board: ChessBoardView, adjacent: Position): boolean
+    - isDiagonalMove(from: Position, to: Position): boolean
     - isValidCapture(board: ChessBoardView, to: Position): boolean
     - isPawnAtPosition(board: ChessBoardView, pos: Position): boolean
     - wasDoublePawnAdvance(move: ChessMove): boolean
@@ -240,11 +240,19 @@ class StandardMove extends ChessMove {
 class Capture extends ChessMove {
     + execute(board: ChessBoard): void
 }
-class EnPassant extends ChessMove {
+class EnPassant extends StandardMove {
     + execute(board: ChessBoard): void
 }
 class Castling extends ChessMove {
+    - {static} QUEEN_SIDE_ROOK_INITIAL_X: int = 0;
+    - {static} KING_SIDE_ROOK_INITIAL_X: int = Position.MAX_X;
+    - {static} QUEEN_SIDE_ROOK_FINAL_X: int = 3;
+    - {static} KING_SIDE_ROOK_FINAL_X: int = 5;
+
     + execute(board: ChessBoard): void
+
+    - getRookInitialPosition(): Position
+    - getRookFinalPosition(): Position
 }
 class Promotion extends StandardMove {
     + execute(board: ChessBoard): void
@@ -276,5 +284,6 @@ ChessMove "1" --> "1" Position : has from >
 ChessMove "1" --> "1" Position : has to >
 Moves "1" --> "*" Position : has >
 Moves "1" --> "*" ChessMove : has >
+EnPassant "1" --> "1" Position : has capture pawn >
 
 @enduml

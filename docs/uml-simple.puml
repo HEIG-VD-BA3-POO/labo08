@@ -100,7 +100,7 @@ abstract class ChessMove {}
 
 class StandardMove extends ChessMove {}
 class Capture extends ChessMove {}
-class EnPassant extends ChessMove {}
+class EnPassant extends StandardMove {}
 class Castling extends ChessMove {}
 class Promotion extends StandardMove {}
 class PromotionWithCapture extends Capture {}
@@ -128,5 +128,6 @@ ChessMove "1" --> "1" Position : has from >
 ChessMove "1" --> "1" Position : has to >
 Moves "1" --> "*" Position : has >
 Moves "1" --> "*" ChessMove : has >
+EnPassant "1" --> "1" Position : has capture pawn >
 
 @enduml
