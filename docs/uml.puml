@@ -176,23 +176,25 @@ class King extends ChessPiece {
 }
 
 
-interface MoveGenerator {
+abstract class MoveGenerator implements Cloneable {
+    + {abstract} generate(board: ChessBoardView, from: Position): Moves
+    + clone(): MoveGenerator
+}
+class DirectionalGenerator extends MoveGenerator {
     + generate(board: ChessBoardView, from: Position): Moves
 }
-class DirectionalGenerator implements MoveGenerator {
-    + generate(board: ChessBoardView, from: Position): Moves
-}
-class KnightGenerator implements MoveGenerator {
+class KnightGenerator extends MoveGenerator {
     - {static} KNIGHT_MOVES: int[][]
 
     + generate(board: ChessBoardView, from: Position): Moves
 }
-class DistanceGenerator implements MoveGenerator {
+class DistanceGenerator extends MoveGenerator {
     - maxDistance: int
 
     + getMaxDistance(): int
     + setMaxDistance(maxDistance: int): void
     + generate(board: ChessBoardView, from: Position): Moves
+    + clone(): DistanceGenerator
 }
 class PawnDistanceGenerator extends DistanceGenerator {
     + generate(board: ChessBoardView, from: Position): Moves
@@ -243,16 +245,25 @@ class Capture extends ChessMove {
 class EnPassant extends StandardMove {
     + execute(board: ChessBoard): void
 }
-class Castling extends ChessMove {
-    - {static} QUEEN_SIDE_ROOK_INITIAL_X: int = 0;
-    - {static} KING_SIDE_ROOK_INITIAL_X: int = Position.MAX_X;
-    - {static} QUEEN_SIDE_ROOK_FINAL_X: int = 3;
-    - {static} KING_SIDE_ROOK_FINAL_X: int = 5;
-
+abstract class Castling extends ChessMove {
     + execute(board: ChessBoard): void
 
-    - getRookInitialPosition(): Position
-    - getRookFinalPosition(): Position
+    # {abstract} getRookInitialPosition(): Position
+    # {abstract} getRookFinalPosition(): Position
+}
+class LongCastling extends Castling {
+    - {static} QUEEN_SIDE_ROOK_INITIAL_X: int = 0;
+    - {static} QUEEN_SIDE_ROOK_FINAL_X: int = 3;
+
+    # getRookInitialPosition(): Position
+    # getRookFinalPosition(): Position
+}
+class ShortCastling extends Castling {
+    - {static} KING_SIDE_ROOK_INITIAL_X: int = Position.MAX_X;
+    - {static} KING_SIDE_ROOK_FINAL_X: int = 5;
+
+    # getRookInitialPosition(): Position
+    # getRookFinalPosition(): Position
 }
 class Promotion extends StandardMove {
     + execute(board: ChessBoard): void
