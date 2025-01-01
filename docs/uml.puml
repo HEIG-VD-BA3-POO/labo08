@@ -79,13 +79,21 @@ class ChessEngine implements ChessController {
 interface ChessBoardView {
     + get(pos: Position): ChessPiece
     + containsKey(pos: Position): boolean
+    + getLastMove(): ChessMove
+    + isKingInCheck(kingColor: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
+    + isInAttackCalculationMode(): boolean
 }
 
 interface Cloneable<<provided>> {}
 
 class ChessBoard implements ChessBoardView, Cloneable {
+    - inAttackCalculationMode: boolean = false;
+
     + get(pos: Position): ChessPiece
     + containsKey(pos: Position): boolean
+    + getLastMove(): ChessMove
+    + setLastMove(chessMove: ChessMove): void
     + put(pos: Position, piece: ChessPiece): void
     + remove(pos: Position): void
     + clear(): void
@@ -93,6 +101,8 @@ class ChessBoard implements ChessBoardView, Cloneable {
     + getView(): ChessView
     + handlePawnPromotion(pos: Position, color: PlayerColor): void
     + isKingInCheck(kingColor: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
+    + isInAttackCalculationMode(): boolean
     + isCheckmate(color: PlayerColor): boolean
     + isStalemate(color: PlayerColor): boolean
     + clone(): ChessBoard
@@ -171,8 +181,15 @@ class Knight extends PromotableChessPiece {}
 class Bishop extends PromotableChessPiece {}
 class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {
-    - canCastle(board: ChessBoardView, from: Position, to: Position): boolean
     + getPossibleMoves(board: ChessBoardView, from: Position): Moves
+    
+    - getPossibleMoves(board: ChessBoardView, from: Position): Moves
+    - getCastlingMoves(board: ChessBoardView, from: Position)
+    - canCastle(board: ChessBoardView, from: Position, to: Position): boolean
+    - getRookPosition(from: Position, direction: Direction): Position
+    - isValidRook(rook: ChessPiece): boolean
+    - areSquaresBetweenEmptyAndSafe(board: ChessBoardView, from: Position, rookPos: Position): boolean
+    - isRookPositionSafe(board: ChessBoardView, rookPos: Position): boolean
 }
 
 
