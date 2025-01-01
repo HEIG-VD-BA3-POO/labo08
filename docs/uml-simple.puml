@@ -108,28 +108,23 @@ class Promotion extends StandardMove {}
 class PromotionWithCapture extends Capture {}
 
 ChessController "1" --> "1" ChessView : manage >
-' "BaseView<E>" "1" --> "1" ChessController : callback >
-' "BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
 
-ChessEngine "1" --> "1" ChessBoard : has >
-ChessEngine "1" --> "1" PlayerColor : has turnColor >
-ChessEngine --> ChessBoardInitialzer : uses statically >
+ChessEngine "1" --> "1" ChessBoard : manages >
+ChessEngine "1" --> "1" PlayerColor : hasTurn >
+ChessEngine --> ChessBoardInitialzer : usesStatically >
 ChessBoard "1" --> "1" ChessView : has >
-ChessBoard "1" --> "2..32" ChessPiece : has >
-' ChessBoard "1" --> "2..32" Position : has >
-' ChessBoard "1" --> "2" PlayerColor : has >
-ChessBoard "1" --> "2" Position : has >
-ChessPiece "1" --> "1" PieceType : has >
-ChessPiece "1" --> "1" PlayerColor : has >
-ChessPiece "1" --> "1..*" MoveGenerator : has >
+ChessBoard "1" --> "2..32" ChessPiece : contains >
+ChessBoard "1" --> "2" Position : tracks >
+ChessPiece "1" --> "1" PieceType : represents >
+ChessPiece "1" --> "1" PlayerColor : belongsTo >
+ChessPiece "1" --> "1..*" MoveGenerator : generates >
 
-DirectionalGenerator "*" --> "1..*" Direction : has >
-DistanceGenerator "1" --> "1..*" DirectionalGenerator : has >
+DirectionalGenerator "*" --> "1..*" Direction : defines >
+DistanceGenerator "1" --> "1..*" DirectionalGenerator : uses >
 
-ChessMove "1" --> "1" Position : has from >
-ChessMove "1" --> "1" Position : has to >
-' Moves "1" --> "*" Position : has >
-Moves "1" --> "*" ChessMove : has >
-EnPassant "1" --> "1" Position : has capture pawn >
+ChessMove "1" --> "1" Position : startsAt >
+ChessMove "1" --> "1" Position : endsAt >
+Moves "1" --> "*" ChessMove : includes >
+EnPassant "1" --> "1" Position : captures >
 
 @enduml
