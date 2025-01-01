@@ -47,7 +47,7 @@ public abstract class ChessMove {
 
     /**
      * Executes the move on the given chess board.
-     * This method must be overriden by subclasses to define the specific behavior
+     * This method must be overridden by subclasses to define the specific behavior
      * of the move.
      * 
      * @param board the chessboard on which the move is executed

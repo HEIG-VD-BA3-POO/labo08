@@ -63,6 +63,9 @@ public abstract class ChessPiece implements Cloneable {
         return color != other.color;
     }
 
+    /**
+     * Marks the piece has moved.
+     */
     public void markMoved() {
         this.hasMoved = true;
     }

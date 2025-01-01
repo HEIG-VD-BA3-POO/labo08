@@ -56,7 +56,7 @@ public final class Pawn extends ChessPiece {
         for (ChessMove move : candidateMoves.getAllMoves()) {
             Position to = move.getTo();
             if (isValidMove(board, from, to)) {
-                validMoves.addMove(createAppropriateMove(board, from, to));
+                validMoves.addMove(createAppropriateMove(from, to));
             }
         }
 
@@ -74,8 +74,9 @@ public final class Pawn extends ChessPiece {
      * @return true if the move is legal, false otherwise
      */
     private boolean isValidMove(ChessBoardView board, Position from, Position to) {
-        if (isDiagonalCapture(from, to)) {
-            return isValidCapture(board, to);
+        if (isDiagonalMove(from, to)) {
+            // Capture
+            return board.containsKey(to) && board.get(to).isOpponent(this);
         }
         return !board.containsKey(to); // Forward moves require empty square
     }
@@ -84,13 +85,12 @@ public final class Pawn extends ChessPiece {
      * Creates the appropriate type of move based on the movement type and position.
      * Handles standard moves, captures, and promotions.
      *
-     * @param board The current state of the chess board
      * @param from  The starting position of the pawn
      * @param to    The target position for the move
      * @return The appropriate ChessMove object for the given move
      */
-    private ChessMove createAppropriateMove(ChessBoardView board, Position from, Position to) {
-        if (isDiagonalCapture(from, to)) {
+    private ChessMove createAppropriateMove(Position from, Position to) {
+        if (isDiagonalMove(from, to)) {
             return createCaptureMove(from, to);
         }
         return createForwardMove(from, to);
@@ -137,7 +137,7 @@ public final class Pawn extends ChessPiece {
                 Direction.RIGHT.add(from, color)
         };
         for (Position adjacent : adjacentPositions) {
-            if (isValidEnPassantPosition(board, from, adjacent)) {
+            if (isValidEnPassantPosition(board, adjacent)) {
                 Position captureSquare = Direction.FORWARDS.add(adjacent, color);
                 moves.addMove(new EnPassant(from, captureSquare));
             }
@@ -150,11 +150,10 @@ public final class Pawn extends ChessPiece {
      * and that it just moved two squares forward.
      *
      * @param board    The current state of the chess board
-     * @param from     The current position of the pawn
      * @param adjacent The position adjacent to the pawn
      * @return true if an en passant capture is possible, false otherwise
      */
-    private boolean isValidEnPassantPosition(ChessBoardView board, Position from, Position adjacent) {
+    private boolean isValidEnPassantPosition(ChessBoardView board, Position adjacent) {
         if (!isPawnAtPosition(board, adjacent))
             return false;
         ChessMove lastMove = board.getLastMove();
@@ -165,27 +164,15 @@ public final class Pawn extends ChessPiece {
     }
 
     /**
-     * Determines if a move is a diagonal capture based on the positions.
+     * Determines if a move is a diagonal based on the positions.
      *
      * @param from The starting position
      * @param to   The target position
      * @return true if the move is diagonal, false otherwise
      */
-    private boolean isDiagonalCapture(Position from, Position to) {
+    private boolean isDiagonalMove(Position from, Position to) {
         Position delta = from.sub(to).abs();
         return delta.x() == delta.y();
-    }
-
-    /**
-     * Checks if a capture is valid at the target position.
-     * Verifies that there is an opponent's piece at the target square.
-     *
-     * @param board The current state of the chess board
-     * @param to    The target position for the capture
-     * @return true if the capture is valid, false otherwise
-     */
-    private boolean isValidCapture(ChessBoardView board, Position to) {
-        return board.containsKey(to) && board.get(to).isOpponent(this);
     }
 
     /**

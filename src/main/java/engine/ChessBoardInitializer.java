@@ -6,7 +6,6 @@ import engine.piece.*;
 /**
  * Utility class for initializing a chessboard with the standard starting piece
  * configuration.
- * 
  * This class is not meant to be instantiated.
  * 
  * @author Leonard Cseres

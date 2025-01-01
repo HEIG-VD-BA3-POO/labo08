@@ -1,7 +1,6 @@
 package engine.move;
 
 import engine.ChessBoard;
-import engine.piece.ChessPiece;
 import engine.piece.Position;
 
 /**
