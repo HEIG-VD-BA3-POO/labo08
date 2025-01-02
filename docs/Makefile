@@ -18,6 +18,7 @@ watch-pdf:
 
 build-uml:
 	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml.puml
+	$(LIMIT) $(PLANTUML) -nbthread auto -tpng uml.puml
 	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml-simple.puml
 
 watch-uml:
