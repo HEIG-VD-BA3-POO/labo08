@@ -95,6 +95,12 @@ Le système vérifie:
 
 ---
 
+# Tests Effectués
+
+TODO
+
+---
+
 # Extensions
 
 L'implémentation étend les fonctionnalités au-delà des exigences de base:
