@@ -107,24 +107,24 @@ class ShortCastling extends Castling {}
 class Promotion extends StandardMove {}
 class PromotionWithCapture extends Capture {}
 
-ChessController "1" --> "1" ChessView : manage >
+ChessController "1" --> "1" ChessView : manage ▸
 
-ChessEngine "1" --> "1" ChessBoard : manages >
-ChessEngine "1" --> "1" PlayerColor : hasTurn >
-ChessEngine --> ChessBoardInitializer : usesStatically >
-ChessBoard "1" --> "1" ChessView : has >
-ChessBoard "1" *-- "2..32" ChessPiece : composedOf
-ChessBoard "1" *-- "2" Position : tracks >
-ChessPiece "1" --> "1" PieceType : represents >
-ChessPiece "1" --> "1" PlayerColor : belongsTo >
-ChessPiece "1" *-- "1..*" MoveGenerator : composedOf >
+ChessEngine "1" *-- "1" ChessBoard : manages ▸
+ChessEngine "1" --> "1" PlayerColor : hasTurn ▸
+ChessEngine -[#8e8e8e]-> ChessBoardInitializer : usesStatically ▸\n<color #8e8e8e>**Note:** This is not a real association.\n<color #8e8e8e>We only indicate that the ChessEngine\n<color #8e8e8e>class uses the ChessBoardInitializer statically.
+ChessBoard "1" *-- "1" ChessView : has ▸
+ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
+ChessBoard "1" *-- "2" Position : tracks ▸
+ChessPiece "1" --> "1" PieceType : represents ▸
+ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
+ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸
 
-DirectionalGenerator "1" *-- "1..*" Direction : defines >
-DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses >
+DirectionalGenerator "1" *-- "1..*" Direction : defines ▸
+DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses ▸
 
-ChessMove "1" --> "1" Position : startsAt >
-ChessMove "1" --> "1" Position : endsAt >
-Moves "1" *-- "*" ChessMove : includes >
-EnPassant "1" --> "1" Position : captures >
+ChessMove "1" *-- "1" Position : startsAt ▸
+ChessMove "1" *-- "1" Position : endsAt ▸
+Moves "1" *-- "*" ChessMove : includes ▸
+EnPassant "1" *-- "1" Position : captures ▸
 
 @enduml
