@@ -15,17 +15,6 @@ public record Position(int x, int y) {
     public static final int MAX_Y = 7;
 
     /**
-     * Constructor for the Position record
-     *
-     * @throws IllegalArgumentException if the position is invalid
-     */
-    public Position {
-        if (!isValid()) {
-            throw new IllegalArgumentException("Position is invalid, x and y should be between 0 and 7");
-        }
-    }
-
-    /**
      * Checks if the position is within the bounds of the chessboard.
      * 
      * @return true if the position is valid, false otherwise

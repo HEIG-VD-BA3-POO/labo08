@@ -48,6 +48,8 @@ public final class ChessEngine implements ChessController {
     public boolean move(int fromX, int fromY, int toX, int toY) {
         Position from = new Position(fromX, fromY);
         Position to = new Position(toX, toY);
+        assert from.isValid() : "From position is invalid";
+        assert to.isValid() : "To position is invalid";
 
         if (!board.containsKey(from) || board.get(from).getColor() != turnColor) {
             return false;
@@ -85,6 +87,7 @@ public final class ChessEngine implements ChessController {
     @Override
     public void select(int x, int y) {
         Position from = new Position(x, y);
+        assert from.isValid() : "From position is invalid";
 
         if (board.get(from).getColor() != turnColor) {
             return;
