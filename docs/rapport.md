@@ -65,11 +65,9 @@ l'état de l'échiquier et la génération des mouvements.
 Le diagramme UML fournit une vue d'ensemble de la structure et des
 relations du système.
 
-![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg)
+![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=95% }
 
 ![Schéma UML (Vue détaillée)](./assets/uml.svg)
-
-\newpage
 
 \newpage
 
