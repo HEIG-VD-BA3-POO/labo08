@@ -22,7 +22,7 @@ public final class PawnDistanceGenerator extends DistanceGenerator {
 
     @Override
     public Moves generate(ChessBoardView board, Position from) {
-        final ChessPiece piece = board.get(from);
+        ChessPiece piece = board.get(from);
         // If the pawn has moved, restrict its maximum distance to 1
         if (piece.hasMoved() && getMaxDistance() == 2) {
             setMaxDistance(1);

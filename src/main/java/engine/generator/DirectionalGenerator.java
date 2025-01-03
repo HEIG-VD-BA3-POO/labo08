@@ -53,7 +53,7 @@ public class DirectionalGenerator extends MoveGenerator {
     @Override
     public Moves generate(ChessBoardView board, Position from) {
         Moves possibleMoves = new Moves();
-        final ChessPiece piece = board.get(from);
+        ChessPiece piece = board.get(from);
 
         for (Direction dir : dirs) {
             Position current = from;

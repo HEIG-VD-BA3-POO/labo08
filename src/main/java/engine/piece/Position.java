@@ -15,6 +15,17 @@ public record Position(int x, int y) {
     public static final int MAX_Y = 7;
 
     /**
+     * Constructor for the Position record
+     *
+     * @throws IllegalArgumentException if the position is invalid
+     */
+    public Position {
+        if (!isValid()) {
+            throw new IllegalArgumentException("Position is invalid, x and y should be between 0 and 7");
+        }
+    }
+
+    /**
      * Checks if the position is within the bounds of the chessboard.
      * 
      * @return true if the position is valid, false otherwise
@@ -31,8 +42,8 @@ public record Position(int x, int y) {
      * @return the maximum of horizontal or vertical steps to the other position
      */
     public int dist(Position other) {
-        final int dx = Math.abs(x - other.x);
-        final int dy = Math.abs(y - other.y);
+        int dx = Math.abs(x - other.x);
+        int dy = Math.abs(y - other.y);
         return Math.max(dx, dy);
     }
 

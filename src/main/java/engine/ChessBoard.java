@@ -102,9 +102,12 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      * Removes a chess piece from the specified position.
      * 
      * @param pos the position to remove the piece from
+     * @throws IllegalStateException if no piece exit at the position
      */
     public void remove(Position pos) {
-        assert pieces.get(pos) != null;
+        if (pieces.get(pos) == null) {
+            throw new IllegalStateException("No piece exits at " + pos);
+        }
         pieces.remove(pos);
         if (view != null) {
             view.removePiece(pos.x(), pos.y());
@@ -123,8 +126,8 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      */
     public void sync() {
         for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            final Position pos = entry.getKey();
-            final ChessPiece piece = entry.getValue();
+            Position pos = entry.getKey();
+            ChessPiece piece = entry.getValue();
             view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
             if (piece.getType() == PieceType.KING) {
                 kings.put(piece.getColor(), pos);
@@ -169,22 +172,7 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     @Override
     public boolean isKingInCheck(PlayerColor kingColor) {
         Position kingPosition = kings.get(kingColor);
-
-        inAttackCalculationMode = true;
-        try {
-            for (Position pos : pieces.keySet()) {
-                ChessPiece piece = get(pos);
-                if (piece.getColor() != kingColor) {
-                    Moves opponentMoves = piece.getPossibleMoves(this, pos);
-                    if (opponentMoves.getMove(kingPosition) != null) {
-                        return true;
-                    }
-                }
-            }
-        } finally {
-            inAttackCalculationMode = false;
-        }
-        return false;
+        return isSquareAttacked(kingPosition, kingColor);
     }
 
     /**
@@ -199,7 +187,6 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     public boolean isSquareAttacked(Position position, PlayerColor color) {
         inAttackCalculationMode = true;
         try {
-
             for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
                 ChessPiece piece = entry.getValue();
                 if (piece.getColor() != color) {
@@ -284,6 +271,8 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      * Creates a deep clone of this chessboard, including all pieces.
      * 
      * @return a new {@link ChessBoard} instance identical to this one
+     *
+     * @throws AssertionError if the clone failed. We assert it won't happen
      */
     @Override
     public ChessBoard clone() {

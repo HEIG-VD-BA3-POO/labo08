@@ -46,16 +46,14 @@ public final class ChessEngine implements ChessController {
      */
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
-        final Position from = new Position(fromX, fromY);
-        final Position to = new Position(toX, toY);
-        assert from.isValid() : "Invalid from position in move()";
-        assert to.isValid() : "Invalid to position in move()";
+        Position from = new Position(fromX, fromY);
+        Position to = new Position(toX, toY);
 
         if (!board.containsKey(from) || board.get(from).getColor() != turnColor) {
             return false;
         }
 
-        final ChessPiece piece = board.get(from);
+        ChessPiece piece = board.get(from);
         Moves moves = piece.getPossibleMoves(board, from);
 
         ChessMove move = moves.getMove(to);
@@ -64,12 +62,14 @@ public final class ChessEngine implements ChessController {
 
     /**
      * Resets the game state to start a new game.
+     *
+     * @throws IllegalStateException if the ChessEngine was not initialized properly
      */
     @Override
     public void newGame() {
         turnColor = PlayerColor.WHITE;
         if (board == null) {
-            throw new RuntimeException("Call ChessEngine.start() before resetting the game");
+            throw new IllegalStateException("Call ChessEngine.start() before resetting the game");
         }
         ChessBoardInitializer.initializeBoard(board);
         board.sync();
@@ -85,13 +85,12 @@ public final class ChessEngine implements ChessController {
     @Override
     public void select(int x, int y) {
         Position from = new Position(x, y);
-        assert from.isValid() : "Invalid from position in select()";
 
         if (board.get(from).getColor() != turnColor) {
             return;
         }
 
-        final ChessPiece piece = board.get(from);
+        ChessPiece piece = board.get(from);
         if (piece == null)
             return;
 

@@ -40,10 +40,15 @@ public enum Direction {
      * 
      * @param dx the change in x-coordinate (horizontal movement)
      * @param dy the change in y-coordinate (vertical movement)
+     * @throws IllegalArgumentException if the provided arguments are invalid
      */
     Direction(int dx, int dy) {
-        assert dx >= -1 && dx <= 1;
-        assert dy >= -1 && dy <= 1;
+        if (dx >= -1 && dx <= 1) {
+            throw new IllegalArgumentException("dx must be between -1 and 1");
+        }
+        if (dy >= -1 && dy <= 1) {
+            throw new IllegalArgumentException("dy must be between -1 and 1");
+        }
         this.dx = dx;
         this.dy = dy;
     }

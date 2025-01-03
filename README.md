@@ -2,7 +2,7 @@
 
 ## Usage
 
-Compile the projet with the following command:
+Compile the project with the following command:
 
 ```bash
 mvn clean package
