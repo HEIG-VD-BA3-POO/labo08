@@ -271,7 +271,6 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
      * Creates a deep clone of this chessboard, including all pieces.
      * 
      * @return a new {@link ChessBoard} instance identical to this one
-     *
      * @throws AssertionError if the clone failed. We assert it won't happen
      */
     @Override
