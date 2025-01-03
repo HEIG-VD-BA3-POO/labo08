@@ -63,7 +63,8 @@ l'état de l'échiquier et la génération des mouvements.
 ## Diagramme UML
 
 Le diagramme UML fournit une vue d'ensemble de la structure et des
-relations du système.
+relations du système. Les élements grisés représentent le code que nous avons
+utilisé et non pas implémenté.
 
 ![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=95% }
 
