@@ -96,7 +96,19 @@ Le système vérifie:
 
 # Tests Effectués
 
-TODO
+| Tests effectuées                                                                                                  | Résultat |
+|-------------------------------------------------------------------------------------------------------------------|----------|
+| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |          |
+| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |          |
+| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |          |
+| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |          |
+| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |          |
+| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |          |
+| Chaque pièce avance dans la bonne direction                                                                       |          |
+| Uniquement les chevaux peuvent sauter des pièces                                                                  |          |
+| Les pièces ne peuvent pas découvrir un échec                                                                      |          |
+| Le roi ne peut pas se mettre en échec                                                                             |          |
+| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |          |
 
 ---
 
