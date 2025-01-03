@@ -43,10 +43,10 @@ public enum Direction {
      * @throws IllegalArgumentException if the provided arguments are invalid
      */
     Direction(int dx, int dy) {
-        if (dx >= -1 && dx <= 1) {
+        if (dx < -1 || dx > 1) {
             throw new IllegalArgumentException("dx must be between -1 and 1");
         }
-        if (dy >= -1 && dy <= 1) {
+        if (dy < -1 || dy > 1) {
             throw new IllegalArgumentException("dy must be between -1 and 1");
         }
         this.dx = dx;
