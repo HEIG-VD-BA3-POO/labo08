@@ -110,7 +110,7 @@ class ChessBoard implements ChessBoardView, Cloneable {
     - hasNoLegalMoves(color: PlayerColor): boolean
 }
 
-abstract class ChessBoardInitialzer {
+abstract class ChessBoardInitializer {
     + {static} initializeBoard(board: ChessBoard): void
 
     - {static} placePawns(board: ChessBoard): void
@@ -293,7 +293,7 @@ ChessController "1" --> "1" ChessView : manage >
 
 ChessEngine "1" --> "1" ChessBoard : manages >
 ChessEngine "1" --> "1" PlayerColor : hasTurn >
-ChessEngine --> ChessBoardInitialzer : usesStatically >
+ChessEngine --> ChessBoardInitializer : usesStatically >
 ChessBoard "1" --> "1" ChessView : has >
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf
 ChessBoard "1" *-- "2" Position : tracks >
