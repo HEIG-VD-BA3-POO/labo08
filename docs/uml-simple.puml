@@ -119,7 +119,7 @@ ChessPiece "1" --> "1" PieceType : represents ▸
 ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
 ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸
 
-DirectionalGenerator "1" *-- "1..*" Direction : defines ▸
+DirectionalGenerator "1" o-- "1..*" Direction : defines ▸
 DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses ▸
 
 ChessMove "1" *-- "1" Position : startsAt ▸
