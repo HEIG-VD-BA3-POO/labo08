@@ -113,6 +113,35 @@ Le système vérifie:
 | Un pion peut être promu en reine, fou, chevalier ou tour                                                          |    V     |
 | Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |    X     |
 
+## Défense par l'attaque
+Les images suivantes montrent que le joueur blanc est obligé d'attaque le fou en H4 avec le cavalier en F3 afin de défendre son roi.  
+![Le roi est bloqué](images/checks/king_no_move.png)  
+![Le cavalier peut défendre le roi](images/checks/knight_move.png)
+
+## Checkmate
+Cette image montre que notre jeu est capable de détecter un échec et mat.
+![Checkmate](images/checks/checkmate.png)
+
+## Stalemate
+Cette image montre que notre jeu est capable de détecter un pat.
+![Stalemate](images/checks/stalemate.png)
+
+## En Passant
+Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'attaque En Passant et permet de l'exécuter.
+![Show move En Passant](./images/en_passant/show_move.png)
+![Execute capture](./images/en_passant/capture.png)
+
+## Castling
+Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un castling si les cases du passage du roi sont attaquées.
+![Show moves while position are being attacked](./images/castling/part1.png)
+![Show moves while position are not being attacked](./images/castling/part2.png)
+![Execute castling](./images/castling/part3.png)
+
+## Promotion
+Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
+![Game state](./images/promotion/game_state.png)
+![Piece selection](./images/promotion/piece_selection.png)
+![Every promotion](./images/promotion/every_promotion.png)
 
 ---
 
