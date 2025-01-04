@@ -74,4 +74,13 @@ public record Position(int x, int y) {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    /**
+     * Checks if the position is on a white square of the chessboard.
+     *
+     * @return true if the position is on a white square, false otherwise
+     */
+    public boolean isWhiteSquare() {
+        return (x + y) % 2 != 0;
+    }
 }

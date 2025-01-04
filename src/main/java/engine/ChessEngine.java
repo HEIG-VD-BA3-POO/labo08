@@ -136,6 +136,8 @@ public final class ChessEngine implements ChessController {
             board.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
         } else if (board.isStalemate(turnColor)) {
             board.getView().displayMessage("Stalemate... It's a draw");
+        } else if (board.isDraw(turnColor)) {
+            board.getView().displayMessage("Draw! Impossible to checkmate");
         } else if (board.isKingInCheck(turnColor)) {
             board.getView().displayMessage("Check!");
         }
