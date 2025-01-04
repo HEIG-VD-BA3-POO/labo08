@@ -97,18 +97,22 @@ Le système vérifie:
 # Tests Effectués
 
 | Tests effectuées                                                                                                  | Résultat |
-|-------------------------------------------------------------------------------------------------------------------|----------|
-| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |          |
-| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |          |
-| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |          |
-| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |          |
-| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |          |
-| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |          |
-| Chaque pièce avance dans la bonne direction                                                                       |          |
-| Uniquement les chevaux peuvent sauter des pièces                                                                  |          |
-| Les pièces ne peuvent pas découvrir un échec                                                                      |          |
-| Le roi ne peut pas se mettre en échec                                                                             |          |
-| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |          |
+|-------------------------------------------------------------------------------------------------------------------|:--------:|
+| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |    V     |
+| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |    V     |
+| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |    V     |
+| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |    V     |
+| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |    V     |
+| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |    V     |
+| Chaque pièce avance dans la bonne direction                                                                       |    V     |
+| Uniquement les chevaux peuvent sauter des pièces                                                                  |    V     |
+| Les pièces ne peuvent pas découvrir un échec                                                                      |    V     |
+| Le roi ne peut pas se mettre en échec                                                                             |    V     |
+| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |    V     |
+| Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |    V     |
+| Un pion peut être promu en reine, fou, chevalier ou tour                                                          |    V     |
+| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |    X     |
+
 
 ---
 
@@ -123,7 +127,7 @@ L'implémentation étend les fonctionnalités au-delà des exigences de base:
 
 ## Génération des Mouvements
 
-La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements:
+La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements :
 
 - **`DirectionalGenerator`:** Pour les mouvements linéaires (par exemple, tour,
   fou).
