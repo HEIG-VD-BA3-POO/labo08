@@ -7,6 +7,12 @@ import engine.piece.Position;
 
 import java.util.Map;
 
+/**
+ * Read-only interface for the ChessBoard.
+ *
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public interface ChessBoardReader {
     /**
      * Retrieves the chess piece located at the specified position.

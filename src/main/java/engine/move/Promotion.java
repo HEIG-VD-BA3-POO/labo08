@@ -20,6 +20,7 @@ public final class Promotion extends StandardMove {
      *
      * @param from the starting position of the pawn
      * @param to   the destination position where the pawn will be promoted
+     * @param pawn the starting position pawn
      */
     public Promotion(Position from, Position to, ChessPiece pawn) {
         super(from, to, pawn);

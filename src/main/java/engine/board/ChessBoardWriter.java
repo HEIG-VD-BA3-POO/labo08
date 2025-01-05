@@ -4,6 +4,12 @@ import engine.move.ChessMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
+/**
+ * Write-only interface for the ChessBoard.
+ *
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public interface ChessBoardWriter {
     /**
      * Places a chess piece at the specified position on the board.

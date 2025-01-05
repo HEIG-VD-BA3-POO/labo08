@@ -21,6 +21,7 @@ public final class PromotionWithCapture extends Capture {
      * @param from the starting position of the pawn
      * @param to   the destination position where the pawn will capture and be
      *             promoted
+     * @param pawn the starting position pawn
      */
     public PromotionWithCapture(Position from, Position to, ChessPiece pawn) {
         super(from, to, pawn);

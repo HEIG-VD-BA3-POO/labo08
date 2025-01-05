@@ -14,7 +14,6 @@ import engine.generator.MoveGenerator;
  * @author Aladin Iseni
  */
 public abstract class PromotableChessPiece extends ChessPiece implements ChessView.UserChoice {
-
     /**
      * Constructs a promotable chess piece with a specified type, color, and move
      * generators.

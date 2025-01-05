@@ -114,7 +114,6 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
         pieces.clear();
     }
 
-
     /**
      * Handles pawn promotion at the given position.
      * Defaults to a queen.
@@ -171,7 +170,6 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
      *
      * @return true if the board is in check calculation mode, false otherwise
      */
-
     @Override
     public boolean isInAttackCalculationMode() {
         return inAttackCalculationMode;
@@ -199,7 +197,8 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
 
     /**
      * Checks if the game is a draw based on insufficient material.
-     * Handles scenarios: K vs K, K+B vs K, K+N vs K, and K+B vs K+B (same colored squares)
+     * Handles scenarios: K vs K, K+B vs K, K+N vs K, and K+B vs K+B (same colored
+     * squares)
      *
      * @return true if the game is a draw due to insufficient material
      */
@@ -309,14 +308,11 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
             }
             // Deep copy the kings map
             clonedBoard.kings = new HashMap<>(kings);
-
             clonedBoard.inAttackCalculationMode = inAttackCalculationMode;
-
             return clonedBoard;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError("Cloning failed", e);
         }
     }
-
 
 }

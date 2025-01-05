@@ -22,7 +22,7 @@ public abstract class ChessMove {
      *
      * @param from      the starting position of the move
      * @param to        the destination position of the move
-     * @param fromPiece the starting piece
+     * @param fromPiece the starting position chess piece
      */
     public ChessMove(Position from, Position to, ChessPiece fromPiece) {
         this.from = from;
@@ -48,6 +48,12 @@ public abstract class ChessMove {
         return from;
     }
 
+
+    /**
+     * Gets the starting position chess piece.
+     *
+     * @return the starting position chess piece
+     */
     public ChessPiece getFromPiece() {
         return fromPiece;
     }

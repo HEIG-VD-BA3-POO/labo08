@@ -11,8 +11,7 @@ import engine.piece.*;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public final class ChessBoardInitializer {
-
+public abstract class ChessBoardInitializer {
     /**
      * Initializes the chessboard by placing all pieces in their standard starting
      * positions.

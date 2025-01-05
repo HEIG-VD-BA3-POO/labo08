@@ -21,8 +21,12 @@ abstract class Castling extends ChessMove {
      * Constructs a Castling move with the specified starting and destination
      * positions for the king.
      *
-     * @param from the starting position of the king
-     * @param to   the destination position of the king
+     * @param from     the starting position of the king
+     * @param to       the destination position of the king
+     * @param king     the starting position king
+     * @param fromRook the starting position of the rook
+     * @param toRook   the destination position of the rook
+     * @param rook     the starting position rook
      */
     protected Castling(Position from, Position to, ChessPiece king, Position fromRook, Position toRook, ChessPiece rook) {
         super(from, to, king);

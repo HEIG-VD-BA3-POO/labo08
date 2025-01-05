@@ -18,8 +18,9 @@ public class StandardMove extends ChessMove {
     /**
      * Constructs a StandardMove with the specified starting and ending positions.
      *
-     * @param from the starting position of the move
-     * @param to   the destination position of the move
+     * @param from      the starting position of the move
+     * @param to        the destination position of the move
+     * @param fromPiece the starting position chess piece
      */
     public StandardMove(Position from, Position to, ChessPiece fromPiece) {
         super(from, to, fromPiece);

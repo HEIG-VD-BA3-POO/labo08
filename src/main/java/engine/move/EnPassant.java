@@ -23,6 +23,7 @@ public final class EnPassant extends StandardMove {
      * @param from                the starting position of the capturing pawn
      * @param to                  the destination position where the capturing pawn
      *                            moves to
+     * @param fromPiece           the starting position chess piece
      * @param capturePawnPosition the position of the captured pawn
      */
     public EnPassant(Position from, Position to, ChessPiece fromPiece, Position capturePawnPosition) {

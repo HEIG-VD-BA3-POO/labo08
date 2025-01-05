@@ -19,9 +19,10 @@ public class Capture extends ChessMove {
      * Constructs a Capture move with the specified starting and destination
      * positions.
      *
-     * @param from the starting position of the move
-     * @param to   the destination position of the move (where the opponent's piece
-     *             will be captured)
+     * @param from      the starting position of the move
+     * @param to        the destination position of the move (where the opponent's piece
+     *                  will be captured)
+     * @param fromPiece the starting position chess piece
      */
     public Capture(Position from, Position to, ChessPiece fromPiece) {
         super(from, to, fromPiece);

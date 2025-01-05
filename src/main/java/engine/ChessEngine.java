@@ -123,6 +123,9 @@ public final class ChessEngine implements ChessController {
         return turnColor == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
 
+    /**
+     * Displays a message to the view if an event occurred
+     */
     private void updateState() {
         ChessBoard board = controller.getBoard();
         String event;

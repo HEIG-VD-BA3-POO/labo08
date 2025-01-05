@@ -15,11 +15,13 @@ public final class LongCastling extends Castling {
     /**
      * Constructs a long castling move.
      *
-     * @param from the starting position of the king
-     * @param to   the destination position of the king
+     * @param from     the starting position of the king
+     * @param to       the destination position of the king
+     * @param king     the starting position king
+     * @param fromRook the starting position of the rook
+     * @param rook     the starting position rook
      */
     public LongCastling(Position from, Position to, ChessPiece king, Position fromRook, ChessPiece rook) {
         super(from, to, king, fromRook, fromRook.add(new Position(3, 0)), rook);
     }
-
 }

@@ -5,17 +5,29 @@ import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.piece.*;
 
+/**
+ * Wraps the ChessBoard, implementing the ChessBoardWrite interface such that
+ * it can interact with the ChessView in conjunction with the ChessBoard.
+ *
+ * @author Leonard Cseres
+ * @author Aladin Iseni
+ */
 public final class ChessBoardController implements ChessBoardWriter {
     private final ChessBoard board = new ChessBoard();
     private final ChessView view;
 
+    /**
+     * Instantiates the ChessBoardController.
+     *
+     * @param view the ChessView
+     */
     public ChessBoardController(ChessView view) {
         this.view = view;
         this.view.startView();
     }
 
     /**
-     * Gets the associated ChessView
+     * Gets the associated ChessView.
      *
      * @return the ChessView
      */
@@ -23,9 +35,8 @@ public final class ChessBoardController implements ChessBoardWriter {
         return view;
     }
 
-
     /**
-     * get the associated ChessBoard
+     * Gets the associated ChessBoard.
      *
      * @return the ChessBoard
      */
@@ -81,7 +92,7 @@ public final class ChessBoardController implements ChessBoardWriter {
 
     /**
      * Handles pawn promotion at the given position.
-     * Prompts the user if a view is available.
+     * Prompts the user though the ChessView.
      *
      * @param pos the position of the pawn being promoted
      */
