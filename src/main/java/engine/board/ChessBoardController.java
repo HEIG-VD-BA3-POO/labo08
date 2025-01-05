@@ -3,7 +3,13 @@ package engine.board;
 import chess.ChessView;
 import chess.PlayerColor;
 import engine.move.ChessMove;
-import engine.piece.*;
+import engine.piece.Bishop;
+import engine.piece.ChessPiece;
+import engine.piece.Knight;
+import engine.piece.Position;
+import engine.piece.PromotableChessPiece;
+import engine.piece.Queen;
+import engine.piece.Rook;
 
 /**
  * Wraps the ChessBoard, implementing the ChessBoardWrite interface such that

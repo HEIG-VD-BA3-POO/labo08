@@ -7,7 +7,13 @@ import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
 import engine.generator.PawnDistanceGenerator;
-import engine.move.*;
+import engine.move.Capture;
+import engine.move.ChessMove;
+import engine.move.EnPassant;
+import engine.move.Moves;
+import engine.move.Promotion;
+import engine.move.PromotionWithCapture;
+import engine.move.StandardMove;
 
 /**
  * Represents the Pawn chess piece.
