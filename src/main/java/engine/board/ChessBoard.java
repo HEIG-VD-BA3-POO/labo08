@@ -122,20 +122,6 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     }
 
     /**
-     * Synchronizes the chessboard state with the associated view.
-     */
-    public void sync() {
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            Position pos = entry.getKey();
-            ChessPiece piece = entry.getValue();
-            view.putPiece(piece.getType(), piece.getColor(), pos.x(), pos.y());
-            if (piece.getType() == PieceType.KING) {
-                kings.put(piece.getColor(), pos);
-            }
-        }
-    }
-
-    /**
      * Gets the associated {@link ChessView}.
      * 
      * @return the view of the chessboard

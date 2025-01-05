@@ -76,7 +76,6 @@ public final class ChessEngine implements ChessController {
             throw new IllegalStateException("Call ChessEngine.start() before resetting the game");
         }
         ChessBoardInitializer.initializeBoard(board);
-        board.sync();
     }
 
     /**
