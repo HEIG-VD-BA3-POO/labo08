@@ -2,7 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.board.ChessBoardView;
+import engine.board.ChessBoardReader;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
@@ -14,7 +14,7 @@ import engine.move.ShortCastling;
  * Represents the King chess piece.
  * The King can move one square in any direction, as defined by the movement
  * rules.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
@@ -23,7 +23,7 @@ public final class King extends ChessPiece {
     /**
      * Constructs a King chess piece with the specified color.
      * Uses a {@link DistanceGenerator} limited to one square and all directions.
-     * 
+     *
      * @param color the color of the King
      */
     public King(PlayerColor color) {
@@ -39,7 +39,7 @@ public final class King extends ChessPiece {
      * @return a {@link Moves} object containing all valid moves for the King
      */
     @Override
-    public Moves getPossibleMoves(ChessBoardView board, Position from) {
+    public Moves getPossibleMoves(ChessBoardReader board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
 
         if (!board.isInAttackCalculationMode()) {
@@ -56,17 +56,23 @@ public final class King extends ChessPiece {
      * @param board the chessboard used to evaluate castling conditions
      * @param from  the current position of the king
      * @return a Moves object containing valid castling moves, or empty if
-     *         no castling is possible
+     * no castling is possible
      */
-    private Moves getCastlingMoves(ChessBoardView board, Position from) {
+    private Moves getCastlingMoves(ChessBoardReader board, Position from) {
         Moves castlingMoves = new Moves();
+
         Position shortCastlingPosition = new Position(from.x() + 2, from.y());
         if (canCastle(board, from, shortCastlingPosition)) {
-            castlingMoves.addMove(new ShortCastling(from, shortCastlingPosition));
+            Position rookPosition = getRookPosition(from, Direction.RIGHT);
+            ChessPiece rook = board.get(rookPosition);
+            castlingMoves.addMove(new ShortCastling(from, shortCastlingPosition, this, rookPosition, rook));
         }
+
         Position longCastlingPosition = new Position(from.x() - 2, from.y());
         if (canCastle(board, from, longCastlingPosition)) {
-            castlingMoves.addMove(new LongCastling(from, longCastlingPosition));
+            Position rookPosition = getRookPosition(from, Direction.LEFT);
+            ChessPiece rook = board.get(rookPosition);
+            castlingMoves.addMove(new LongCastling(from, longCastlingPosition, this, rookPosition, rook));
         }
         return castlingMoves;
     }
@@ -81,7 +87,7 @@ public final class King extends ChessPiece {
      * @param to    the target position for the King (castling destination)
      * @return true if the King can castle, false otherwise
      */
-    private boolean canCastle(ChessBoardView board, Position from, Position to) {
+    private boolean canCastle(ChessBoardReader board, Position from, Position to) {
         if (hasMoved()) {
             return false;
         }
@@ -90,19 +96,10 @@ public final class King extends ChessPiece {
         Position rookPosition = getRookPosition(from, direction);
         ChessPiece rook = board.get(rookPosition);
 
-        if (!isValidRook(rook)) {
-            return false;
-        }
-
-        if (!areSquaresBetweenEmptyAndSafe(board, from, rookPosition, direction)) {
-            return false;
-        }
-
-        if (!isRookPositionSafe(board, rookPosition)) {
-            return false;
-        }
-
-        return !board.isKingInCheck(color);
+        return isValidRook(rook) &&
+                areSquaresBetweenEmptyAndSafe(board, from, rookPosition, direction) &&
+                isRookPositionSafe(board, rookPosition) &&
+                !board.isKingInCheck(color);
     }
 
     /**
@@ -140,8 +137,8 @@ public final class King extends ChessPiece {
      * @param direction the direction of castling (RIGHT or LEFT)
      * @return true if the squares between are empty and safe, false otherwise
      */
-    private boolean areSquaresBetweenEmptyAndSafe(ChessBoardView board, Position from, Position rookPos,
-            Direction direction) {
+    private boolean areSquaresBetweenEmptyAndSafe(ChessBoardReader board, Position from, Position rookPos,
+                                                  Direction direction) {
         Position current = direction.add(from, color);
         while (!current.equals(rookPos)) {
             if (board.containsKey(current) || board.isSquareAttacked(current, color)) {
@@ -159,7 +156,7 @@ public final class King extends ChessPiece {
      * @param rookPos the position of the Rook
      * @return true if the Rook's position is not attacked, false otherwise
      */
-    private boolean isRookPositionSafe(ChessBoardView board, Position rookPos) {
+    private boolean isRookPositionSafe(ChessBoardReader board, Position rookPos) {
         return !board.isSquareAttacked(rookPos, color);
     }
 }

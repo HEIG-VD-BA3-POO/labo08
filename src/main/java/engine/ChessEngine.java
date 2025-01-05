@@ -1,28 +1,30 @@
 package engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
 import engine.board.ChessBoard;
+import engine.board.ChessBoardController;
 import engine.board.ChessBoardInitializer;
 import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Main engine class responsible for managing the chess game logic, turns, and
  * interactions with the view.
  * Implements the {@link ChessController} interface.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
 public final class ChessEngine implements ChessController {
-    private ChessBoard board;
+    private final ChessBoard board = new ChessBoard();
+    private ChessBoardController boardController;
     private PlayerColor turnColor;
 
     /**
@@ -32,7 +34,7 @@ public final class ChessEngine implements ChessController {
      */
     @Override
     public void start(ChessView view) {
-        this.board = new ChessBoard(view);
+        boardController = new ChessBoardController(board, view);
         view.startView();
         newGame();
     }
@@ -72,10 +74,10 @@ public final class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         turnColor = PlayerColor.WHITE;
-        if (board == null) {
-            throw new IllegalStateException("Call ChessEngine.start() before resetting the game");
+        if (boardController == null) {
+            throw new IllegalStateException("Call ChessEngine.start() before starting a new game");
         }
-        ChessBoardInitializer.initializeBoard(board);
+        ChessBoardInitializer.initializeBoard(boardController);
     }
 
     /**
@@ -106,7 +108,7 @@ public final class ChessEngine implements ChessController {
             }
         }
 
-        board.getView().highlightPositions(positions);
+        boardController.getView().highlightPositions(positions);
     }
 
     /**
@@ -128,17 +130,17 @@ public final class ChessEngine implements ChessController {
             return false; // Illegal move, leaves the king in check
         }
 
-        move.execute(board); // Execute the move on the real board
+        move.execute(boardController); // Execute the move on the real board
         nextTurn();
 
         if (board.isCheckmate(turnColor)) {
-            board.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
+            boardController.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
         } else if (board.isStalemate(turnColor)) {
-            board.getView().displayMessage("Stalemate... It's a draw");
+            boardController.getView().displayMessage("Stalemate... It's a draw");
         } else if (board.isDraw()) {
-            board.getView().displayMessage("Draw! Impossible to checkmate");
+            boardController.getView().displayMessage("Draw! Impossible to checkmate");
         } else if (board.isKingInCheck(turnColor)) {
-            board.getView().displayMessage("Check!");
+            boardController.getView().displayMessage("Check!");
         }
 
         return true;

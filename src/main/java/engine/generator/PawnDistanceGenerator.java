@@ -1,6 +1,6 @@
 package engine.generator;
 
-import engine.board.ChessBoardView;
+import engine.board.ChessBoardReader;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
@@ -21,7 +21,7 @@ public final class PawnDistanceGenerator extends DistanceGenerator {
     }
 
     @Override
-    public Moves generate(ChessBoardView board, Position from) {
+    public Moves generate(ChessBoardReader board, Position from) {
         ChessPiece piece = board.get(from);
         // If the pawn has moved, restrict its maximum distance to 1
         if (piece.hasMoved() && getMaxDistance() == 2) {

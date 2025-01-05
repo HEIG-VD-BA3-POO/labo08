@@ -37,7 +37,7 @@ public enum Direction {
 
     /**
      * Constructor for the Direction enum, defining the change in position (dx, dy).
-     * 
+     *
      * @param dx the change in x-coordinate (horizontal movement)
      * @param dy the change in y-coordinate (vertical movement)
      * @throws IllegalArgumentException if the provided arguments are invalid
@@ -55,7 +55,7 @@ public enum Direction {
 
     /**
      * Adjusts the horizontal movement (dx) based on the player's color.
-     * 
+     *
      * @param color the color of the player (used to determine direction)
      * @return the adjusted horizontal movement (dx) based on the color
      */
@@ -65,7 +65,7 @@ public enum Direction {
 
     /**
      * Adjusts the vertical movement (dy) based on the player's color.
-     * 
+     *
      * @param color the color of the player (used to determine direction)
      * @return the adjusted vertical movement (dy) based on the color
      */
@@ -76,7 +76,7 @@ public enum Direction {
     /**
      * Calculates a new position by applying this direction to the given position,
      * taking the piece color into account.
-     * 
+     *
      * @param position the current position of the piece
      * @param color    the color of the piece (used to adjust direction)
      * @return the new position after applying the direction
@@ -88,7 +88,7 @@ public enum Direction {
     /**
      * Returns a string representation of the direction, including the dx and dy
      * values.
-     * 
+     *
      * @return a string representation of the direction
      */
     @Override

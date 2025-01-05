@@ -1,16 +1,16 @@
 package engine.move;
 
+import engine.piece.Position;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import engine.piece.Position;
 
 /**
  * Represents a collection of chess moves, storing them in a map with the
  * destination position as the key.
  * Provides methods for adding, extending, and retrieving moves.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
@@ -26,7 +26,7 @@ public final class Moves {
 
     /**
      * Adds a move to the collection of moves.
-     * 
+     *
      * @param move the chess move to be added
      */
     public void addMove(ChessMove move) {
@@ -36,7 +36,7 @@ public final class Moves {
     /**
      * Extends the current collection of moves by adding all moves from another
      * Moves object.
-     * 
+     *
      * @param moves the Moves object whose moves should be added
      */
     public void extendMoves(Moves moves) {
@@ -47,10 +47,10 @@ public final class Moves {
 
     /**
      * Retrieves a move based on its destination position.
-     * 
+     *
      * @param to the destination position of the move
      * @return the chess move associated with the destination position, or null if
-     *         no such move exists
+     * no such move exists
      */
     public ChessMove getMove(Position to) {
         return movesMap.get(to);
@@ -58,7 +58,7 @@ public final class Moves {
 
     /**
      * Retrieves all moves in the collection.
-     * 
+     *
      * @return a collection of all chess moves
      */
     public Collection<ChessMove> getAllMoves() {
@@ -67,7 +67,7 @@ public final class Moves {
 
     /**
      * Returns a string representation of all moves in the collection.
-     * 
+     *
      * @return a string representing all moves
      */
     @Override

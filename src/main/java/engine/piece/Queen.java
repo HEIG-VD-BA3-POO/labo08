@@ -9,7 +9,7 @@ import engine.generator.DirectionalGenerator;
  * Represents the Queen chess piece.
  * The Queen can move any number of squares in any direction: horizontally,
  * vertically, or diagonally.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
@@ -20,7 +20,7 @@ public final class Queen extends PromotableChessPiece {
      * The Queen moves in all directions (horizontal, vertical, and diagonal) with
      * no restrictions
      * on the number of squares.
-     * 
+     *
      * @param color the color of the Queen
      */
     public Queen(PlayerColor color) {
