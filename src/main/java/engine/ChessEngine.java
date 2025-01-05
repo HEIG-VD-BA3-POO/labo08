@@ -38,6 +38,20 @@ public final class ChessEngine implements ChessController {
     }
 
     /**
+     * Resets the game state to start a new game.
+     *
+     * @throws IllegalStateException if the ChessEngine was not initialized properly
+     */
+    @Override
+    public void newGame() {
+        turnColor = PlayerColor.WHITE;
+        if (controller == null) {
+            throw new IllegalStateException("Call ChessEngine.start() before starting a new game");
+        }
+        ChessBoardInitializer.initializeBoard(controller);
+    }
+
+    /**
      * Attempts to make a move on the chessboard from the given coordinates.
      *
      * @param fromX the starting X-coordinate
@@ -64,20 +78,6 @@ public final class ChessEngine implements ChessController {
         nextTurn();
         updateState();
         return true;
-    }
-
-    /**
-     * Resets the game state to start a new game.
-     *
-     * @throws IllegalStateException if the ChessEngine was not initialized properly
-     */
-    @Override
-    public void newGame() {
-        turnColor = PlayerColor.WHITE;
-        if (controller == null) {
-            throw new IllegalStateException("Call ChessEngine.start() before starting a new game");
-        }
-        ChessBoardInitializer.initializeBoard(controller);
     }
 
     /**
