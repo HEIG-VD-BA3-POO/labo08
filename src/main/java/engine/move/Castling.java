@@ -28,7 +28,8 @@ abstract class Castling extends ChessMove {
      * @param toRook   the destination position of the rook
      * @param rook     the starting position rook
      */
-    protected Castling(Position from, Position to, ChessPiece king, Position fromRook, Position toRook, ChessPiece rook) {
+    protected Castling(Position from, Position to, ChessPiece king, Position fromRook, Position toRook,
+            ChessPiece rook) {
         super(from, to, king);
         this.fromRook = fromRook;
         this.toRook = toRook;
