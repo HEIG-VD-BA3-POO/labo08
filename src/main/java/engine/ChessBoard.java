@@ -235,18 +235,54 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     }
 
     /**
-     * Checks if the game is a draw.
+     * Checks if the game is a draw based on insufficient material.
+     * Handles scenarios: K vs K, K+B vs K, K+N vs K, and K+B vs K+B (same colored squares)
      *
-     * @return true if the game is a draw, false otherwise
+     * @return true if the game is a draw due to insufficient material
      */
-    public boolean isDraw(PlayerColor color) {
-        PlayerColor oppositeColor = color == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
-        int thisPlayerPieces = howManyPiecesPlayerHas(color);
-        int otherPlayerPieces = howManyPiecesPlayerHas(oppositeColor);
-        return thisPlayerPieces == 1 && otherPlayerPieces == 1 ||
-                thisPlayerPieces == 2 && otherPlayerPieces == 1 && doesPlayerHaveOneBishop(color) ||
-                thisPlayerPieces == 2 && otherPlayerPieces == 1 && doesPlayerHaveOneKnight(color) ||
-                thisPlayerPieces == 2 && otherPlayerPieces == 2 && doPlayersHaveBishopsOnTheSameColor();
+    public boolean isDraw() {
+        // Count pieces and track bishops for each player
+        int whitePieces = 0;
+        int blackPieces = 0;
+        Position whiteBishopPos = null;
+        Position blackBishopPos = null;
+
+        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+            ChessPiece piece = entry.getValue();
+            if (piece.getColor() == PlayerColor.WHITE) {
+                whitePieces++;
+                if (piece.getType() == PieceType.BISHOP) {
+                    whiteBishopPos = entry.getKey();
+                }
+            } else {
+                blackPieces++;
+                if (piece.getType() == PieceType.BISHOP) {
+                    blackBishopPos = entry.getKey();
+                }
+            }
+        }
+        // King vs King
+        if (whitePieces == 1 && blackPieces == 1) {
+            return true;
+        }
+        // Cases with 2 pieces vs 1 piece
+        if ((whitePieces == 2 && blackPieces == 1) || (whitePieces == 1 && blackPieces == 2)) {
+            PlayerColor morePieces = whitePieces == 2 ? PlayerColor.WHITE : PlayerColor.BLACK;
+            // Find the extra piece
+            for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+                ChessPiece piece = entry.getValue();
+                if (piece.getColor() == morePieces && piece.getType() != PieceType.KING) {
+                    // King + Bishop vs King or King + Knight vs King
+                    return piece.getType() == PieceType.BISHOP ||
+                            piece.getType() == PieceType.KNIGHT;
+                }
+            }
+        }
+        // King + Bishop vs King + Bishop (same colored squares)
+        if (whitePieces == 2 && blackPieces == 2 && whiteBishopPos != null && blackBishopPos != null) {
+            return whiteBishopPos.getColor() == blackBishopPos.getColor();
+        }
+        return false;
     }
 
     /**
@@ -309,86 +345,5 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError("Cloning failed", e);
         }
-    }
-
-
-    /**
-     * Counts how many pieces the player has on the board.
-     *
-     * @param color the color of the player
-     * @return the number of pieces the player has on the board
-     */
-    public int howManyPiecesPlayerHas(PlayerColor color) {
-        int count = 0;
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == color) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Checks if the player has one bishop left on the board.
-     *
-     * @param color the color of the player
-     * @return true if the player has one bishop left, false otherwise
-     */
-    public boolean doesPlayerHaveOneBishop(PlayerColor color) {
-        return doesPlayerHaveOneSpecifiedPiece(color, PieceType.BISHOP);
-    }
-
-    /**
-     * Checks if the player has one knight left on the board.
-     *
-     * @param color the color of the player
-     * @return true if the player has one knight left, false otherwise
-     */
-    public boolean doesPlayerHaveOneKnight(PlayerColor color) {
-        return doesPlayerHaveOneSpecifiedPiece(color, PieceType.KNIGHT);
-    }
-
-    /**
-     * Checks if the player has one specified piece left on the board.
-     *
-     * @param color the color of the player
-     * @param type the type of the piece
-     * @return true if the player has one specified piece left, false otherwise
-     */
-    public boolean doesPlayerHaveOneSpecifiedPiece(PlayerColor color, PieceType type) {
-        int count = 0;
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == color && piece.getType() == type) {
-                count++;
-            }
-        }
-        return count == 1;
-    }
-
-    /**
-     * Checks if both players have bishops on the same color square.
-     *
-     * @return true if both players have bishops on the same color square, false otherwise
-     */
-    public boolean doPlayersHaveBishopsOnTheSameColor() {
-        if (!doesPlayerHaveOneBishop(PlayerColor.WHITE) || !doesPlayerHaveOneBishop(PlayerColor.BLACK)) {
-            return false;
-        }
-
-        boolean whiteBishopOnWhiteSquare = false;
-        boolean blackBishopOnWhiteSquare = false;
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getType() == PieceType.BISHOP) {
-                if (piece.getColor() == PlayerColor.WHITE) {
-                    whiteBishopOnWhiteSquare = entry.getKey().isWhiteSquare();
-                } else {
-                    blackBishopOnWhiteSquare = entry.getKey().isWhiteSquare();
-                }
-            }
-        }
-        return whiteBishopOnWhiteSquare == blackBishopOnWhiteSquare;
     }
 }

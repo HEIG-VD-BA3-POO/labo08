@@ -1,5 +1,7 @@
 package engine.piece;
 
+import chess.PlayerColor;
+
 /**
  * Represents a position on the chessboard with x and y coordinates.
  * Provides utility methods for position validation and arithmetic operations.
@@ -66,6 +68,15 @@ public record Position(int x, int y) {
     }
 
     /**
+     * Gets the position color
+     *
+     * @return WHITE if the position is on a white square, BLACK otherwise
+     */
+    public PlayerColor getColor() {
+        return (x + y) % 2 == 0 ? PlayerColor.BLACK : PlayerColor.WHITE;
+    }
+
+    /**
      * Provides a string representation of the position in the format "(x, y)".
      * 
      * @return a string representation of the position
@@ -73,14 +84,5 @@ public record Position(int x, int y) {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
-    }
-
-    /**
-     * Checks if the position is on a white square of the chessboard.
-     *
-     * @return true if the position is on a white square, false otherwise
-     */
-    public boolean isWhiteSquare() {
-        return (x + y) % 2 != 0;
     }
 }
