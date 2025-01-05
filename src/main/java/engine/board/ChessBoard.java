@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
+public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private Map<PlayerColor, Position> kings = new HashMap<>();
     private ChessMove lastMove = null;
@@ -147,6 +147,11 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
      */
     @Override
     public boolean isSquareAttacked(Position position, PlayerColor color) {
+        if (inAttackCalculationMode) {
+            // We prevent infinite call stack when cloning the board
+            return false;
+        }
+
         inAttackCalculationMode = true;
         try {
             for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
@@ -162,17 +167,6 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
             inAttackCalculationMode = false;
         }
         return false;
-    }
-
-    /**
-     * Determines if the board is in a mode where it is evaluating positions for
-     * check or attack scenarios, ignoring certain rules like special moves.
-     *
-     * @return true if the board is in check calculation mode, false otherwise
-     */
-    @Override
-    public boolean isInAttackCalculationMode() {
-        return inAttackCalculationMode;
     }
 
     /**

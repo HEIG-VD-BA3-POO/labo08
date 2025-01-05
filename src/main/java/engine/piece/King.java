@@ -41,11 +41,7 @@ public final class King extends ChessPiece {
     @Override
     public Moves getPossibleMoves(ChessBoardReader board, Position from) {
         Moves moves = super.getPossibleMoves(board, from);
-
-        if (!board.isInAttackCalculationMode()) {
-            // Add castling moves
-            moves.extendMoves(getCastlingMoves(board, from));
-        }
+        moves.extendMoves(getCastlingMoves(board, from));
 
         return moves;
     }

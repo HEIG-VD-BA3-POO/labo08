@@ -64,12 +64,4 @@ public interface ChessBoardReader {
      * @return true if the square is attacked, false otherwise
      */
     boolean isSquareAttacked(Position position, PlayerColor color);
-
-    /**
-     * Determines if the board is in a mode where it is evaluating positions for
-     * check or attack scenarios, ignoring certain rules like special moves.
-     *
-     * @return true if the board is in check calculation mode, false otherwise
-     */
-    boolean isInAttackCalculationMode();
 }

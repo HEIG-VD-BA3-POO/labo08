@@ -31,15 +31,6 @@ public abstract class ChessMove {
     }
 
     /**
-     * Gets the destination position of the move.
-     *
-     * @return the destination position
-     */
-    public Position getTo() {
-        return to;
-    }
-
-    /**
      * Gets the starting position of the move.
      *
      * @return the starting position
@@ -48,6 +39,14 @@ public abstract class ChessMove {
         return from;
     }
 
+    /**
+     * Gets the destination position of the move.
+     *
+     * @return the destination position
+     */
+    public Position getTo() {
+        return to;
+    }
 
     /**
      * Gets the starting position chess piece.
