@@ -120,7 +120,7 @@ Le système vérifie:
 # Tests Effectués
 
 | **Tests effectuée**                                                                                               | **Résultat** |
-| ----------------------------------------------------------------------------------------------------------------- | :----------: |
+|-------------------------------------------------------------------------------------------------------------------|:------------:|
 | Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |      V       |
 | En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |      V       |
 | En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |      V       |
@@ -131,10 +131,11 @@ Le système vérifie:
 | Uniquement les chevaux peuvent sauter des pièces                                                                  |      V       |
 | Les pièces ne peuvent pas découvrir un échec                                                                      |      V       |
 | Le roi ne peut pas se mettre en échec                                                                             |      V       |
-| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |      V       |
+| Lorsque le roi est en échec, uniquement les mouvements de défenses sont praticables                               |      V       |
 | Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |      V       |
 | Un pion peut être promu en reine, fou, chevalier ou tour                                                          |      V       |
-| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |      X       |
+| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |      V       |
+| Un message Draw s'affiche lorsqu'il n'est plus possible de faire un checkmate avec le matériel restant            |      V       |
 
 ## Défense par l'attaque
 
@@ -168,6 +169,12 @@ Cette image montre que notre jeu est capable de détecter un pat.
 
 ![Stalemate](images/checks/stalemate.png){ width=200px }
 
+## Draw
+
+Nous observons sur l'image suivante le message d'égalité dû au manque de pièces pour effectuer un échec et mat.
+
+![Draw](images/checks/draw.png){ width=200px }
+
 ## En Passant
 
 Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'attaque En Passant et permet de l'exécuter.
@@ -178,12 +185,12 @@ Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'at
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{images/en_passant/show_move.png}
-  \captionof{figure}{Le roi est bloqué}
+  \captionof{figure}{Le pion a la possibilité de capturer En Passant}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{images/en_passant/capture.png}
-  \captionof{figure}{Le cavalier peut défendre le roi}
+  \captionof{figure}{Le pion capture En Passant}
 \end{minipage}
 \end{figure}
 ```
@@ -197,13 +204,18 @@ Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un cast
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/castling/part1.png}
-  \captionof{figure}{Le roi est bloqué}
+  \includegraphics[width=.6\linewidth]{images/castling/part1.png}
+  \captionof{figure}{Le roi est bloqué car les cases sont attaquées}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/castling/part2.png}
-  \captionof{figure}{Le cavalier peut défendre le roi}
+  \includegraphics[width=.6\linewidth]{images/castling/part2.png}
+  \captionof{figure}{Le roi peut effectuer un roque}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{images/castling/part3.png}
+  \captionof{figure}{Le roi effectue un roque}
 \end{minipage}
 \end{figure}
 ```
@@ -220,12 +232,12 @@ Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, to
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{images/promotion/game_state.png}
-  \captionof{figure}{Le roi est bloqué}
+  \captionof{figure}{Le pion est prêt à être promu}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{images/promotion/piece_selection.png}
-  \captionof{figure}{Le cavalier peut défendre le roi}
+  \captionof{figure}{Le joueur peut choisir la promotion du pion}
 \end{minipage}
 \end{figure}
 ```
