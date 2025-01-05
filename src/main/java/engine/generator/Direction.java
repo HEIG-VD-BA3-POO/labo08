@@ -54,16 +54,6 @@ public enum Direction {
     }
 
     /**
-     * Adjusts the horizontal movement (dx) based on the player's color.
-     *
-     * @param color the color of the player (used to determine direction)
-     * @return the adjusted horizontal movement (dx) based on the color
-     */
-    private int getDx(PlayerColor color) {
-        return color == PlayerColor.WHITE ? dx : -dx;
-    }
-
-    /**
      * Adjusts the vertical movement (dy) based on the player's color.
      *
      * @param color the color of the player (used to determine direction)
@@ -82,7 +72,7 @@ public enum Direction {
      * @return the new position after applying the direction
      */
     public Position add(Position position, PlayerColor color) {
-        return position.add(new Position(getDx(color), getDy(color)));
+        return position.add(new Position(dx, getDy(color)));
     }
 
     /**

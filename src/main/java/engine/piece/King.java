@@ -56,7 +56,7 @@ public final class King extends ChessPiece {
      * @param board the chessboard used to evaluate castling conditions
      * @param from  the current position of the king
      * @return a Moves object containing valid castling moves, or empty if
-     * no castling is possible
+     *         no castling is possible
      */
     private Moves getCastlingMoves(ChessBoardReader board, Position from) {
         Moves castlingMoves = new Moves();
@@ -98,7 +98,6 @@ public final class King extends ChessPiece {
 
         return isValidRook(rook) &&
                 areSquaresBetweenEmptyAndSafe(board, from, rookPosition, direction) &&
-                isRookPositionSafe(board, rookPosition) &&
                 !board.isKingInCheck(color);
     }
 
@@ -138,7 +137,7 @@ public final class King extends ChessPiece {
      * @return true if the squares between are empty and safe, false otherwise
      */
     private boolean areSquaresBetweenEmptyAndSafe(ChessBoardReader board, Position from, Position rookPos,
-                                                  Direction direction) {
+            Direction direction) {
         Position current = direction.add(from, color);
         while (!current.equals(rookPos)) {
             if (board.containsKey(current) || board.isSquareAttacked(current, color)) {
@@ -147,16 +146,5 @@ public final class King extends ChessPiece {
             current = direction.add(current, color);
         }
         return true;
-    }
-
-    /**
-     * Checks if the Rook's position is safe from attack.
-     *
-     * @param board   the chess board
-     * @param rookPos the position of the Rook
-     * @return true if the Rook's position is not attacked, false otherwise
-     */
-    private boolean isRookPositionSafe(ChessBoardReader board, Position rookPos) {
-        return !board.isSquareAttacked(rookPos, color);
     }
 }
