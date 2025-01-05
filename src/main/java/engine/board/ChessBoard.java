@@ -72,6 +72,7 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
      *
      * @param chessMove the last move that was made
      */
+    @Override
     public void setLastMove(ChessMove chessMove) {
         lastMove = chessMove;
     }
@@ -83,6 +84,7 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
      * @param pos   the position to place the piece
      * @param piece the {@link ChessPiece} to place
      */
+    @Override
     public void put(Position pos, ChessPiece piece) {
         pieces.put(pos, piece);
         if (piece.getType() == PieceType.KING) {
@@ -96,6 +98,7 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
      * @param pos the position to remove the piece from
      * @throws IllegalStateException if no piece exit at the position
      */
+    @Override
     public void remove(Position pos) {
         if (pieces.get(pos) == null) {
             throw new IllegalStateException("No piece exits at " + pos);
