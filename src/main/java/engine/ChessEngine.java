@@ -23,8 +23,7 @@ import java.util.List;
  * @author Aladin Iseni
  */
 public final class ChessEngine implements ChessController {
-    private final ChessBoard board = new ChessBoard();
-    private ChessBoardController boardController;
+    private ChessBoardController controller;
     private PlayerColor turnColor;
 
     /**
@@ -34,8 +33,7 @@ public final class ChessEngine implements ChessController {
      */
     @Override
     public void start(ChessView view) {
-        boardController = new ChessBoardController(board, view);
-        view.startView();
+        controller = new ChessBoardController(view);
         newGame();
     }
 
@@ -55,6 +53,7 @@ public final class ChessEngine implements ChessController {
         assert from.isValid() : "From position is invalid";
         assert to.isValid() : "To position is invalid";
 
+        ChessBoard board = controller.getBoard();
         if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
             return false;
         }
@@ -74,10 +73,10 @@ public final class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         turnColor = PlayerColor.WHITE;
-        if (boardController == null) {
+        if (controller == null) {
             throw new IllegalStateException("Call ChessEngine.start() before starting a new game");
         }
-        ChessBoardInitializer.initializeBoard(boardController);
+        ChessBoardInitializer.initializeBoard(controller);
     }
 
     /**
@@ -92,6 +91,7 @@ public final class ChessEngine implements ChessController {
         Position from = new Position(x, y);
         assert from.isValid() : "From position is invalid";
 
+        ChessBoard board = controller.getBoard();
         if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
             return;
         }
@@ -108,7 +108,7 @@ public final class ChessEngine implements ChessController {
             }
         }
 
-        boardController.getView().highlightPositions(positions);
+        controller.getView().highlightPositions(positions);
     }
 
     /**
@@ -123,6 +123,7 @@ public final class ChessEngine implements ChessController {
             return false;
         }
 
+        ChessBoard board = controller.getBoard();
         ChessBoard clonedBoard = board.clone();
         move.execute(clonedBoard);
 
@@ -130,17 +131,18 @@ public final class ChessEngine implements ChessController {
             return false; // Illegal move, leaves the king in check
         }
 
-        move.execute(boardController); // Execute the move on the real board
+        move.execute(controller); // Execute the move on the board attached to the view
         nextTurn();
 
+        ChessView view = controller.getView();
         if (board.isCheckmate(turnColor)) {
-            boardController.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
+            view.displayMessage("Checkmate! " + oppositePlayer() + " won!");
         } else if (board.isStalemate(turnColor)) {
-            boardController.getView().displayMessage("Stalemate... It's a draw");
+            view.displayMessage("Stalemate... It's a draw");
         } else if (board.isDraw()) {
-            boardController.getView().displayMessage("Draw! Impossible to checkmate");
+            view.displayMessage("Draw! Impossible to checkmate");
         } else if (board.isKingInCheck(turnColor)) {
-            boardController.getView().displayMessage("Check!");
+            view.displayMessage("Check!");
         }
 
         return true;

@@ -6,21 +6,31 @@ import engine.move.ChessMove;
 import engine.piece.*;
 
 public class ChessBoardController implements ChessBoardWriter {
-    private final ChessBoard board;
+    private final ChessBoard board = new ChessBoard();
     private final ChessView view;
 
-    public ChessBoardController(ChessBoard board, ChessView view) {
-        this.board = board;
+    public ChessBoardController(ChessView view) {
         this.view = view;
+        this.view.startView();
     }
 
     /**
-     * Gets the associated {@link ChessView}.
+     * Gets the associated ChessView
      *
-     * @return the view of the chessboard
+     * @return the ChessView
      */
     public ChessView getView() {
         return view;
+    }
+
+
+    /**
+     * get the associated ChessBoard
+     *
+     * @return the ChessBoard
+     */
+    public ChessBoard getBoard() {
+        return board;
     }
 
     /**
