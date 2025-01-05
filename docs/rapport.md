@@ -11,6 +11,12 @@ header-includes:
   - \fancyhead[R]{Page \thepage}
   - \fancyfoot[C]{}
   - \fancyfoot[R]{\thepage}
+  - \usepackage{dirtree}
+  - \usepackage{float}
+  - \makeatletter
+  - \def\fps@figure{H}
+  - \makeatother
+  - \usepackage{caption}
 toc: true
 lang: fr
 numbersections: true
@@ -47,6 +53,22 @@ garantissant l'encapsulation, la réutilisabilité et la modularité. Le package
 `engine` contient les classes et la logique pour la gestion du jeu, le suivi de
 l'état de l'échiquier et la génération des mouvements.
 
+## Structure
+
+Comme montionné précédament, le notre implémentation se situe dans le package
+`engine`.
+
+\dirtree{%
+.1 .
+.2 app\DTcomment{point d'entrée de l'application}.
+.2 chess\DTcomment{code founi}.
+.2 engine.
+.3 board\DTcomment{logique de l'échiquier}.
+.3 generator\DTcomment{génération de mouvements possibles pour les pieces}.
+.3 move\DTcomment{gestion des différents mouvements}.
+.3 piece\DTcomment{logique des pieces d'échec}.
+}
+
 ## Composants Clés
 
 - **`ChessEngine`:** Gère le déroulement du jeu et communique avec la vue.
@@ -66,9 +88,9 @@ Le diagramme UML fournit une vue d'ensemble de la structure et des
 relations du système. Les élements grisés représentent le code que nous avons
 utilisé et non pas implémenté.
 
-![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=95% }
+![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=70% }
 
-![Schéma UML (Vue détaillée)](./assets/uml.svg)
+![Schéma UML (Vue détaillée)](./assets/uml.svg){ width=75% }
 
 \newpage
 
@@ -82,6 +104,7 @@ Le système vérifie:
   n'est possible.
 - **Pat:** Lorsque aucun mouvement légal n'est possible, mais que le roi n'est
   pas en échec.
+- **Match nul:** Lorsque aucun joueur peut gagner
 
 ## Règles Spéciales
 
@@ -96,52 +119,118 @@ Le système vérifie:
 
 # Tests Effectués
 
-| Tests effectuées                                                                                                  | Résultat |
-|-------------------------------------------------------------------------------------------------------------------|:--------:|
-| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |    V     |
-| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |    V     |
-| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |    V     |
-| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |    V     |
-| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |    V     |
-| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |    V     |
-| Chaque pièce avance dans la bonne direction                                                                       |    V     |
-| Uniquement les chevaux peuvent sauter des pièces                                                                  |    V     |
-| Les pièces ne peuvent pas découvrir un échec                                                                      |    V     |
-| Le roi ne peut pas se mettre en échec                                                                             |    V     |
-| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |    V     |
-| Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |    V     |
-| Un pion peut être promu en reine, fou, chevalier ou tour                                                          |    V     |
-| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |    X     |
+| **Tests effectuée**                                                                                               | **Résultat** |
+| ----------------------------------------------------------------------------------------------------------------- | :----------: |
+| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |      V       |
+| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |      V       |
+| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |      V       |
+| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |      V       |
+| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |      V       |
+| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |      V       |
+| Chaque pièce avance dans la bonne direction                                                                       |      V       |
+| Uniquement les chevaux peuvent sauter des pièces                                                                  |      V       |
+| Les pièces ne peuvent pas découvrir un échec                                                                      |      V       |
+| Le roi ne peut pas se mettre en échec                                                                             |      V       |
+| Lorsque le roi est en échec, uniquement les mouvements de défenses sont pratiquables                              |      V       |
+| Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |      V       |
+| Un pion peut être promu en reine, fou, chevalier ou tour                                                          |      V       |
+| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |      X       |
 
 ## Défense par l'attaque
-Les images suivantes montrent que le joueur blanc est obligé d'attaque le fou en H4 avec le cavalier en F3 afin de défendre son roi.  
-![Le roi est bloqué](images/checks/king_no_move.png)  
-![Le cavalier peut défendre le roi](images/checks/knight_move.png)
+
+Les images suivantes montrent que le joueur blanc est obligé d'attaque le fou en H4 avec le cavalier en F3 afin de défendre son roi.
+
+```{=latex}
+\begin{figure}
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/checks/king_no_move.png}
+  \captionof{figure}{Le roi est bloqué}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/checks/knight_move.png}
+  \captionof{figure}{Le cavalier peut défendre le roi}
+\end{minipage}
+\end{figure}
+```
 
 ## Checkmate
+
 Cette image montre que notre jeu est capable de détecter un échec et mat.
-![Checkmate](images/checks/checkmate.png)
+
+![Checkmate](images/checks/checkmate.png){ width=200px }
 
 ## Stalemate
+
 Cette image montre que notre jeu est capable de détecter un pat.
-![Stalemate](images/checks/stalemate.png)
+
+![Stalemate](images/checks/stalemate.png){ width=200px }
 
 ## En Passant
+
 Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'attaque En Passant et permet de l'exécuter.
-![Show move En Passant](./images/en_passant/show_move.png)
-![Execute capture](./images/en_passant/capture.png)
+
+```{=latex}
+\begin{figure}
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/en_passant/show_move.png}
+  \captionof{figure}{Le roi est bloqué}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/en_passant/capture.png}
+  \captionof{figure}{Le cavalier peut défendre le roi}
+\end{minipage}
+\end{figure}
+```
 
 ## Castling
+
 Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un castling si les cases du passage du roi sont attaquées.
-![Show moves while position are being attacked](./images/castling/part1.png)
-![Show moves while position are not being attacked](./images/castling/part2.png)
-![Execute castling](./images/castling/part3.png)
+
+```{=latex}
+\begin{figure}
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/castling/part1.png}
+  \captionof{figure}{Le roi est bloqué}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/castling/part2.png}
+  \captionof{figure}{Le cavalier peut défendre le roi}
+\end{minipage}
+\end{figure}
+```
+
+![Execute castling](./images/castling/part3.png){ width=200px }
 
 ## Promotion
+
 Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
-![Game state](./images/promotion/game_state.png)
-![Piece selection](./images/promotion/piece_selection.png)
-![Every promotion](./images/promotion/every_promotion.png)
+
+```{=latex}
+\begin{figure}
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/promotion/game_state.png}
+  \captionof{figure}{Le roi est bloqué}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/promotion/piece_selection.png}
+  \captionof{figure}{Le cavalier peut défendre le roi}
+\end{minipage}
+\end{figure}
+```
+
+![Every promotion](./images/promotion/every_promotion.png){ width=200px }
 
 ---
 
