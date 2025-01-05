@@ -68,43 +68,67 @@ interface ChessView<<provided>> {
 
 class ChessEngine implements ChessController {
     + start(view: ChessView): void
-    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
     + newGame(): void
+    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
 
-    - makeMove(move: ChessMove): boolean
     - nextTurn(): void
-    - oppositePlayer(): PlayerColor
+    - getOpponentPlayer(): PlayerColor
+    - updateState(): void
 }
 
-interface ChessBoardView {
+interface ChessBoardWriter {
+    + put(pos: Position, piece: ChessPiece): void
+    + remove(pos: Position): void
+    + clear(): void
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
+}
+
+interface ChessBoardReader {
     + get(pos: Position): ChessPiece
     + containsKey(pos: Position): boolean
+    + getPieces(): Map<Position, ChessPiece>
     + getLastMove(): ChessMove
-    + isKingInCheck(kingColor: PlayerColor): boolean
+    + isKingInCheck(color: PlayerColor): boolean
     + isSquareAttacked(postition: Position, color: PlayerColor): boolean
     + isInAttackCalculationMode(): boolean
+}
+
+class ChessBoardController implements ChessBoardWriter {
+    + getView(): ChessView
+    + getBoard(): ChessBoard
+
+    + put(pos: Position, piece: ChessPiece): void
+    + remove(pos: Position): void
+    + clear(): void
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
 }
 
 interface Cloneable<<provided>> {}
 
-class ChessBoard implements ChessBoardView, Cloneable {
+class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
     - inAttackCalculationMode: boolean = false;
 
     + get(pos: Position): ChessPiece
     + containsKey(pos: Position): boolean
+    + getPieces(): Map<Position, ChessPiece>
     + getLastMove(): ChessMove
-    + setLastMove(chessMove: ChessMove): void
+    + isKingInCheck(color: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
+    + isInAttackCalculationMode(): boolean
+
     + put(pos: Position, piece: ChessPiece): void
     + remove(pos: Position): void
     + clear(): void
-    + sync(): void
-    + getView(): ChessView
-    + handlePawnPromotion(pos: Position, color: PlayerColor): void
-    + isKingInCheck(kingColor: PlayerColor): boolean
-    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
-    + isInAttackCalculationMode(): boolean
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
+
     + isCheckmate(color: PlayerColor): boolean
     + isStalemate(color: PlayerColor): boolean
+    + isDraw(): boolean
+    + isValidMove(move: ChessMove, turnColor: PlayerColor): boolean
+
     + clone(): ChessBoard
 
     - hasNoLegalMoves(color: PlayerColor): boolean
@@ -130,6 +154,7 @@ class Position {
     + add(other: Position): Position
     + sub(other: Position): Position
     + abs(): Position
+    + getColor(): PlayerColor
     + toString(): String
 }
 
@@ -155,24 +180,24 @@ abstract class ChessPiece implements Cloneable {
     + isOpponent(other: ChessPiece): boolean
     + markMoved(): void
     + hasMoved(): boolean
-    + getPossibleMoves(board: ChessBoardView, from: Position): Moves
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
     + clone(): ChessPiece
 }
 abstract class PromotableChessPiece extends ChessPiece implements UserChoice {
     + textValue(): String
 }
 class Pawn extends ChessPiece {
-    + getPossibleMoves(board: ChessBoardView, from: Position): Moves
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
 
-    - isValidMove(board: ChessBoardView, from: Position, to: Position): boolean
+    - isValidMove(board: ChessBoardReader, from: Position, to: Position): boolean
     - createAppropriateMove(from: Position, to: Position): ChessMove
     - createCaptureMove(from: Position, to: Position): ChessMove
     - createForwardMove(from: Position, to: Position): ChessMove
-    - addEnPassantMoves(board: ChessBoardView, from: Position, moves: Moves): void
-    - isValidEnPassantPosition(board: ChessBoardView, adjacent: Position): boolean
+    - addEnPassantMoves(board: ChessBoardReader, from: Position, moves: Moves): void
+    - isValidEnPassantPosition(board: ChessBoardReader, adjacent: Position): boolean
     - isDiagonalMove(from: Position, to: Position): boolean
-    - isValidCapture(board: ChessBoardView, to: Position): boolean
-    - isPawnAtPosition(board: ChessBoardView, pos: Position): boolean
+    - isValidCapture(board: ChessBoardReader, to: Position): boolean
+    - isPawnAtPosition(board: ChessBoardReader, pos: Position): boolean
     - wasDoublePawnAdvance(move: ChessMove): boolean
     - isAtPromotionRank(pos: Position): boolean
 }
@@ -181,40 +206,39 @@ class Knight extends PromotableChessPiece {}
 class Bishop extends PromotableChessPiece {}
 class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {
-    + getPossibleMoves(board: ChessBoardView, from: Position): Moves
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
     
-    - getPossibleMoves(board: ChessBoardView, from: Position): Moves
-    - getCastlingMoves(board: ChessBoardView, from: Position)
-    - canCastle(board: ChessBoardView, from: Position, to: Position): boolean
+    - getPossibleMoves(board: ChessBoardReader, from: Position): Moves
+    - getCastlingMoves(board: ChessBoardReader, from: Position)
+    - canCastle(board: ChessBoardReader, from: Position, to: Position): boolean
     - getRookPosition(from: Position, direction: Direction): Position
     - isValidRook(rook: ChessPiece): boolean
-    - areSquaresBetweenEmptyAndSafe(board: ChessBoardView, from: Position, rookPos: Position): boolean
-    - isRookPositionSafe(board: ChessBoardView, rookPos: Position): boolean
+    - areSquaresBetweenEmptyAndSafe(board: ChessBoardReader, from: Position, rookPos: Position): boolean
 }
 
 
 abstract class MoveGenerator implements Cloneable {
-    + {abstract} generate(board: ChessBoardView, from: Position): Moves
++ {abstract} generate(board: ChessBoardReader, from: Position): Moves
     + clone(): MoveGenerator
 }
 class DirectionalGenerator extends MoveGenerator {
-    + generate(board: ChessBoardView, from: Position): Moves
+    + generate(board: ChessBoardReader, from: Position): Moves
 }
 class KnightGenerator extends MoveGenerator {
     - {static} KNIGHT_MOVES: int[][]
 
-    + generate(board: ChessBoardView, from: Position): Moves
+    + generate(board: ChessBoardReader, from: Position): Moves
 }
 class DistanceGenerator extends MoveGenerator {
     - maxDistance: int
 
     + getMaxDistance(): int
     + setMaxDistance(maxDistance: int): void
-    + generate(board: ChessBoardView, from: Position): Moves
+    + generate(board: ChessBoardReader, from: Position): Moves
     + clone(): DistanceGenerator
 }
 class PawnDistanceGenerator extends DistanceGenerator {
-    + generate(board: ChessBoardView, from: Position): Moves
+    + generate(board: ChessBoardReader, from: Position): Moves
 }
 
 enum Direction {
@@ -234,10 +258,8 @@ enum Direction {
     + add(position: Position): Position
     + toString(): String
 
-    - getDx(color: PlayerColor): int
     - getDy(color: PlayerColor): int
 }
-
 
 class Moves {
     + addMove(move: ChessMove): void
@@ -248,53 +270,41 @@ class Moves {
 }
 
 abstract class ChessMove {
+    + getFrom(): Position
     + getTo(): Position
-    + {abstract} execute(board: ChessBoard): void
+    + getFromPiece(): ChessPiece
+    + execute(board: ChessBoardWriter): void
     + toString(): String
 }
 
 class StandardMove extends ChessMove {
-    + execute(board: ChessBoard): void
+    + execute(board: ChessBoardWriter): void
 }
 class Capture extends ChessMove {
-    + execute(board: ChessBoard): void
+    + execute(board: ChessBoardWriter): void
 }
 class EnPassant extends StandardMove {
-    + execute(board: ChessBoard): void
+    + execute(board: ChessBoardWriter): void
 }
 abstract class Castling extends ChessMove {
-    + execute(board: ChessBoard): void
-
-    # {abstract} getRookInitialPosition(): Position
-    # {abstract} getRookFinalPosition(): Position
+    + execute(board: ChessBoardWriter): void
 }
-class LongCastling extends Castling {
-    - {static} QUEEN_SIDE_ROOK_INITIAL_X: int = 0;
-    - {static} QUEEN_SIDE_ROOK_FINAL_X: int = 3;
-
-    # getRookInitialPosition(): Position
-    # getRookFinalPosition(): Position
-}
-class ShortCastling extends Castling {
-    - {static} KING_SIDE_ROOK_INITIAL_X: int = Position.MAX_X;
-    - {static} KING_SIDE_ROOK_FINAL_X: int = 5;
-
-    # getRookInitialPosition(): Position
-    # getRookFinalPosition(): Position
-}
+class LongCastling extends Castling {}
+class ShortCastling extends Castling {}
 class Promotion extends StandardMove {
-    + execute(board: ChessBoard): void
+    + execute(board: ChessBoardWriter): void
 }
 class PromotionWithCapture extends Capture {
-    + execute(board: ChessBoard): void
+    + execute(board: ChessBoardWriter): void
 }
 
 ChessController "1" --> "1" ChessView : manage ▸
 
-ChessEngine "1" *-- "1" ChessBoard : manages ▸
+ChessEngine "1" *-- "1" ChessBoardController : manages ▸
 ChessEngine "1" --> "1" PlayerColor : hasTurn ▸
 ChessEngine -[#8e8e8e]-> ChessBoardInitializer : usesStatically ▸\n<color #8e8e8e>**Note:** This is not a real association.\n<color #8e8e8e>We only indicate that the ChessEngine\n<color #8e8e8e>class uses the ChessBoardInitializer statically.
-ChessBoard "1" *-- "1" ChessView : has ▸
+ChessBoardController "1" *-- "1" ChessBoard : controls ▸
+ChessBoardController "1" --> "1" ChessView : controls ▸
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
 ChessBoard "1" *-- "2" Position : tracks ▸
 ChessPiece "1" --> "1" PieceType : represents ▸
@@ -306,7 +316,11 @@ DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses ▸
 
 ChessMove "1" *-- "1" Position : startsAt ▸
 ChessMove "1" *-- "1" Position : endsAt ▸
+ChessMove "1" *-- "1" ChessPiece : moves ▸
 Moves "1" *-- "*" ChessMove : includes ▸
 EnPassant "1" *-- "1" Position : captures ▸
+Castling "1" *-- "1" Position : rookStartsAt ▸
+Castling "1" *-- "1" Position : rookEndsAt ▸
+Castling "1" *-- "1" ChessPiece : movesWith ▸
 
 @enduml
