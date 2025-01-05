@@ -6,6 +6,8 @@ import java.util.List;
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
+import engine.board.ChessBoard;
+import engine.board.ChessBoardInitializer;
 import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.ChessPiece;

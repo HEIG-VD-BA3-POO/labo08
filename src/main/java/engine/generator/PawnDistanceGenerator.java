@@ -1,6 +1,6 @@
 package engine.generator;
 
-import engine.ChessBoardView;
+import engine.board.ChessBoardView;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;

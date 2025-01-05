@@ -2,7 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.ChessBoardView;
+import engine.board.ChessBoardView;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;

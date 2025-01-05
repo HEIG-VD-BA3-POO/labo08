@@ -1,4 +1,4 @@
-package engine;
+package engine.board;
 
 import java.util.HashMap;
 import java.util.Map;

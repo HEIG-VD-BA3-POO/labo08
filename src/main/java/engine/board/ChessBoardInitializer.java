@@ -1,4 +1,4 @@
-package engine;
+package engine.board;
 
 import chess.PlayerColor;
 import engine.piece.*;
@@ -11,7 +11,7 @@ import engine.piece.*;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-final class ChessBoardInitializer {
+public final class ChessBoardInitializer {
 
     /**
      * Initializes the chessboard by placing all pieces in their standard starting

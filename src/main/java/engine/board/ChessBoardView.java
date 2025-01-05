@@ -1,4 +1,4 @@
-package engine;
+package engine.board;
 
 import chess.PlayerColor;
 import engine.move.ChessMove;
