@@ -2,25 +2,19 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.ChessBoardView;
+import engine.board.ChessBoardReader;
 import engine.generator.Direction;
 import engine.generator.DirectionalGenerator;
 import engine.generator.DistanceGenerator;
 import engine.generator.PawnDistanceGenerator;
-import engine.move.Capture;
-import engine.move.ChessMove;
-import engine.move.EnPassant;
-import engine.move.Moves;
-import engine.move.Promotion;
-import engine.move.PromotionWithCapture;
-import engine.move.StandardMove;
+import engine.move.*;
 
 /**
  * Represents the Pawn chess piece.
  * The Pawn can move one or two squares forward, but captures diagonally.
  * It also has the option to promote upon reaching the opposite end of the
  * board.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
@@ -31,7 +25,7 @@ public final class Pawn extends ChessPiece {
      * Uses a {@link PawnDistanceGenerator} for forward movement and a
      * {@link DirectionalGenerator}
      * for diagonal captures.
-     * 
+     *
      * @param color the color of the Pawn
      */
     public Pawn(PlayerColor color) {
@@ -43,13 +37,13 @@ public final class Pawn extends ChessPiece {
      * Gets all possible moves for the Pawn from the given position.
      * Handles regular moves, captures, and promotions (including promotion with
      * capture).
-     * 
+     *
      * @param board the chess board
      * @param from  the starting position of the Pawn
      * @return a {@link Moves} object containing all valid moves for the Pawn
      */
     @Override
-    public Moves getPossibleMoves(ChessBoardView board, Position from) {
+    public Moves getPossibleMoves(ChessBoardReader board, Position from) {
         Moves candidateMoves = super.getPossibleMoves(board, from);
         Moves validMoves = new Moves();
 
@@ -73,7 +67,7 @@ public final class Pawn extends ChessPiece {
      * @param to    The target position for the move
      * @return true if the move is legal, false otherwise
      */
-    private boolean isValidMove(ChessBoardView board, Position from, Position to) {
+    private boolean isValidMove(ChessBoardReader board, Position from, Position to) {
         if (isDiagonalMove(from, to)) {
             // Capture
             return board.containsKey(to) && board.get(to).isOpponent(this);
@@ -106,8 +100,8 @@ public final class Pawn extends ChessPiece {
      */
     private ChessMove createCaptureMove(Position from, Position to) {
         return isAtPromotionRank(to)
-                ? new PromotionWithCapture(from, to)
-                : new Capture(from, to);
+                ? new PromotionWithCapture(from, to, this)
+                : new Capture(from, to, this);
     }
 
     /**
@@ -119,8 +113,8 @@ public final class Pawn extends ChessPiece {
      */
     private ChessMove createForwardMove(Position from, Position to) {
         return isAtPromotionRank(to)
-                ? new Promotion(from, to)
-                : new StandardMove(from, to);
+                ? new Promotion(from, to, this)
+                : new StandardMove(from, to, this);
     }
 
     /**
@@ -131,7 +125,7 @@ public final class Pawn extends ChessPiece {
      * @param from  The current position of the pawn
      * @param moves The collection of moves to add to
      */
-    private void addEnPassantMoves(ChessBoardView board, Position from, Moves moves) {
+    private void addEnPassantMoves(ChessBoardReader board, Position from, Moves moves) {
         Position[] adjacentPositions = {
                 Direction.LEFT.add(from, color),
                 Direction.RIGHT.add(from, color)
@@ -139,7 +133,7 @@ public final class Pawn extends ChessPiece {
         for (Position adjacent : adjacentPositions) {
             if (isValidEnPassantPosition(board, adjacent)) {
                 Position captureSquare = Direction.FORWARDS.add(adjacent, color);
-                moves.addMove(new EnPassant(from, captureSquare, adjacent));
+                moves.addMove(new EnPassant(from, captureSquare, this, adjacent));
             }
         }
     }
@@ -153,7 +147,7 @@ public final class Pawn extends ChessPiece {
      * @param adjacent The position adjacent to the pawn
      * @return true if an en passant capture is possible, false otherwise
      */
-    private boolean isValidEnPassantPosition(ChessBoardView board, Position adjacent) {
+    private boolean isValidEnPassantPosition(ChessBoardReader board, Position adjacent) {
         if (!isPawnAtPosition(board, adjacent))
             return false;
         ChessMove lastMove = board.getLastMove();
@@ -182,7 +176,7 @@ public final class Pawn extends ChessPiece {
      * @param pos   The position to check
      * @return true if there is a pawn at the position, false otherwise
      */
-    private boolean isPawnAtPosition(ChessBoardView board, Position pos) {
+    private boolean isPawnAtPosition(ChessBoardReader board, Position pos) {
         return board.containsKey(pos) && board.get(pos).getType() == PieceType.PAWN;
     }
 

@@ -1,4 +1,4 @@
-package engine;
+package engine.board;
 
 import chess.PlayerColor;
 import engine.piece.*;
@@ -7,19 +7,18 @@ import engine.piece.*;
  * Utility class for initializing a chessboard with the standard starting piece
  * configuration.
  * This class is not meant to be instantiated.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-final class ChessBoardInitializer {
-
+public abstract class ChessBoardInitializer {
     /**
      * Initializes the chessboard by placing all pieces in their standard starting
      * positions.
      *
      * @param board the {@link ChessBoard} to initialize
      */
-    public static void initializeBoard(ChessBoard board) {
+    public static void initializeBoard(ChessBoardWriter board) {
         board.clear();
         placePawns(board);
         placeRooks(board);
@@ -32,9 +31,9 @@ final class ChessBoardInitializer {
     /**
      * Places all pawns on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with pawns
+     * @param board the {@link ChessBoardWriter} to populate with pawns
      */
-    private static void placePawns(ChessBoard board) {
+    private static void placePawns(ChessBoardWriter board) {
         for (int i = 0; i < 8; i++) {
             board.put(new Position(i, 1), new Pawn(PlayerColor.WHITE));
             board.put(new Position(i, 6), new Pawn(PlayerColor.BLACK));
@@ -44,9 +43,9 @@ final class ChessBoardInitializer {
     /**
      * Places all rooks on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with rooks
+     * @param board the {@link ChessBoardWriter} to populate with rooks
      */
-    private static void placeRooks(ChessBoard board) {
+    private static void placeRooks(ChessBoardWriter board) {
         board.put(new Position(0, 0), new Rook(PlayerColor.WHITE));
         board.put(new Position(7, 0), new Rook(PlayerColor.WHITE));
         board.put(new Position(0, 7), new Rook(PlayerColor.BLACK));
@@ -56,9 +55,9 @@ final class ChessBoardInitializer {
     /**
      * Places all knights on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with knights
+     * @param board the {@link ChessBoardWriter} to populate with knights
      */
-    private static void placeKnights(ChessBoard board) {
+    private static void placeKnights(ChessBoardWriter board) {
         board.put(new Position(1, 0), new Knight(PlayerColor.WHITE));
         board.put(new Position(6, 0), new Knight(PlayerColor.WHITE));
         board.put(new Position(1, 7), new Knight(PlayerColor.BLACK));
@@ -68,9 +67,9 @@ final class ChessBoardInitializer {
     /**
      * Places all bishops on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with bishops
+     * @param board the {@link ChessBoardWriter} to populate with bishops
      */
-    private static void placeBishops(ChessBoard board) {
+    private static void placeBishops(ChessBoardWriter board) {
         board.put(new Position(2, 0), new Bishop(PlayerColor.WHITE));
         board.put(new Position(5, 0), new Bishop(PlayerColor.WHITE));
         board.put(new Position(2, 7), new Bishop(PlayerColor.BLACK));
@@ -80,9 +79,9 @@ final class ChessBoardInitializer {
     /**
      * Places the kings on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with kings
+     * @param board the {@link ChessBoardWriter} to populate with kings
      */
-    private static void placeKings(ChessBoard board) {
+    private static void placeKings(ChessBoardWriter board) {
         board.put(new Position(4, 0), new King(PlayerColor.WHITE));
         board.put(new Position(4, 7), new King(PlayerColor.BLACK));
     }
@@ -90,9 +89,9 @@ final class ChessBoardInitializer {
     /**
      * Places the queens on the chessboard in their starting positions.
      *
-     * @param board the {@link ChessBoard} to populate with queens
+     * @param board the {@link ChessBoardWriter} to populate with queens
      */
-    private static void placeQueens(ChessBoard board) {
+    private static void placeQueens(ChessBoardWriter board) {
         board.put(new Position(3, 0), new Queen(PlayerColor.WHITE));
         board.put(new Position(3, 7), new Queen(PlayerColor.BLACK));
     }

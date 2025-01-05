@@ -1,26 +1,29 @@
 package engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
+import engine.board.ChessBoard;
+import engine.board.ChessBoardController;
+import engine.board.ChessBoardInitializer;
 import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Main engine class responsible for managing the chess game logic, turns, and
  * interactions with the view.
  * Implements the {@link ChessController} interface.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
 public final class ChessEngine implements ChessController {
-    private ChessBoard board;
+    private ChessBoardController controller;
     private PlayerColor turnColor;
 
     /**
@@ -30,9 +33,22 @@ public final class ChessEngine implements ChessController {
      */
     @Override
     public void start(ChessView view) {
-        this.board = new ChessBoard(view);
-        view.startView();
+        controller = new ChessBoardController(view);
         newGame();
+    }
+
+    /**
+     * Resets the game state to start a new game.
+     *
+     * @throws IllegalStateException if the ChessEngine was not initialized properly
+     */
+    @Override
+    public void newGame() {
+        turnColor = PlayerColor.WHITE;
+        if (controller == null) {
+            throw new IllegalStateException("Call ChessEngine.start() before starting a new game");
+        }
+        ChessBoardInitializer.initializeBoard(controller);
     }
 
     /**
@@ -50,31 +66,18 @@ public final class ChessEngine implements ChessController {
         Position to = new Position(toX, toY);
         assert from.isValid() : "From position is invalid";
         assert to.isValid() : "To position is invalid";
+        assert controller.getBoard().containsKey(from) : "From position is invalid";
 
-        if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
+        ChessBoard board = controller.getBoard();
+        Moves moves = board.get(from).getPossibleMoves(board, from);
+        ChessMove move = moves.getMove(to);
+        if (!board.isValidMove(move, turnColor)) {
             return false;
         }
-
-        ChessPiece piece = board.get(from);
-        Moves moves = piece.getPossibleMoves(board, from);
-
-        ChessMove move = moves.getMove(to);
-        return makeMove(move);
-    }
-
-    /**
-     * Resets the game state to start a new game.
-     *
-     * @throws IllegalStateException if the ChessEngine was not initialized properly
-     */
-    @Override
-    public void newGame() {
-        turnColor = PlayerColor.WHITE;
-        if (board == null) {
-            throw new IllegalStateException("Call ChessEngine.start() before resetting the game");
-        }
-        ChessBoardInitializer.initializeBoard(board);
-        board.sync();
+        move.execute(controller);
+        nextTurn();
+        updateState();
+        return true;
     }
 
     /**
@@ -88,66 +91,27 @@ public final class ChessEngine implements ChessController {
     public void select(int x, int y) {
         Position from = new Position(x, y);
         assert from.isValid() : "From position is invalid";
+        assert controller.getBoard().containsKey(from) : "From position is invalid";
 
-        if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
-            return;
-        }
-
+        ChessBoard board = controller.getBoard();
         ChessPiece piece = board.get(from);
 
         Moves moves = piece.getPossibleMoves(board, from);
         List<Position> positions = new ArrayList<>();
         for (ChessMove move : moves.getAllMoves()) {
-            ChessBoard clonedBoard = board.clone();
-            move.execute(clonedBoard);
-            if (!clonedBoard.isKingInCheck(turnColor)) {
+            if (board.isValidMove(move, turnColor)) {
                 positions.add(move.getTo());
             }
         }
 
-        board.getView().highlightPositions(positions);
-    }
-
-    /**
-     * Executes the given move if it is valid and updates the game state
-     * accordingly.
-     *
-     * @param move the move to be executed
-     * @return true if the move is successful, false otherwise
-     */
-    private boolean makeMove(ChessMove move) {
-        if (move == null) {
-            return false;
-        }
-
-        ChessBoard clonedBoard = board.clone();
-        move.execute(clonedBoard);
-
-        if (clonedBoard.isKingInCheck(turnColor)) {
-            return false; // Illegal move, leaves the king in check
-        }
-
-        move.execute(board); // Execute the move on the real board
-        nextTurn();
-
-        if (board.isCheckmate(turnColor)) {
-            board.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
-        } else if (board.isStalemate(turnColor)) {
-            board.getView().displayMessage("Stalemate... It's a draw");
-        } else if (board.isDraw()) {
-            board.getView().displayMessage("Draw! Impossible to checkmate");
-        } else if (board.isKingInCheck(turnColor)) {
-            board.getView().displayMessage("Check!");
-        }
-
-        return true;
+        controller.getView().highlightPositions(positions);
     }
 
     /**
      * Switches to the next player's turn.
      */
     private void nextTurn() {
-        turnColor = oppositePlayer();
+        turnColor = getOpponentPlayer();
     }
 
     /**
@@ -155,7 +119,30 @@ public final class ChessEngine implements ChessController {
      *
      * @return the color of the opposing player
      */
-    private PlayerColor oppositePlayer() {
+    private PlayerColor getOpponentPlayer() {
         return turnColor == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
+    }
+
+    /**
+     * Displays a message to the view if an event occurred
+     */
+    private void updateState() {
+        ChessBoard board = controller.getBoard();
+        String event;
+        if (board.isCheckmate(turnColor)) {
+            event = "Checkmate! " + getOpponentPlayer() + " won!";
+        } else if (board.isStalemate(turnColor)) {
+            event = "Stalemate... It's a draw";
+        } else if (board.isDraw()) {
+            event = "Draw! Impossible to checkmate";
+        } else if (board.isKingInCheck(turnColor)) {
+            event = "Check!";
+        } else {
+            event = null;
+        }
+
+        if (event != null) {
+            controller.getView().displayMessage(event);
+        }
     }
 }

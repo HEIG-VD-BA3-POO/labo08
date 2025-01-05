@@ -1,6 +1,6 @@
 package engine.move;
 
-import engine.ChessBoard;
+import engine.board.ChessBoardWriter;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
@@ -8,7 +8,7 @@ import engine.piece.Position;
  * Represents a promotion move in chess, where a pawn reaches the last rank and
  * is promoted
  * to a more powerful piece (Queen, Rook, Bishop, or Knight).
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
@@ -17,12 +17,13 @@ public final class Promotion extends StandardMove {
     /**
      * Constructs a Promotion move with the specified starting and destination
      * positions.
-     * 
+     *
      * @param from the starting position of the pawn
      * @param to   the destination position where the pawn will be promoted
+     * @param pawn the starting position pawn
      */
-    public Promotion(Position from, Position to) {
-        super(from, to);
+    public Promotion(Position from, Position to, ChessPiece pawn) {
+        super(from, to, pawn);
     }
 
     /**
@@ -30,15 +31,12 @@ public final class Promotion extends StandardMove {
      * from its starting position
      * to the destination, and the pawn is promoted to a new piece (Queen, Rook,
      * Bishop, or Knight).
-     * 
+     *
      * @param board the chessboard on which the move is executed
      */
     @Override
-    public void execute(ChessBoard board) {
+    public void execute(ChessBoardWriter board) {
         super.execute(board);
-        assert !board.containsKey(from);
-        assert board.containsKey(to);
-        ChessPiece p = board.get(to);
-        board.handlePawnPromotion(to, p.getColor());
+        board.handlePawnPromotion(to);
     }
 }
