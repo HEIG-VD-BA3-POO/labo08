@@ -248,6 +248,16 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
         return false;
     }
 
+    public boolean isValidMove(ChessMove move, PlayerColor turnColor) {
+        if (move == null || move.getFromPiece().getColor() != turnColor) {
+            return false;
+        }
+        ChessBoard clonedBoard = this.clone();
+        move.execute(clonedBoard);
+
+        return !clonedBoard.isKingInCheck(turnColor);
+    }
+
     /**
      * Determines if the player of the given color has any legal moves left.
      *
@@ -307,4 +317,6 @@ public class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable
             throw new AssertionError("Cloning failed", e);
         }
     }
+
+
 }

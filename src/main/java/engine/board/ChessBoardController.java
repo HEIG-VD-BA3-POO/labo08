@@ -5,7 +5,7 @@ import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.piece.*;
 
-public class ChessBoardController implements ChessBoardWriter {
+public final class ChessBoardController implements ChessBoardWriter {
     private final ChessBoard board = new ChessBoard();
     private final ChessView view;
 

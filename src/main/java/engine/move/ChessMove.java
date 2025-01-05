@@ -48,6 +48,10 @@ public abstract class ChessMove {
         return from;
     }
 
+    public ChessPiece getFromPiece() {
+        return fromPiece;
+    }
+
     /**
      * Executes the move on the given chess board.
      * This method must be overridden by subclasses to define the specific behavior
