@@ -51,7 +51,7 @@ public final class ChessEngine implements ChessController {
         assert from.isValid() : "From position is invalid";
         assert to.isValid() : "To position is invalid";
 
-        if (!board.containsKey(from) || board.get(from).getColor() != turnColor) {
+        if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
             return false;
         }
 
@@ -89,13 +89,11 @@ public final class ChessEngine implements ChessController {
         Position from = new Position(x, y);
         assert from.isValid() : "From position is invalid";
 
-        if (board.get(from).getColor() != turnColor) {
+        if (!board.containsKey(from) || board.get(from).getColor() != turnColor || board.isDraw()) {
             return;
         }
 
         ChessPiece piece = board.get(from);
-        if (piece == null)
-            return;
 
         Moves moves = piece.getPossibleMoves(board, from);
         List<Position> positions = new ArrayList<>();
@@ -136,6 +134,8 @@ public final class ChessEngine implements ChessController {
             board.getView().displayMessage("Checkmate! " + oppositePlayer() + " won!");
         } else if (board.isStalemate(turnColor)) {
             board.getView().displayMessage("Stalemate... It's a draw");
+        } else if (board.isDraw()) {
+            board.getView().displayMessage("Draw! Impossible to checkmate");
         } else if (board.isKingInCheck(turnColor)) {
             board.getView().displayMessage("Check!");
         }

@@ -1,5 +1,7 @@
 package engine.piece;
 
+import chess.PlayerColor;
+
 /**
  * Represents a position on the chessboard with x and y coordinates.
  * Provides utility methods for position validation and arithmetic operations.
@@ -63,6 +65,15 @@ public record Position(int x, int y) {
      */
     public Position abs() {
         return new Position(Math.abs(x), Math.abs(y));
+    }
+
+    /**
+     * Gets the position color
+     *
+     * @return WHITE if the position is on a white square, BLACK otherwise
+     */
+    public PlayerColor getColor() {
+        return (x + y) % 2 == 0 ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
 
     /**

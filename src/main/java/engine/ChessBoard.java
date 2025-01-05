@@ -235,6 +235,57 @@ public final class ChessBoard implements ChessBoardView, Cloneable {
     }
 
     /**
+     * Checks if the game is a draw based on insufficient material.
+     * Handles scenarios: K vs K, K+B vs K, K+N vs K, and K+B vs K+B (same colored squares)
+     *
+     * @return true if the game is a draw due to insufficient material
+     */
+    public boolean isDraw() {
+        // Count pieces and track bishops for each player
+        int whitePieces = 0;
+        int blackPieces = 0;
+        Position whiteBishopPos = null;
+        Position blackBishopPos = null;
+
+        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+            ChessPiece piece = entry.getValue();
+            if (piece.getColor() == PlayerColor.WHITE) {
+                whitePieces++;
+                if (piece.getType() == PieceType.BISHOP) {
+                    whiteBishopPos = entry.getKey();
+                }
+            } else {
+                blackPieces++;
+                if (piece.getType() == PieceType.BISHOP) {
+                    blackBishopPos = entry.getKey();
+                }
+            }
+        }
+        // King vs King
+        if (whitePieces == 1 && blackPieces == 1) {
+            return true;
+        }
+        // Cases with 2 pieces vs 1 piece
+        if ((whitePieces == 2 && blackPieces == 1) || (whitePieces == 1 && blackPieces == 2)) {
+            PlayerColor morePieces = whitePieces == 2 ? PlayerColor.WHITE : PlayerColor.BLACK;
+            // Find the extra piece
+            for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+                ChessPiece piece = entry.getValue();
+                if (piece.getColor() == morePieces && piece.getType() != PieceType.KING) {
+                    // King + Bishop vs King or King + Knight vs King
+                    return piece.getType() == PieceType.BISHOP ||
+                            piece.getType() == PieceType.KNIGHT;
+                }
+            }
+        }
+        // King + Bishop vs King + Bishop (same colored squares)
+        if (whitePieces == 2 && blackPieces == 2 && whiteBishopPos != null && blackBishopPos != null) {
+            return whiteBishopPos.getColor() == blackBishopPos.getColor();
+        }
+        return false;
+    }
+
+    /**
      * Determines if the player of the given color has any legal moves left.
      * 
      * @param color the color of the player to check
