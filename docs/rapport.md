@@ -58,6 +58,7 @@ l'état de l'échiquier et la génération des mouvements.
 Comme montionné précédament, le notre implémentation se situe dans le package
 `engine`.
 
+```{=latex}
 \dirtree{%
 .1 .
 .2 app\DTcomment{point d'entrée de l'application}.
@@ -68,14 +69,18 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 .3 move\DTcomment{gestion des différents mouvements}.
 .3 piece\DTcomment{logique des pieces d'échec}.
 }
+```
 
 ## Composants Clés
 
-- **`ChessEngine`:** Gère le déroulement du jeu et communique avec la vue.
+- **`ChessEngine`:** Gère le déroulement du jeu et communique avec le
+  controlleur de l'échiquier.
+- **`ChessBoardContoller`:** Représente l'échiquier, suit les pièces et valide
+  les états
 - **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
   du jeu.
-- **`ChessBoardView`:** Interface de lecture (view) de l'échiquier, qui ne
-  permet pas de le modifier.
+- **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture (view) de
+  l'échiquier, qui ne permet pas de le modifier.
 - **`ChessPiece`:** Classe abstraite définissant le comportement commun à toutes
   les pièces, étendue par des sous-classes spécifiques (par exemple, `Pawn`,
   `Rook`, etc.).
@@ -86,9 +91,9 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 
 ## Diagramme UML
 
-Le diagramme UML fournit une vue d'ensemble de la structure et des
-relations du système. Les élements grisés représentent le code que nous avons
-utilisé et non pas implémenté.
+Le diagramme UML fournit une vue d'ensemble de la structure et des relations du
+système. Les élements grisés représentent le code que nous avons utilisé et non
+pas implémenté.
 
 ![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=70% }
 
@@ -141,7 +146,8 @@ Le système vérifie:
 
 ## Défense par l'attaque
 
-Les images suivantes montrent que le joueur blanc est obligé d'attaque le fou en H4 avec le cavalier en F3 afin de défendre son roi.
+Les images suivantes montrent que le joueur blanc est obligé d'attaque le fou en
+H4 avec le cavalier en F3 afin de défendre son roi.
 
 ```{=latex}
 \begin{figure}
@@ -173,13 +179,15 @@ Cette image montre que notre jeu est capable de détecter un pat.
 
 ## Draw
 
-Nous observons sur l'image suivante le message d'égalité dû au manque de pièces pour effectuer un échec et mat.
+Nous observons sur l'image suivante le message d'égalité dû au manque de pièces
+pour effectuer un échec et mat.
 
 ![Draw](images/checks/draw.png){ width=200px }
 
 ## En Passant
 
-Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'attaque En Passant et permet de l'exécuter.
+Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose
+l'attaque En Passant et permet de l'exécuter.
 
 ```{=latex}
 \begin{figure}
@@ -199,7 +207,8 @@ Sur les deux images ci-dessous, nous pouvons observer que notre jeu propose l'at
 
 ## Castling
 
-Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un castling si les cases du passage du roi sont attaquées.
+Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un
+castling si les cases du passage du roi sont attaquées.
 
 ```{=latex}
 \begin{figure}
@@ -221,7 +230,8 @@ Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un cast
 
 ## Promotion
 
-Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
+Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine,
+tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
 
 ```{=latex}
 \begin{figure}
@@ -248,13 +258,15 @@ Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, to
 L'implémentation étend les fonctionnalités au-delà des exigences de base:
 
 - **Logique Réutilisable:** La génération des mouvements est abstraite dans des
-  classes réutilisables, simplifiant les extensions et les futures modifications.
+  classes réutilisables, simplifiant les extensions et les futures
+  modifications.
 - **Gestion des États de Jeu:** La détection de l'échec et mat et du pat
   améliore l'expérience utilisateur et respecte les règles réelles des échecs.
 
 ## Génération des Mouvements
 
-La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements :
+La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements
+:
 
 - **`DirectionalGenerator`:** Pour les mouvements linéaires (par exemple, tour,
   fou).
@@ -280,11 +292,10 @@ abordant des règles et interactions complexes. Les défis ont inclus:
 Améliorations futures possibles:
 
 - Ajouter une IA pour un mode solo.
-- Proposer des suggestions de mouvements ou mettre en évidence les
-  mouvements valides pour améliorer l’expérience utilisateur.
+- Proposer des suggestions de mouvements ou mettre en évidence les mouvements
+  valides pour améliorer l’expérience utilisateur.
 
-\newpage
-\appendix
+\newpage \appendix
 
 # Annexes
 
