@@ -82,6 +82,8 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 - **`MoveGenerator`:** Classe abstraite responsable de la génération des
   mouvements possibles pour les pièces.
 
+\newpage
+
 ## Diagramme UML
 
 Le diagramme UML fournit une vue d'ensemble de la structure et des
@@ -120,7 +122,7 @@ Le système vérifie:
 # Tests Effectués
 
 | **Tests effectuée**                                                                                               | **Résultat** |
-|-------------------------------------------------------------------------------------------------------------------|:------------:|
+| ----------------------------------------------------------------------------------------------------------------- | :----------: |
 | Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |      V       |
 | En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |      V       |
 | En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |      V       |
@@ -204,23 +206,18 @@ Les trois images suivantes montrent qu'il n'est pas possible d'effectuer un cast
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{images/castling/part1.png}
+  \includegraphics[width=.9\linewidth]{images/castling/part1.png}
   \captionof{figure}{Le roi est bloqué car les cases sont attaquées}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.6\linewidth]{images/castling/part2.png}
+  \includegraphics[width=.9\linewidth]{images/castling/part2.png}
   \captionof{figure}{Le roi peut effectuer un roque}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{images/castling/part3.png}
-  \captionof{figure}{Le roi effectue un roque}
 \end{minipage}
 \end{figure}
 ```
 
-![Execute castling](./images/castling/part3.png){ width=200px }
+![Le roi effectue un roque](./images/castling/part3.png){ width=200px }
 
 ## Promotion
 
@@ -242,7 +239,7 @@ Ci-dessous, nous observons qu'il est possible de promouvoir un pion en reine, to
 \end{figure}
 ```
 
-![Every promotion](./images/promotion/every_promotion.png){ width=200px }
+![Chaque promotion](./images/promotion/every_promotion.png){ width=200px }
 
 ---
 
