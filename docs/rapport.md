@@ -62,8 +62,8 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 \dirtree{%
 .1 .
 .2 app\DTcomment{point d'entrée de l'application}.
-.2 chess\DTcomment{code founi}.
-.2 engine.
+.2 chess\DTcomment{\textit{code founi}}.
+.2 engine\DTcomment{notre implémentation}.
 .3 board\DTcomment{logique de l'échiquier}.
 .3 generator\DTcomment{génération de mouvements possibles pour les pieces}.
 .3 move\DTcomment{gestion des différents mouvements}.
@@ -75,17 +75,17 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 
 - **`ChessEngine`:** Gère le déroulement du jeu et communique avec le
   controlleur de l'échiquier.
-- **`ChessBoardContoller`:** Représente l'échiquier, suit les pièces et valide
-  les états
+- **`ChessBoardContoller`:** Expose l'échiquier en controllant la view
+  (`ChessView`).
 - **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
   du jeu.
-- **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture (view) de
-  l'échiquier, qui ne permet pas de le modifier.
+- **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture/écriture de
+  l'échiquier.
 - **`ChessPiece`:** Classe abstraite définissant le comportement commun à toutes
-  les pièces, étendue par des sous-classes spécifiques (par exemple, `Pawn`,
-  `Rook`, etc.).
+  les pièces, étendue par des sous-classes spécifiques.
 - **`MoveGenerator`:** Classe abstraite responsable de la génération des
   mouvements possibles pour les pièces.
+- **`ChessMove`:** Représente un type de mouvement aux échecs.
 
 \newpage
 
@@ -107,11 +107,11 @@ pas implémenté.
 
 Le système vérifie:
 
-- **Échec et mat:** Lorsque le roi est en échec et qu'aucun mouvement légal
-  n'est possible.
-- **Pat:** Lorsque aucun mouvement légal n'est possible, mais que le roi n'est
-  pas en échec.
-- **Match nul:** Lorsque aucun joueur peut gagner
+- **Checkmate:** Lorsque le roi est en échec et qu'aucun mouvement légal n'est
+  possible.
+- **Stalemate:** Lorsque aucun mouvement légal n'est possible, mais que le roi
+  n'est pas en échec.
+- **Draw:** Lorsque aucun joueur peut gagner
 
 ## Règles Spéciales
 
