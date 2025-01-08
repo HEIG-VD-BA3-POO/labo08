@@ -320,11 +320,11 @@ la fois.
 La logique de détection des états de jeu est encapsulée dans la classe
 `ChessBoard`. Chaque cas est vérifié de la manière suivante:
 
-- **`Échec et Mat:`** Vérifie si le roi est en échec et qu'il n'a aucun
-  mouvement légal disponible.
-- **`Pat:`** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal
+- **Échec et Mat:** Vérifie si le roi est en échec et qu'il n'a aucun mouvement
+  légal disponible.
+- **Pat:** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal
   n'est disponible.
-- **`Impossibilité de mater:`** Vérifie qu'il n'y a plus de matériel nécessaire
+- **Impossibilité de mater:** Vérifie qu'il n'y a plus de matériel nécessaire
   pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations suivantes est
   vraie:
   - Les deux joueurs n'ont plus que leur roi.
