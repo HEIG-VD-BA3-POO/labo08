@@ -352,7 +352,7 @@ Les images sont sous licence AGPL-3.0 et proviennent du projet Lichess[^1].
 
 \vspace{1em}
 
-**Sulignement des Mouvements Possibles**
+**Soulignement des Mouvements Possibles**
 
 Lorsqu'un utilisateur clique sur une pièce, les cases où la pièce peut bouger
 sont surlignées. Cette fonctionnalité nous a aidé a déboguer les mouvements de
@@ -381,7 +381,7 @@ Et nous avons rajouté la méthode suivante dans `ChessController`:
 void select(int x, int y);
 ```
 
-Cela nous permet de réagir aux évènements 'select' afin de surligner les
+Cela nous permet de réagir aux évènements 'select' afin de souligner les
 mouvements possible.
 
 \newpage
