@@ -10,12 +10,13 @@ This application was developed in the context of the OOP course at HEIG-VD. The
 project report can be found here: [rapport.pdf](./docs/rapport.pdf)
 
 <p align="center">
-    <img src="./docs/images/checks/knight_move.png" width="400" />
+    <img src="./docs/assets/checks/knight_move.png" width="400" />
 </p>
 
 ## Class Diagrams
 
 ![](./docs/assets/uml-simple.svg)
+
 ![](./docs/assets/uml.svg)
 
 ## Usage
