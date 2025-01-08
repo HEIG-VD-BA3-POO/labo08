@@ -30,9 +30,9 @@ interface UserChoice<<provided>> {
     + textValue(): String
 }
 
-interface "DrawableResource<E>"<<provided>> {
-    + getResource(): E
-}
+' interface "DrawableResource<E>"<<provided>> {
+'     + getResource(): E
+' }
 
 interface ChessView<<provided>> {
     + startView(): void
@@ -41,46 +41,122 @@ interface ChessView<<provided>> {
     + displayMessage(msg: String): void
 }
 
-note left of ChessView
-    T implements User Choice: <T extends User Choice> in Java
-end note
+' note left of ChessView
+'     T implements User Choice: <T extends User Choice> in Java
+' end note
 
-abstract class "BaseView<E>"<<provided>> implements ChessView {
-    + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
-    # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
-}
+' abstract class "BaseView<E>"<<provided>> implements ChessView {
+'     + registerResource(type: PieceType, color: PlayerColor, res: DrawableResource<E>): void
+'     # loadResourceFor(type: PieceType, color: PlayerColor, def: Resource): DrawableResource<E>
+' }
 
-class GUIView<<provided>> extends "BaseView<E>" {
-    + startView(): void
-    + removePiece(x: int, y: int): void
-    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-    + displayMessage(msg: String): void
-    + askUser<T>(title: String, question: String, possibilities: ...T): T
-}
+' class GUIView<<provided>> extends "BaseView<E>" {
+'     + startView(): void
+'     + removePiece(x: int, y: int): void
+'     + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+' + displayMessage(msg: String): void
+'     + askUser<T>(title: String, question: String, possibilities: ...T): T
+' }
 
-class ConsoleView<<provided>> extends "BaseView<E>" {
-    + startView(): void
-    + removePiece(x: int, y: int): void
-    + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
-    + displayMessage(msg: String): void
-    + askUser<T>(title: String, question: String, possibilities: ...T): T
-}
+' class ConsoleView<<provided>> extends "BaseView<E>" {
+'     + startView(): void
+'     + removePiece(x: int, y: int): void
+'     + putPiece(x: int, y: int, type: PieceType, color: PlayerColor): void
+'     + displayMessage(msg: String): void
+'     + askUser<T>(title: String, question: String, possibilities: ...T): T
+' }
 
 class ChessEngine implements ChessController {
-    + startGame(): void
-    + movePiece(fromX: int, fromY: int, x: int, y: int): void
+    + start(view: ChessView): void
+    + newGame(): void
+    + move(fromX: int, fromY: int, toX: int, toY: int): boolean
+
+    - nextTurn(): void
+    - getOpponentPlayer(): PlayerColor
+    - updateState(): void
 }
 
-interface ChessBoardView {
-    ChessPiece get(Position pos)
-    boolean containsKey(Position pos)
+interface ChessBoardWriter {
+    + put(pos: Position, piece: ChessPiece): void
+    + remove(pos: Position): void
+    + clear(): void
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
 }
 
-class ChessBoard implements ChessBoardView {}
+interface ChessBoardReader {
+    + get(pos: Position): ChessPiece
+    + containsKey(pos: Position): boolean
+    + getPieces(): Map<Position, ChessPiece>
+    + getLastMove(): ChessMove
+    + isKingInCheck(color: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor, ignore: PieceType): boolean
+    + isInAttackCalculationMode(): boolean
+}
 
-static class ChessBoardInitialzer<<static>> {}
+class ChessBoardController implements ChessBoardWriter {
+    + getView(): ChessView
+    + getBoard(): ChessBoard
 
-class Position {}
+    + put(pos: Position, piece: ChessPiece): void
+    + remove(pos: Position): void
+    + clear(): void
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
+}
+
+interface Cloneable<<provided>> {}
+
+class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
+    - inAttackCalculationMode: boolean = false;
+
+    + get(pos: Position): ChessPiece
+    + containsKey(pos: Position): boolean
+    + getPieces(): Map<Position, ChessPiece>
+    + getLastMove(): ChessMove
+    + isKingInCheck(color: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
+    + isInAttackCalculationMode(): boolean
+
+    + put(pos: Position, piece: ChessPiece): void
+    + remove(pos: Position): void
+    + clear(): void
+    + setLastMove(chessMove: ChessMove): void
+    + handlePawnPromotion(pos: Position): void
+
+    + isCheckmate(color: PlayerColor): boolean
+    + isStalemate(color: PlayerColor): boolean
+    + isDraw(): boolean
+    + isValidMove(move: ChessMove, turnColor: PlayerColor): boolean
+
+    + clone(): ChessBoard
+
+    - hasNoLegalMoves(color: PlayerColor): boolean
+}
+
+abstract class ChessBoardInitializer {
+    + {static} initializeBoard(board: ChessBoard): void
+
+    - {static} placePawns(board: ChessBoard): void
+    - {static} placeRooks(board: ChessBoard): void
+    - {static} placeKnights(board: ChessBoard): void
+    - {static} placeBishops(board: ChessBoard): void
+    - {static} placeKings(board: ChessBoard): void
+    - {static} placeQueens(board: ChessBoard): void
+}
+
+class Position {
+    + {static} MAX_X: int = 7
+    + {static} MAX_Y: int = 7
+
+    + isValid(): boolean
+    + dist(other: Position): int
+    + add(other: Position): Position
+    + sub(other: Position): Position
+    + abs(): Position
+    + getColor(): PlayerColor
+    + toString(): String
+}
 
 enum PlayerColor<<provided>> {
     WHITE
@@ -96,27 +172,74 @@ enum PieceType<<provided>> {
     KING
 }
 
-abstract class ChessPiece {
+abstract class ChessPiece implements Cloneable {
     - boolean: hasMoved
-    + Moves getPossibleMoves(ChessBoardView board, Position from)
+
+    + getType(): PieceType
+    + getColor(): PlayerColor
+    + isOpponent(other: ChessPiece): boolean
+    + markMoved(): void
+    + hasMoved(): boolean
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
+    + clone(): ChessPiece
 }
-abstract class PromotableChessPiece extends ChessPiece implements UserChoice {}
-class Pawn extends ChessPiece {}
+abstract class PromotableChessPiece extends ChessPiece implements UserChoice {
+    + textValue(): String
+}
+class Pawn extends ChessPiece {
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
+
+    - isValidMove(board: ChessBoardReader, from: Position, to: Position): boolean
+    - createAppropriateMove(from: Position, to: Position): ChessMove
+    - createCaptureMove(from: Position, to: Position): ChessMove
+    - createForwardMove(from: Position, to: Position): ChessMove
+    - addEnPassantMoves(board: ChessBoardReader, from: Position, moves: Moves): void
+    - isValidEnPassantPosition(board: ChessBoardReader, adjacent: Position): boolean
+    - isDiagonalMove(from: Position, to: Position): boolean
+    - isValidCapture(board: ChessBoardReader, to: Position): boolean
+    - isPawnAtPosition(board: ChessBoardReader, pos: Position): boolean
+    - wasDoublePawnAdvance(move: ChessMove): boolean
+    - isAtPromotionRank(pos: Position): boolean
+}
 class Rook extends PromotableChessPiece {}
 class Knight extends PromotableChessPiece {}
 class Bishop extends PromotableChessPiece {}
 class Queen extends PromotableChessPiece {}
-class King extends ChessPiece {}
-
-
-interface MoveGenerator {
-    + Moves generate(ChessBoardView board, Position from)
+class King extends ChessPiece {
+    + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
+    
+    - getPossibleMoves(board: ChessBoardReader, from: Position): Moves
+    - getCastlingMoves(board: ChessBoardReader, from: Position)
+    - canCastle(board: ChessBoardReader, from: Position, to: Position): boolean
+    - getRookPosition(from: Position, direction: Direction): Position
+    - isValidRook(rook: ChessPiece): boolean
+    - areSquaresBetweenEmptyAndSafe(board: ChessBoardReader, from: Position, rookPos: Position): boolean
 }
-class DirectionalGenerator implements MoveGenerator {}
-class CastlingDirectionalGenerator extends DirectionalGenerator {}
-class KnightGenerator implements MoveGenerator {}
-class DistanceGenerator implements MoveGenerator {}
-class PawnDistanceGenerator extends DistanceGenerator {}
+
+
+abstract class MoveGenerator implements Cloneable {
++ {abstract} generate(board: ChessBoardReader, from: Position): Moves
+    + clone(): MoveGenerator
+}
+class DirectionalGenerator extends MoveGenerator {
+    + generate(board: ChessBoardReader, from: Position): Moves
+}
+class KnightGenerator extends MoveGenerator {
+    - {static} KNIGHT_MOVES: int[][]
+
+    + generate(board: ChessBoardReader, from: Position): Moves
+}
+class DistanceGenerator extends MoveGenerator {
+    - maxDistance: int
+
+    + getMaxDistance(): int
+    + setMaxDistance(maxDistance: int): void
+    + generate(board: ChessBoardReader, from: Position): Moves
+    + clone(): DistanceGenerator
+}
+class PawnDistanceGenerator extends DistanceGenerator {
+    + generate(board: ChessBoardReader, from: Position): Moves
+}
 
 enum Direction {
     FORWARDS
@@ -127,40 +250,77 @@ enum Direction {
     FORWARDS_RIGHT
     BACKWARDS_LEFT
     BACKWARDS_RIGHT
+
+    + {static} ALL: List<Direction>
+    + {static} STRAIGHT: List<Direction>
+    + {static} DIAGONAL: List<Direction>
+
+    + add(position: Position): Position
+    + toString(): String
+
+    - getDy(color: PlayerColor): int
 }
 
-
-class Moves {}
+class Moves {
+    + addMove(move: ChessMove): void
+    + extendMoves(moves: Moves): void
+    + getMove(position: Position): ChessMove
+    + getAllMoves(): Collection<ChessMove>
+    + toString(): String
+}
 
 abstract class ChessMove {
-    + void execute(ChessBoard board)
+    + getFrom(): Position
+    + getTo(): Position
+    + getFromPiece(): ChessPiece
+    + execute(board: ChessBoardWriter): void
+    + toString(): String
 }
 
-class StandardMove extends ChessMove {}
-class Capture extends ChessMove {}
-class Check extends ChessMove {}
-class EnPassant extends ChessMove {}
-class Castling extends ChessMove {}
-class Promotion extends StandardMove {}
-class PromotionWithCapture extends Capture {}
+class StandardMove extends ChessMove {
+    + execute(board: ChessBoardWriter): void
+}
+class Capture extends ChessMove {
+    + execute(board: ChessBoardWriter): void
+}
+class EnPassant extends StandardMove {
+    + execute(board: ChessBoardWriter): void
+}
+abstract class Castling extends ChessMove {
+    + execute(board: ChessBoardWriter): void
+}
+class LongCastling extends Castling {}
+class ShortCastling extends Castling {}
+class Promotion extends StandardMove {
+    + execute(board: ChessBoardWriter): void
+}
+class PromotionWithCapture extends Capture {
+    + execute(board: ChessBoardWriter): void
+}
 
-ChessController "1" --> "1" ChessView : manage >
-"BaseView<E>" "1" --> "1" ChessController : callback >
-"BaseView<E>" "0..*" --> "0..*" "DrawableResource<E>" : store >
+ChessController "1" --> "1" ChessView : manage ▸
 
-ChessEngine "1" --> "1" ChessBoard : has >
-ChessEngine "1" --> "1" PlayerColor : has >
-ChessBoard "1" --> "1" ChessView : has >
-ChessBoard "1" --> "2..32" ChessPiece : has >
-ChessBoard "1" --> "2..32" Position : has >
-ChessPiece "1" --> "1..*" MoveGenerator : has >
-ChessPiece "1" --> "1" PieceType : has >
-ChessPiece "1" --> "1" PlayerColor : has >
+ChessEngine "1" *-- "1" ChessBoardController : manages ▸
+ChessEngine "1" --> "1" PlayerColor : hasTurn ▸
+ChessEngine -[#8e8e8e]-> ChessBoardInitializer : usesStatically ▸\n<color #8e8e8e>**Note:** This is not a real association.\n<color #8e8e8e>We only indicate that the ChessEngine\n<color #8e8e8e>class uses the ChessBoardInitializer statically.
+ChessBoardController "1" *-- "1" ChessBoard : controls ▸
+ChessBoardController "1" --> "1" ChessView : controls ▸
+ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
+ChessBoard "1" *-- "2" Position : tracks ▸
+ChessPiece "1" --> "1" PieceType : represents ▸
+ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
+ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸
 
-DirectionalGenerator "*" --> "1..*" Direction : has >
-DistanceGenerator "1" --> "*" DirectionalGenerator : has >
+DirectionalGenerator "1" o-- "1..*" Direction : defines ▸
+DistanceGenerator "1" *-- "1..*" DirectionalGenerator : uses ▸
 
-ChessMove "1" --> "2" Position : has >
-Moves "1" --> "*" ChessMove : has >
+ChessMove "1" *-- "1" Position : startsAt ▸
+ChessMove "1" *-- "1" Position : endsAt ▸
+ChessMove "1" *-- "1" ChessPiece : moves ▸
+Moves "1" *-- "*" ChessMove : includes ▸
+EnPassant "1" *-- "1" Position : captures ▸
+Castling "1" *-- "1" Position : rookStartsAt ▸
+Castling "1" *-- "1" Position : rookEndsAt ▸
+Castling "1" *-- "1" ChessPiece : movesWith ▸
 
 @enduml
