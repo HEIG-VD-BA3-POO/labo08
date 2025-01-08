@@ -136,7 +136,7 @@ public final class King extends ChessPiece {
             Direction direction) {
         Position current = direction.add(from, color);
         while (!current.equals(rookPos)) {
-            if (board.containsKey(current) || board.isSquareAttacked(current, color)) {
+            if (board.containsKey(current) || board.isSquareAttacked(current, color, PieceType.KING)) {
                 return false;
             }
             current = direction.add(current, color);

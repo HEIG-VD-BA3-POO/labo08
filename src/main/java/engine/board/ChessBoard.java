@@ -23,7 +23,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private Map<PlayerColor, Position> kings = new HashMap<>();
     private ChessMove lastMove = null;
-    private boolean inAttackCalculationMode = false;
 
     /**
      * Retrieves the chess piece at the specified position.
@@ -147,24 +146,28 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      */
     @Override
     public boolean isSquareAttacked(Position position, PlayerColor color) {
-        if (inAttackCalculationMode) {
-            // We prevent infinite call stack when cloning the board
-            return false;
-        }
+        return isSquareAttacked(position, get(position).getColor(), null);
+    }
 
-        inAttackCalculationMode = true;
-        try {
-            for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-                ChessPiece piece = entry.getValue();
-                if (piece.getColor() != color) {
-                    Moves possibleMoves = piece.getPossibleMoves(this, entry.getKey());
-                    if (possibleMoves.getMove(position) != null) {
-                        return true;
-                    }
+    /**
+     * Checks if the square at the given position is attacked by any piece of the
+     * given color.
+     *
+     * @param position the position to check
+     * @param color    the color of the attacking pieces
+     * @param ignore   the piece type to ignore, can be set to null to check all piece types
+     * @return true if the square is attacked, false otherwise
+     */
+    @Override
+    public boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore) {
+        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
+            ChessPiece piece = entry.getValue();
+            if (piece.getColor() != color && (ignore == null || ignore != piece.getType())) {
+                Moves possibleMoves = piece.getPossibleMoves(this, entry.getKey());
+                if (possibleMoves.getMove(position) != null) {
+                    return true;
                 }
             }
-        } finally {
-            inAttackCalculationMode = false;
         }
         return false;
     }
@@ -302,7 +305,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
             }
             // Deep copy the kings map
             clonedBoard.kings = new HashMap<>(kings);
-            clonedBoard.inAttackCalculationMode = inAttackCalculationMode;
             return clonedBoard;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError("Cloning failed", e);
