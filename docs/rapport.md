@@ -194,12 +194,12 @@ H4 avec le cavalier en F3 afin de défendre son roi.
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/checks/king_no_move.png}
+  \includegraphics[width=.9\linewidth]{assets/checks/king_no_move.png}
   \captionof{figure}{Le roi est bloqué}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/checks/knight_move.png}
+  \includegraphics[width=.9\linewidth]{assets/checks/knight_move.png}
   \captionof{figure}{Le cavalier peut défendre le roi}
 \end{minipage}
 \end{figure}
@@ -209,20 +209,20 @@ H4 avec le cavalier en F3 afin de défendre son roi.
 
 Cette image montre que notre jeu est capable de détecter un échec et mat.
 
-![Checkmate](images/checks/checkmate.png){ width=175px }
+![Checkmate](assets/checks/checkmate.png){ width=175px }
 
 ## Stalemate
 
 Cette image montre que notre jeu est capable de détecter un pat.
 
-![Stalemate](images/checks/stalemate.png){ width=200px }
+![Stalemate](assets/checks/stalemate.png){ width=200px }
 
 ## Draw
 
 Nous observons sur l'image suivante le message d'égalité dû au manque de pièces
 pour effectuer un échec et mat.
 
-![Draw](images/checks/draw.png){ width=200px }
+![Draw](assets/checks/draw.png){ width=200px }
 
 \newpage
 
@@ -236,12 +236,12 @@ l'attaque En Passant et permet de l'exécuter.
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/en_passant/show_move.png}
+  \includegraphics[width=.9\linewidth]{assets/en_passant/show_move.png}
   \captionof{figure}{Le pion a la possibilité de capturer En Passant}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/en_passant/capture.png}
+  \includegraphics[width=.9\linewidth]{assets/en_passant/capture.png}
   \captionof{figure}{Le pion capture En Passant}
 \end{minipage}
 \end{figure}
@@ -257,18 +257,18 @@ castling si les cases du passage du roi sont attaquées.
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/castling/part1.png}
+  \includegraphics[width=.9\linewidth]{assets/castling/part1.png}
   \captionof{figure}{Le roi est bloqué car les cases sont attaquées}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/castling/part2.png}
+  \includegraphics[width=.9\linewidth]{assets/castling/part2.png}
   \captionof{figure}{Le roi peut effectuer un roque}
 \end{minipage}
 \end{figure}
 ```
 
-![Le roi effectue un roque](./images/castling/part3.png){ width=200px }
+![Le roi effectue un roque](./assets/castling/part3.png){ width=200px }
 
 ## Promotion
 
@@ -280,18 +280,18 @@ tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/promotion/game_state.png}
+  \includegraphics[width=.9\linewidth]{assets/promotion/game_state.png}
   \captionof{figure}{Le pion est prêt à être promu}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{images/promotion/piece_selection.png}
+  \includegraphics[width=.9\linewidth]{assets/promotion/piece_selection.png}
   \captionof{figure}{Le joueur peut choisir la promotion du pion}
 \end{minipage}
 \end{figure}
 ```
 
-![Chaque promotion](./images/promotion/every_promotion.png){ width=200px }
+![Chaque promotion](./assets/promotion/every_promotion.png){ width=200px }
 
 ---
 

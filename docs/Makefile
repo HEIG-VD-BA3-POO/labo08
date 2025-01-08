@@ -17,9 +17,9 @@ watch-pdf:
 	@(find $(ASSETS) -type f; echo $(MD_FILE)) | entr -cs 'make build-pdf'
 
 build-uml:
-	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml.puml
-	$(LIMIT) $(PLANTUML) -nbthread auto -tpng uml.puml
-	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml-simple.puml
+	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml/uml.puml
+	$(LIMIT) $(PLANTUML) -nbthread auto -o uml/ -tpng uml/uml.puml
+	$(LIMIT) $(PLANTUML) $(PLANTUML_OPTS) -tsvg uml/uml-simple.puml
 
 watch-uml:
-	@find . -name "*.puml" | entr -s 'make build-uml'
+	@find uml/ -name "*.puml" | entr -s 'make build-uml'
