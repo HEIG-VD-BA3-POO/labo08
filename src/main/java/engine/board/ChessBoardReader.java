@@ -20,7 +20,7 @@ public interface ChessBoardReader {
      *
      * @param pos the position on the chessboard
      * @return the {@link ChessPiece} at the given position, or null if no piece is
-     * present
+     *         present
      */
     ChessPiece get(Position pos);
 
@@ -31,7 +31,6 @@ public interface ChessBoardReader {
      * @return true if a piece is present at the given position, false otherwise
      */
     boolean containsKey(Position pos);
-
 
     /**
      * Get all the chessboard pieces
@@ -56,23 +55,13 @@ public interface ChessBoardReader {
     boolean isKingInCheck(PlayerColor color);
 
     /**
-     * Checks if the specified square is attacked by any pieces of the opposing
-     * player.
-     *
-     * @param position the position to check
-     * @param color    the color of the player whose pieces should not attack the
-     *                 square
-     * @return true if the square is attacked, false otherwise
-     */
-    boolean isSquareAttacked(Position position, PlayerColor color);
-
-    /**
      * Checks if the square at the given position is attacked by any piece of the
      * given color.
      *
      * @param position the position to check
      * @param color    the color of the attacking pieces
-     * @param ignore   the piece type to ignore, can be set to null to check all piece types
+     * @param ignore   the piece type to ignore, can be set to null to check all
+     *                 piece types
      * @return true if the square is attacked, false otherwise
      */
     boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore);

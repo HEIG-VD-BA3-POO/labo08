@@ -133,7 +133,7 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     @Override
     public boolean isKingInCheck(PlayerColor kingColor) {
         Position kingPosition = kings.get(kingColor);
-        return isSquareAttacked(kingPosition, kingColor);
+        return isSquareAttacked(kingPosition, kingColor, null);
     }
 
     /**
@@ -142,20 +142,8 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      *
      * @param position the position to check
      * @param color    the color of the attacking pieces
-     * @return true if the square is attacked, false otherwise
-     */
-    @Override
-    public boolean isSquareAttacked(Position position, PlayerColor color) {
-        return isSquareAttacked(position, get(position).getColor(), null);
-    }
-
-    /**
-     * Checks if the square at the given position is attacked by any piece of the
-     * given color.
-     *
-     * @param position the position to check
-     * @param color    the color of the attacking pieces
-     * @param ignore   the piece type to ignore, can be set to null to check all piece types
+     * @param ignore   the piece type to ignore, can be set to null to check all
+     *                 piece types
      * @return true if the square is attacked, false otherwise
      */
     @Override
