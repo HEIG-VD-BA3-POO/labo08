@@ -398,8 +398,8 @@ abordant des règles et interactions complexes. Les défis ont inclus:
 Améliorations futures possibles:
 
 - Ajouter une IA pour un mode solo.
-- Proposer des suggestions de mouvements ou mettre en évidence les mouvements
-  valides pour améliorer l'expérience utilisateur.
+- Proposer des suggestions de mouvements pour améliorer l'expérience
+  utilisateur.
 
 \newpage
 
