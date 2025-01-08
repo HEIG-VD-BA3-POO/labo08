@@ -90,7 +90,7 @@ interface ChessBoardReader {
     + getPieces(): Map<Position, ChessPiece>
     + getLastMove(): ChessMove
     + isKingInCheck(color: PlayerColor): boolean
-    + isSquareAttacked(postition: Position, color: PlayerColor): boolean
+    + isSquareAttacked(postition: Position, color: PlayerColor, ignore: PieceType): boolean
     + isInAttackCalculationMode(): boolean
 }
 

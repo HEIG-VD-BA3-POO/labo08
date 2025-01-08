@@ -38,11 +38,11 @@ Pour simplifier le développement, les éléments suivants nous ont été fourni
   couleurs des joueurs.
 - **Interfaces:** `ChessController` et `ChessView` pour la gestion du jeu et de
   l'interface utilisateur.
-- **Vues préconstruites:** Une vue graphique (`GUIView`) et une vue en mode
+- **Vues pré-construites:** Une vue graphique (`GUIView`) et une vue en mode
   texte (`ConsoleView`).
 
 L'implémentation se concentre sur un nouveau package `engine` qui encapsule la
-logique du jeu tout en exploitant les interfaces fournies pour l’interaction.
+logique du jeu tout en exploitant les interfaces fournies pour l'interaction.
 
 ---
 
@@ -55,7 +55,7 @@ l'état de l'échiquier et la génération des mouvements.
 
 ## Structure
 
-Comme montionné précédament, le notre implémentation se situe dans le package
+Comme mentionné précédemment, le notre implémentation se situe dans le package
 `engine`.
 
 ```{=latex}
@@ -73,9 +73,9 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
 
 ## Composants Clés
 
-- **`ChessEngine`:** Gère le déroulement du jeu et communique avec le
-  controlleur de l'échiquier.
-- **`ChessBoardContoller`:** Expose l'échiquier en controllant la view
+- **`ChessEngine`:** Gère le déroulement du jeu et communique avec le contrôleur
+  de l'échiquier.
+- **`ChessBoardContoller`:** Expose l'échiquier en contrôlant la view
   (`ChessView`).
 - **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
   du jeu.
@@ -87,12 +87,41 @@ Comme montionné précédament, le notre implémentation se situe dans le packag
   mouvements possibles pour les pièces.
 - **`ChessMove`:** Représente un type de mouvement aux échecs.
 
+## Détails de Conception
+
+**Séparation `ChessBoard` et `ChessBoardContoller`**
+
+Nous avons découplé la logique de l'échiquier avec la mise à jour de la vue
+(`ChessView`) afin de pouvoir cloner l'échiquier sans être lié à la vue.
+
+Cela nous permet d'exécuter des mouvements sur la classe `ChessBoardContoller`
+pour mettre à jour l'interface et exécuter des mouvements sur la classe
+`ChessBoard` sans mettre à jour l'interface.
+
+\vspace{1em}
+
+**Interfaces `ChessBoardReader` et `ChessBoardWriter`**
+
+Pour encapsuler l'échiquier, deux interfaces limitent l'accès de `ChessBoard`.
+
+Par exemple, une pièce d'échec est uniquement intéressée à lire l'état de
+l'échiquier pour générer différents types de mouvements. Alors qu'un mouvement
+(`ChessMove`) doit pouvoir modifier l'état de l'échiquier.
+
+\vspace{1em}
+
+**Classe Abstraite `PromotableChessPiece`**
+
+Le rôle de cette classe est d'implémenter l'interface `UserChoice` fournie afin
+d'avoir un représentation textuelle pour l'utilisateur de l'interface de la
+piece lors d'une promotion.
+
 \newpage
 
 ## Diagramme UML
 
 Le diagramme UML fournit une vue d'ensemble de la structure et des relations du
-système. Les élements grisés représentent le code que nous avons utilisé et non
+système. Les éléments grisés représentent le code que nous avons utilisé et non
 pas implémenté.
 
 ![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=70% }
@@ -103,7 +132,9 @@ pas implémenté.
 
 # Caractéristiques Principales
 
-Notre jeu implémente les fonctionnalités suivantes pour une partie de joueur contre joueur :
+Notre jeu implémente les fonctionnalités suivantes pour une partie de joueur
+contre joueur:
+
 - Les mouvements de base des pièces (pion, tour, cavalier, fou, reine, roi).
 - La capture des pièces adverses.
 - Le petit et le grand roque
@@ -129,7 +160,7 @@ Notre jeu implémente les fonctionnalités suivantes pour une partie de joueur c
 
 # Tests Effectués
 
-| **Tests effectuée**                                                                                               | **Résultat** |
+| **Tests effectués**                                                                                               | **Résultat** |
 | ----------------------------------------------------------------------------------------------------------------- | :----------: |
 | Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |      V       |
 | En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |      V       |
@@ -172,7 +203,7 @@ H4 avec le cavalier en F3 afin de défendre son roi.
 
 Cette image montre que notre jeu est capable de détecter un échec et mat.
 
-![Checkmate](images/checks/checkmate.png){ width=200px }
+![Checkmate](images/checks/checkmate.png){ width=175px }
 
 ## Stalemate
 
@@ -186,6 +217,8 @@ Nous observons sur l'image suivante le message d'égalité dû au manque de piè
 pour effectuer un échec et mat.
 
 ![Draw](images/checks/draw.png){ width=200px }
+
+\newpage
 
 ## En Passant
 
@@ -258,36 +291,52 @@ tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
 
 # Extensions
 
-L'implémentation étend les fonctionnalités au-delà des exigences de base:
-
-- **Logique Réutilisable:** La génération des mouvements est abstraite dans des
-  classes réutilisables, simplifiant les extensions et les futures
-  modifications.
-- **Gestion des États de Jeu:** La détection de l'échec et mat et du pat
-  améliore l'expérience utilisateur et respecte les règles réelles des échecs.
+<!-- L'implémentation étend les fonctionnalités au-delà des exigences de base: -->
+<!---->
+<!-- **Logique réutilisable** -->
+<!---->
+<!-- La génération des mouvements est abstraite dans des classes réutilisables, -->
+<!-- simplifiant les extensions et les futures modifications. -->
+<!---->
+<!-- **Gestion des états de jeu** -->
+<!---->
+<!-- La détection de l'échec et mat, du pat et l'impossibilité de mater. -->
+<!---->
+<!-- Nous avons aussi apporté quelques modifications au package `chess` fourni. -->
 
 ## Génération des Mouvements
 
 La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements:
 
-- **`DirectionalGenerator`:** Pour les mouvements linéaires (par exemple, tour,
-  fou).
+- **`DirectionalGenerator`:** Pour les mouvement directionnels et prends en
+  compte si la pièce peut sauter (ex: cavalier)
 - **`KnightGenerator`:** Pour les mouvements en L propres aux cavaliers.
+- **`PawnDistanceGenerator`:** Spécialise `DistanceGenerator` pour autoriser le
+  mouvement de 2 cases quand le pion n'as pas encore bougé et puis 1 seule case.
 - **`DistanceGenerator`:** Gère les mouvements avec des portées variables, comme
   les pions.
 
 ## Gestion des États de Jeu
 
-La logique de détection des états de jeu est encapsulée dans la classe `ChessBoard`.
-Chaque cas est vérifié de la manière suivante:
-- **`Échec:`** Vérifie si le roi est attaqué par une pièce adverse.
-- **`Échec et Mat:`** Vérifie si le roi est en échec et qu'il n'a aucun mouvement légal disponible.
-- **`Pat:`** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal n'est disponible.
-- **`Impossibilité de mater:`** Vérifie qu'il n'y a plus de matériel nécessaire pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations suivantes est vraie:
+La logique de détection des états de jeu est encapsulée dans la classe
+`ChessBoard`. Chaque cas est vérifié de la manière suivante:
+
+- **`Échec et Mat:`** Vérifie si le roi est en échec et qu'il n'a aucun
+  mouvement légal disponible.
+- **`Pat:`** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal
+  n'est disponible.
+- **`Impossibilité de mater:`** Vérifie qu'il n'y a plus de matériel nécessaire
+  pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations suivantes est
+  vraie:
   - Les deux joueurs n'ont plus que leur roi.
-  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi et un fou.
-  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi et un cavalier.
-  - Chaque joueur a un roi et un fou, mais les deux fous sont sur des cases de la même couleur.
+  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi
+    et un fou.
+  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi
+    et un cavalier.
+  - Chaque joueur a un roi et un fou, mais les deux fous sont sur des cases de
+    la même couleur.
+
+## Package `chess`
 
 \newpage
 
@@ -304,9 +353,11 @@ Améliorations futures possibles:
 
 - Ajouter une IA pour un mode solo.
 - Proposer des suggestions de mouvements ou mettre en évidence les mouvements
-  valides pour améliorer l’expérience utilisateur.
+  valides pour améliorer l'expérience utilisateur.
 
-\newpage \appendix
+\newpage
+
+\appendix
 
 # Annexes
 
