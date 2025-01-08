@@ -44,6 +44,12 @@ Pour simplifier le développement, les éléments suivants nous ont été fourni
 L'implémentation se concentre sur un nouveau package `engine` qui encapsule la
 logique du jeu tout en exploitant les interfaces fournies pour l'interaction.
 
+Le rendu est composé de 2 versions:
+
+- Sans modifications au package `chess` fourni
+- Avec modifications au package `chess` fourni (c.f.
+  [[Extensions]{.underline}](#extensions))
+
 ---
 
 # Conception et Architecture
@@ -65,9 +71,9 @@ Comme mentionné précédemment, le notre implémentation se situe dans le packa
 .2 chess\DTcomment{\textit{code founi}}.
 .2 engine\DTcomment{notre implémentation}.
 .3 board\DTcomment{logique de l'échiquier}.
-.3 generator\DTcomment{génération de mouvements possibles pour les pieces}.
+.3 generator\DTcomment{génération de mouvements possibles pour les pièces}.
 .3 move\DTcomment{gestion des différents mouvements}.
-.3 piece\DTcomment{logique des pieces d'échec}.
+.3 piece\DTcomment{logique des pièces d'échec}.
 }
 ```
 
@@ -114,7 +120,7 @@ l'échiquier pour générer différents types de mouvements. Alors qu'un mouveme
 
 Le rôle de cette classe est d'implémenter l'interface `UserChoice` fournie afin
 d'avoir un représentation textuelle pour l'utilisateur de l'interface de la
-piece lors d'une promotion.
+pièce lors d'une promotion.
 
 \newpage
 
@@ -331,7 +337,52 @@ La logique de détection des états de jeu est encapsulée dans la classe
 
 ## Package `chess`
 
-Nous avons aussi apporté quelques modifications au package `chess` fourni.
+Nous avons aussi apporté quelques modifications au package `chess` fourni. Comme
+mentionné dans l'introduction, nous avons fourni deux versions qui
+incluent/excluent ces modifications.
+
+\vspace{1em}
+
+**Changements Esthétiques**
+
+Nous avons modifier les images des pions ainsi que les couleurs de l'échiquier.
+Les images sont sous licence AGPL-3.0 et proviennent du projet Lichess[^1].
+
+[^1]: https://github.com/lichess-org/lila/tree/master/public/piece/cburnett
+
+\vspace{1em}
+
+**Sulignement des Mouvements Possibles**
+
+Lorsqu'un utilisateur clique sur une pièce, les cases où la pièce peut bouger
+sont surlignées. Cette fonctionnalité nous a aidé a déboguer les mouvements de
+pièces.
+
+Pour implémenter cela, nous avons rajouté la méthode suivante dans `ChessView`:
+
+```java
+/**
+ * Highlights with a green dot the given positions
+ *
+ * @param pos the list of positions
+ */
+void highlightPositions(List<Position> pos);
+```
+
+Et nous avons rajouté la méthode suivante dans `ChessController`:
+
+```java
+/**
+ * Called when the user selects a piece on the board
+ *
+ * @param x the piece x position
+ * @param y the piece y position
+ */
+void select(int x, int y);
+```
+
+Cela nous permet de réagir aux évènements 'select' afin de surligner les
+mouvements possible.
 
 \newpage
 
