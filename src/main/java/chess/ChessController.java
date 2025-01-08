@@ -26,6 +26,12 @@ public interface ChessController {
    */
   boolean move(int fromX, int fromY, int toX, int toY);
 
+  /**
+   * Called when the user selects a piece on the board
+   *
+   * @param x the piece x position
+   * @param y the piece y position
+   */
   void select(int x, int y);
 
   /**

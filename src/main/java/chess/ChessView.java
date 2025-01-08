@@ -32,6 +32,11 @@ public interface ChessView {
    */
   void putPiece(PieceType type, PlayerColor color, int x, int y);
 
+  /**
+   * Highlights with a green dot the given positions
+   *
+   * @param pos the list of positions
+   */
   void highlightPositions(List<Position> pos);
 
   /**

@@ -81,11 +81,10 @@ public final class ChessEngine implements ChessController {
     }
 
     /**
-     * Highlights valid moves for a piece at the given position if it belongs to the
-     * current player.
+     * Called when the user selects a piece on the board
      *
-     * @param x the X-coordinate of the piece
-     * @param y the Y-coordinate of the piece
+     * @param x the piece x position
+     * @param y the piece y position
      */
     @Override
     public void select(int x, int y) {

@@ -166,8 +166,8 @@ public class ConsoleView extends BaseView<String> {
 
   @Override
   public void highlightPositions(List<Position> pos) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'highlightPositions'");
+    // No implementation for console view
+    return;
   }
 
 }
