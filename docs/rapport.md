@@ -1,6 +1,6 @@
 ---
 title: "Laboratoire 8 - Chess"
-author: "Cseres Leonard, Aladin Iseni"
+author: "Leonard Cseres, Aladin Iseni"
 date: \today
 geometry: margin=1.75in
 papersize: a4
