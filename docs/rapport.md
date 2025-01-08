@@ -162,21 +162,21 @@ contre joueur:
 
 | **Tests effectués**                                                                                               | **Résultat** |
 | ----------------------------------------------------------------------------------------------------------------- | :----------: |
-| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |      V       |
-| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |      V       |
-| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |      V       |
-| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |      V       |
-| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |      V       |
-| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |      V       |
-| Chaque pièce avance dans la bonne direction                                                                       |      V       |
-| Uniquement les chevaux peuvent sauter des pièces                                                                  |      V       |
-| Les pièces ne peuvent pas découvrir un échec                                                                      |      V       |
-| Le roi ne peut pas se mettre en échec                                                                             |      V       |
-| Lorsque le roi est en échec, uniquement les mouvements de défenses sont praticables                               |      V       |
-| Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |      V       |
-| Un pion peut être promu en reine, fou, chevalier ou tour                                                          |      V       |
-| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |      V       |
-| Un message Draw s'affiche lorsqu'il n'est plus possible de faire un checkmate avec le matériel restant            |      V       |
+| Mettre le roi blanc en échec où le seule mouvement possible est l'attaque de la pièce blanche par une pièce noire |     Vrai     |
+| En Passant est uniquement pratiquable lorsque le pion adverse avance de deux cases                                |     Vrai     |
+| En passant est praticable uniquement au tour suivant et pas 2 tours après                                         |     Vrai     |
+| Le roque est uniquement praticable si le roi et la tour en question n'ont pas bougé                               |     Vrai     |
+| Le roque est pratiquable uniquement si les cases sur lesquelles passe le roi ne sont pas attaquées                |     Vrai     |
+| Les pions peuvent avancer de deux cases uniquement lors de leur premier déplacement                               |     Vrai     |
+| Chaque pièce avance dans la bonne direction                                                                       |     Vrai     |
+| Uniquement les chevaux peuvent sauter des pièces                                                                  |     Vrai     |
+| Les pièces ne peuvent pas découvrir un échec                                                                      |     Vrai     |
+| Le roi ne peut pas se mettre en échec                                                                             |     Vrai     |
+| Lorsque le roi est en échec, uniquement les mouvements de défenses sont praticables                               |     Vrai     |
+| Une pièce ne peut que capturer les pièces d'une autre couleur                                                     |     Vrai     |
+| Un pion peut être promu en reine, fou, chevalier ou tour                                                          |     Vrai     |
+| Un message Check s'affiche lorsque le roi est en échec et Checkmate lorsque quelqu'un a gagné                     |     Vrai     |
+| Un message Draw s'affiche lorsqu'il n'est plus possible de faire un checkmate avec le matériel restant            |     Vrai     |
 
 ## Défense par l'attaque
 
@@ -291,30 +291,23 @@ tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
 
 # Extensions
 
-<!-- L'implémentation étend les fonctionnalités au-delà des exigences de base: -->
-<!---->
-<!-- **Logique réutilisable** -->
-<!---->
-<!-- La génération des mouvements est abstraite dans des classes réutilisables, -->
-<!-- simplifiant les extensions et les futures modifications. -->
-<!---->
-<!-- **Gestion des états de jeu** -->
-<!---->
-<!-- La détection de l'échec et mat, du pat et l'impossibilité de mater. -->
-<!---->
-<!-- Nous avons aussi apporté quelques modifications au package `chess` fourni. -->
-
 ## Génération des Mouvements
 
 La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements:
 
-- **`DirectionalGenerator`:** Pour les mouvement directionnels et prends en
-  compte si la pièce peut sauter (ex: cavalier)
-- **`KnightGenerator`:** Pour les mouvements en L propres aux cavaliers.
-- **`PawnDistanceGenerator`:** Spécialise `DistanceGenerator` pour autoriser le
-  mouvement de 2 cases quand le pion n'as pas encore bougé et puis 1 seule case.
+- **`DirectionalGenerator`:** Pour les mouvement directionnels.
 - **`DistanceGenerator`:** Gère les mouvements avec des portées variables, comme
   les pions.
+- **`KnightGenerator`:** Pour les mouvements en L propres aux cavaliers.
+- **`PawnDistanceGenerator`:** Spécialise `DistanceGenerator` pour autoriser le
+  mouvement de 2 cases quand le pion n'as pas encore bougé, puis 1 seule case.
+
+Au point de vue conception, la classe `DistanceGenerator` peut utiliser une
+liste de `DirectionalGenerator` pour obtenir les mouvements d'une distance
+maximum avec de la directionnalité.
+
+Par exemple, le roi, peut se déplacer dans tous les sens mais d'une seule case à
+la fois.
 
 ## Gestion des États de Jeu
 
@@ -337,6 +330,8 @@ La logique de détection des états de jeu est encapsulée dans la classe
     la même couleur.
 
 ## Package `chess`
+
+Nous avons aussi apporté quelques modifications au package `chess` fourni.
 
 \newpage
 
