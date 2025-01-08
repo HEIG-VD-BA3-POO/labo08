@@ -103,15 +103,18 @@ pas implémenté.
 
 # Caractéristiques Principales
 
-## Détection de Fin de Jeu
-
-Le système vérifie:
-
-- **Checkmate:** Lorsque le roi est en échec et qu'aucun mouvement légal n'est
-  possible.
-- **Stalemate:** Lorsque aucun mouvement légal n'est possible, mais que le roi
-  n'est pas en échec.
-- **Draw:** Lorsque aucun joueur peut gagner
+Notre jeu implémente les fonctionnalités suivantes pour une partie de joueur contre joueur :
+- Les mouvements de base des pièces (pion, tour, cavalier, fou, reine, roi).
+- La capture des pièces adverses.
+- Le petit et le grand roque
+- La prise en passant
+- La promotion des pions en avançant
+- La promotion des pions en capturant
+- La détection et l'affichage de:
+  - L'échec
+  - L'échec et mat
+  - Le pat
+  - L'impossibilité de mater
 
 ## Règles Spéciales
 
@@ -265,8 +268,7 @@ L'implémentation étend les fonctionnalités au-delà des exigences de base:
 
 ## Génération des Mouvements
 
-La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements
-:
+La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements:
 
 - **`DirectionalGenerator`:** Pour les mouvements linéaires (par exemple, tour,
   fou).
@@ -276,7 +278,16 @@ La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvemen
 
 ## Gestion des États de Jeu
 
-TODO
+La logique de détection des états de jeu est encapsulée dans la classe `ChessBoard`.
+Chaque cas est vérifié de la manière suivante:
+- **`Échec:`** Vérifie si le roi est attaqué par une pièce adverse.
+- **`Échec et Mat:`** Vérifie si le roi est en échec et qu'il n'a aucun mouvement légal disponible.
+- **`Pat:`** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal n'est disponible.
+- **`Impossibilité de mater:`** Vérifie qu'il n'y a plus de matériel nécessaire pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations suivantes est vraie:
+  - Les deux joueurs n'ont plus que leur roi.
+  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi et un fou.
+  - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi et un cavalier.
+  - Chaque joueur a un roi et un fou, mais les deux fous sont sur des cases de la même couleur.
 
 \newpage
 
