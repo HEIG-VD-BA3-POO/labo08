@@ -23,6 +23,6 @@ public final class Rook extends PromotableChessPiece {
      * @param color the color of the Rook
      */
     public Rook(PlayerColor color) {
-        super(PieceType.ROOK, color, new DirectionalGenerator(false, Direction.STRAIGHT));
+        super(PieceType.ROOK, color, new DirectionalGenerator(Direction.STRAIGHT));
     }
 }

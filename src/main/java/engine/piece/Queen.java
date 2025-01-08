@@ -24,6 +24,6 @@ public final class Queen extends PromotableChessPiece {
      * @param color the color of the Queen
      */
     public Queen(PlayerColor color) {
-        super(PieceType.QUEEN, color, new DirectionalGenerator(false, Direction.ALL));
+        super(PieceType.QUEEN, color, new DirectionalGenerator(Direction.ALL));
     }
 }

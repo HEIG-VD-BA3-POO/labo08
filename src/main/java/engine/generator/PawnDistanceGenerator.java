@@ -17,7 +17,7 @@ import engine.piece.Position;
 public final class PawnDistanceGenerator extends DistanceGenerator {
 
     public PawnDistanceGenerator() {
-        super(2, new DirectionalGenerator(false, Direction.FORWARDS));
+        super(2, new DirectionalGenerator(Direction.FORWARDS));
     }
 
     @Override

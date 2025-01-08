@@ -22,6 +22,6 @@ public final class Bishop extends PromotableChessPiece {
      * @param color the color of the Bishop
      */
     public Bishop(PlayerColor color) {
-        super(PieceType.BISHOP, color, new DirectionalGenerator(false, Direction.DIAGONAL));
+        super(PieceType.BISHOP, color, new DirectionalGenerator(Direction.DIAGONAL));
     }
 }

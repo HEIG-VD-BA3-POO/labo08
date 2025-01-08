@@ -36,7 +36,7 @@ public final class Pawn extends ChessPiece {
      */
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color, new PawnDistanceGenerator(), new DistanceGenerator(1,
-                new DirectionalGenerator(false, Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT)));
+                new DirectionalGenerator(Direction.FORWARDS_LEFT, Direction.FORWARDS_RIGHT)));
     }
 
     /**

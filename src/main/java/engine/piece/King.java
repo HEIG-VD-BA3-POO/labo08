@@ -27,7 +27,7 @@ public final class King extends ChessPiece {
      * @param color the color of the King
      */
     public King(PlayerColor color) {
-        super(PieceType.KING, color, new DistanceGenerator(1, new DirectionalGenerator(false, Direction.ALL)));
+        super(PieceType.KING, color, new DistanceGenerator(1, new DirectionalGenerator(Direction.ALL)));
     }
 
     /**
