@@ -3,7 +3,6 @@ package engine.board;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.ChessMove;
-import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 import engine.piece.Queen;
@@ -20,16 +19,17 @@ import java.util.Map;
  * @author Aladin Iseni
  */
 public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
-    private final ChessBoardStateValidator validator;
+    Map<PlayerColor, Position> kings = new HashMap<>();
     private Map<Position, ChessPiece> pieces = new HashMap<>();
-    private Map<PlayerColor, Position> kings = new HashMap<>();
     private ChessMove lastMove = null;
 
     /**
-     * Constructor of the ChessBoard
+     * Creates a new chessboard state validator and returns it
+     *
+     * @return the chessboard state validator
      */
-    public ChessBoard() {
-        this.validator = new ChessBoardStateValidator(this);
+    public ChessBoardStateValidator getValidator() {
+        return new ChessBoardStateValidator(this);
     }
 
     /**
@@ -143,69 +143,17 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      */
     @Override
     public boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore) {
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() != color && (ignore == null || ignore != piece.getType())) {
-                Moves possibleMoves = piece.getPossibleMoves(this, entry.getKey());
-                if (possibleMoves.getMove(position) != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return new ChessBoardStateValidator(this).isSquareAttacked(position, color, ignore);
     }
 
-    /**
-     * Checks if the king of the given color is in check.
-     *
-     * @param kingColor the color of the king to check
-     * @return true if the king is in check, false otherwise
-     */
-    public boolean isKingInCheck(PlayerColor kingColor) {
-        Position kingPosition = kings.get(kingColor);
-        return isSquareAttacked(kingPosition, kingColor, null);
-    }
 
     /**
-     * Checks if the player of the given color is in checkmate.
+     * Gets the kings mapped by player color
      *
-     * @param color the color of the player to check
-     * @return true if the player is in checkmate, false otherwise
+     * @return the kings
      */
-    public boolean isCheckmate(PlayerColor color) {
-        return validator.isCheckmate(color);
-    }
-
-    /**
-     * Checks if the player of the given color is in stalemate.
-     *
-     * @param color the color of the player to check
-     * @return true if the player is in stalemate, false otherwise
-     */
-    public boolean isStalemate(PlayerColor color) {
-        return validator.isStalemate(color);
-    }
-
-    /**
-     * Checks if the game is a draw based on insufficient material.
-     * Handles scenarios: K vs K, K+B vs K, K+N vs K, and K+B vs K+B (same colored
-     * squares)
-     *
-     * @return true if the game is a draw due to insufficient material
-     */
-    public boolean isDraw() {
-        return validator.isDraw();
-    }
-
-    /**
-     * Validates if a move is legal considering check conditions.
-     *
-     * @param move      the move to validate
-     * @param turnColor the color of the player making the move
-     * @return true if the move is valid, false otherwise
-     */
-    public boolean isValidMove(ChessMove move, PlayerColor turnColor) {
-        return validator.isValidMove(move, turnColor);
+    Map<PlayerColor, Position> getKings() {
+        return kings;
     }
 
     /**

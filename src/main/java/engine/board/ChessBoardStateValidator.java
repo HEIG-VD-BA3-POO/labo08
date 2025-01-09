@@ -1,5 +1,6 @@
 package engine.board;
 
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.ChessMove;
 import engine.move.Moves;
@@ -14,7 +15,7 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-class ChessBoardStateValidator {
+public class ChessBoardStateValidator {
     private final ChessBoard board;
     private final MaterialCounter materialCounter;
 
@@ -36,7 +37,7 @@ class ChessBoardStateValidator {
      * @return true if the player is in checkmate, false otherwise
      */
     public boolean isCheckmate(PlayerColor color) {
-        return board.isKingInCheck(color) && hasNoLegalMoves(color);
+        return isKingInCheck(color) && hasNoLegalMoves(color);
     }
 
     /**
@@ -46,7 +47,7 @@ class ChessBoardStateValidator {
      * @return true if the player is in stalemate, false otherwise
      */
     public boolean isStalemate(PlayerColor color) {
-        return !board.isKingInCheck(color) && hasNoLegalMoves(color);
+        return !isKingInCheck(color) && hasNoLegalMoves(color);
     }
 
     /**
@@ -72,6 +73,39 @@ class ChessBoardStateValidator {
      */
     public boolean isDraw() {
         return materialCounter.isInsufficientMaterial();
+    }
+
+    /**
+     * Checks if the king of the given color is in check.
+     *
+     * @param kingColor the color of the king to check
+     * @return true if the king is in check, false otherwise
+     */
+    public boolean isKingInCheck(PlayerColor kingColor) {
+        Position kingPosition = board.getKings().get(kingColor);
+        return isSquareAttacked(kingPosition, kingColor, null);
+    }
+
+    /**
+     * Checks if the square at the given position is attacked by any piece of the
+     * given color.
+     *
+     * @param position the position to check
+     * @param color    the color of the attacking pieces
+     * @param ignore   the piece type to ignore, can be set to null to check all
+     *                 piece types
+     * @return true if the square is attacked, false otherwise
+     */
+    boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore) {
+        return board.getPieces().entrySet().stream()
+                .filter(entry -> {
+                    ChessPiece piece = entry.getValue();
+                    return piece.getColor() != color &&
+                            (ignore == null || ignore != piece.getType());
+                }).anyMatch(entry -> {
+                    Moves possibleMoves = entry.getValue().getPossibleMoves(board, entry.getKey());
+                    return possibleMoves.getMove(position) != null;
+                });
     }
 
     /**
@@ -112,6 +146,6 @@ class ChessBoardStateValidator {
     private boolean wouldResultInCheck(ChessMove move, PlayerColor turnColor) {
         ChessBoard testBoard = board.clone();
         move.execute(testBoard);
-        return testBoard.isKingInCheck(turnColor);
+        return testBoard.getValidator().isKingInCheck(turnColor);
     }
 }
