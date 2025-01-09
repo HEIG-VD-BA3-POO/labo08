@@ -119,7 +119,7 @@ l'échiquier pour générer différents types de mouvements. Alors qu'un mouveme
 **Classe Abstraite `PromotableChessPiece`**
 
 Le rôle de cette classe est d'implémenter l'interface `UserChoice` fournie afin
-d'avoir un représentation textuelle pour l'utilisateur de l'interface de la
+d'avoir une représentation textuelle pour l'utilisateur de l'interface de la
 pièce lors d'une promotion.
 
 \newpage
@@ -127,8 +127,8 @@ pièce lors d'une promotion.
 ## Diagramme UML
 
 Le diagramme UML fournit une vue d'ensemble de la structure et des relations du
-système. Les éléments grisés représentent le code que nous avons utilisé et non
-pas implémenté.
+système. Les éléments grisés représentent le code que nous avons utilisé, mais
+que nous n’avons pas implémenté nous-mêmes.
 
 ![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=70% }
 
@@ -301,7 +301,7 @@ tour, fou ou cavalier à l'aide d'une fenêtre de sélection.
 
 La hiérarchie `MoveGenerator` encapsule la logique de génération des mouvements:
 
-- **`DirectionalGenerator`:** Pour les mouvement directionnels.
+- **`DirectionalGenerator`:** Pour les mouvements directionnels.
 - **`DistanceGenerator`:** Gère les mouvements avec des portées variables, comme
   les pions.
 - **`KnightGenerator`:** Pour les mouvements en L propres aux cavaliers.
@@ -312,21 +312,21 @@ Au point de vue conception, la classe `DistanceGenerator` peut utiliser une
 liste de `DirectionalGenerator` pour obtenir les mouvements d'une distance
 maximum avec de la directionnalité.
 
-Par exemple, le roi, peut se déplacer dans tous les sens mais d'une seule case à
-la fois.
+Par exemple, le roi, peut se déplacer dans tous les sens, mais d'une seule case
+à la fois.
 
 ## Gestion des États de Jeu
 
 La logique de détection des états de jeu est encapsulée dans la classe
 `ChessBoard`. Chaque cas est vérifié de la manière suivante:
 
-- **Échec et Mat:** Vérifie si le roi est en échec et qu'il n'a aucun mouvement
-  légal disponible.
-- **Pat:** Vérifie que le roi n'est pas en échec et qu'aucun mouvement légal
-  n'est disponible.
-- **Impossibilité de mater:** Vérifie qu'il n'y a plus de matériel nécessaire
-  pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations suivantes est
-  vraie:
+- **Échec et Mat (Checkmate):** Vérifie si le roi est en échec et qu'il n'a
+  aucun mouvement légal disponible.
+- **Pat (Stalemate):** Vérifie que le roi n'est pas en échec et qu'aucun
+  mouvement légal n'est disponible.
+- **Impossibilité de mater (Draw):** Vérifie qu'il n'y a plus de matériel
+  nécessaire pour mater. C'est-à-dire, qu'il vérifie si une des 4 situations
+  suivantes est vraie:
   - Les deux joueurs n'ont plus que leur roi.
   - L'un des joueurs n'a plus que son roi et l'autre joueur n'a plus que son roi
     et un fou.
@@ -345,7 +345,7 @@ incluent/excluent ces modifications.
 
 **Changements Esthétiques**
 
-Nous avons modifier les images des pions ainsi que les couleurs de l'échiquier.
+Nous avons modifié les images des pions ainsi que les couleurs de l'échiquier.
 Les images sont sous licence AGPL-3.0 et proviennent du projet Lichess[^1].
 
 [^1]: https://github.com/lichess-org/lila/tree/master/public/piece/cburnett
@@ -355,7 +355,7 @@ Les images sont sous licence AGPL-3.0 et proviennent du projet Lichess[^1].
 **Soulignement des Mouvements Possibles**
 
 Lorsqu'un utilisateur clique sur une pièce, les cases où la pièce peut bouger
-sont surlignées. Cette fonctionnalité nous a aidé a déboguer les mouvements de
+sont surlignées. Cette fonctionnalité nous a aidé à déboguer les mouvements de
 pièces.
 
 Pour implémenter cela, nous avons rajouté la méthode suivante dans `ChessView`:
@@ -382,7 +382,7 @@ void select(int x, int y);
 ```
 
 Cela nous permet de réagir aux évènements 'select' afin de souligner les
-mouvements possible.
+mouvements possibles.
 
 \newpage
 
