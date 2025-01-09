@@ -18,6 +18,12 @@ class ChessGameStateValidator {
     private final ChessBoard board;
     private final MaterialCounter materialCounter;
 
+    /**
+     * Creates a new ChessGameStateValidator to validate game states and moves for
+     * the provided board.
+     *
+     * @param board the chess board to validate
+     */
     public ChessGameStateValidator(ChessBoard board) {
         this.board = board;
         this.materialCounter = new MaterialCounter(board);
@@ -68,28 +74,44 @@ class ChessGameStateValidator {
         return materialCounter.isInsufficientMaterial();
     }
 
-    private boolean wouldResultInCheck(ChessMove move, PlayerColor turnColor) {
-        ChessBoard testBoard = board.clone();
-        move.execute(testBoard);
-        return testBoard.isKingInCheck(turnColor);
-    }
-
+    /**
+     * Determines if the current board state results in the given color having no
+     * legal moves.
+     *
+     * @param color the color of the player to check
+     * @return true if the player has no legal moves, false otherwise
+     */
     private boolean hasNoLegalMoves(PlayerColor color) {
         return board.getPieces().entrySet().stream()
                 .filter(entry -> entry.getValue().getColor() == color)
                 .noneMatch(entry -> hasLegalMove(entry.getValue(), entry.getKey()));
     }
 
+    /**
+     * Determines if the given piece at the specified position has any legal moves.
+     *
+     * @param piece    the chess piece to check
+     * @param position the position of the chess piece
+     * @return true if the piece has at least one legal move, false otherwise
+     */
     private boolean hasLegalMove(ChessPiece piece, Position position) {
         Moves possibleMoves = piece.getPossibleMoves(board, position);
         return possibleMoves.getAllMoves().stream()
-                .anyMatch(move -> !wouldResultInMoveCheck(position, move, piece));
+                .anyMatch(move -> !wouldResultInCheck(move, piece.getColor()));
     }
 
-    private boolean wouldResultInMoveCheck(Position from, ChessMove move, ChessPiece piece) {
+    /**
+     * Simulates a move on a cloned board to determine if it results in the king
+     * being in check.
+     *
+     * @param move      the move to simulate
+     * @param turnColor the color of the player making the move
+     * @return true if the simulated move results in the king being in check, false
+     * otherwise
+     */
+    private boolean wouldResultInCheck(ChessMove move, PlayerColor turnColor) {
         ChessBoard testBoard = board.clone();
-        testBoard.remove(from);
-        testBoard.put(move.getTo(), piece);
-        return testBoard.isKingInCheck(piece.getColor());
+        move.execute(testBoard);
+        return testBoard.isKingInCheck(turnColor);
     }
 }

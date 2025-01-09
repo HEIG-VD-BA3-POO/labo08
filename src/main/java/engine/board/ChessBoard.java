@@ -20,11 +20,10 @@ import java.util.Map;
  * @author Aladin Iseni
  */
 public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
+    private final ChessGameStateValidator validator;
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private Map<PlayerColor, Position> kings = new HashMap<>();
-
     private ChessMove lastMove = null;
-    private final ChessGameStateValidator validator;
 
     /**
      * Constructor of the ChessBoard
@@ -60,7 +59,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      *
      * @return a map of the positions its piece
      */
-    @Override
     public Map<Position, ChessPiece> getPieces() {
         return Collections.unmodifiableMap(pieces);
     }
@@ -134,18 +132,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     }
 
     /**
-     * Checks if the king of the given color is in check.
-     *
-     * @param kingColor the color of the king to check
-     * @return true if the king is in check, false otherwise
-     */
-    @Override
-    public boolean isKingInCheck(PlayerColor kingColor) {
-        Position kingPosition = kings.get(kingColor);
-        return isSquareAttacked(kingPosition, kingColor, null);
-    }
-
-    /**
      * Checks if the square at the given position is attacked by any piece of the
      * given color.
      *
@@ -167,6 +153,17 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the king of the given color is in check.
+     *
+     * @param kingColor the color of the king to check
+     * @return true if the king is in check, false otherwise
+     */
+    public boolean isKingInCheck(PlayerColor kingColor) {
+        Position kingPosition = kings.get(kingColor);
+        return isSquareAttacked(kingPosition, kingColor, null);
     }
 
     /**
@@ -221,7 +218,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     public ChessBoard clone() {
         try {
             ChessBoard clonedBoard = (ChessBoard) super.clone();
-
             // Deep copy the pieces map
             clonedBoard.pieces = new HashMap<>();
             for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
