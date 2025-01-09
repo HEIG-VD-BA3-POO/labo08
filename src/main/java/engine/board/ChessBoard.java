@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents the chessboard, managing the state of the game, including pieces,
- * positions, and special rules like pawn promotion and check.
+ * Represents the chessboard, managing the state of the game, including pieces
+ * and positions.
  *
  * @author Leonard Cseres
  * @author Aladin Iseni
@@ -22,7 +22,16 @@ import java.util.Map;
 public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private Map<PlayerColor, Position> kings = new HashMap<>();
+
     private ChessMove lastMove = null;
+    private final ChessGameStateValidator validator;
+
+    /**
+     * Constructor of the ChessBoard
+     */
+    public ChessBoard() {
+        this.validator = new ChessGameStateValidator(this);
+    }
 
     /**
      * Retrieves the chess piece at the specified position.
@@ -167,7 +176,7 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      * @return true if the player is in checkmate, false otherwise
      */
     public boolean isCheckmate(PlayerColor color) {
-        return isKingInCheck(color) && hasNoLegalMoves(color);
+        return validator.isCheckmate(color);
     }
 
     /**
@@ -177,7 +186,7 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      * @return true if the player is in stalemate, false otherwise
      */
     public boolean isStalemate(PlayerColor color) {
-        return !isKingInCheck(color) && hasNoLegalMoves(color);
+        return validator.isStalemate(color);
     }
 
     /**
@@ -188,91 +197,18 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      * @return true if the game is a draw due to insufficient material
      */
     public boolean isDraw() {
-        // Count pieces and track bishops for each player
-        int whitePieces = 0;
-        int blackPieces = 0;
-        Position whiteBishopPos = null;
-        Position blackBishopPos = null;
-
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == PlayerColor.WHITE) {
-                whitePieces++;
-                if (piece.getType() == PieceType.BISHOP) {
-                    whiteBishopPos = entry.getKey();
-                }
-            } else {
-                blackPieces++;
-                if (piece.getType() == PieceType.BISHOP) {
-                    blackBishopPos = entry.getKey();
-                }
-            }
-        }
-        // King vs King
-        if (whitePieces == 1 && blackPieces == 1) {
-            return true;
-        }
-        // Cases with 2 pieces vs 1 piece
-        if ((whitePieces == 2 && blackPieces == 1) || (whitePieces == 1 && blackPieces == 2)) {
-            PlayerColor morePieces = whitePieces == 2 ? PlayerColor.WHITE : PlayerColor.BLACK;
-            // Find the extra piece
-            for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-                ChessPiece piece = entry.getValue();
-                if (piece.getColor() == morePieces && piece.getType() != PieceType.KING) {
-                    // King + Bishop vs King or King + Knight vs King
-                    return piece.getType() == PieceType.BISHOP ||
-                            piece.getType() == PieceType.KNIGHT;
-                }
-            }
-        }
-        // King + Bishop vs King + Bishop (same colored squares)
-        if (whitePieces == 2 && blackPieces == 2 && whiteBishopPos != null && blackBishopPos != null) {
-            return whiteBishopPos.getColor() == blackBishopPos.getColor();
-        }
-        return false;
-    }
-
-    public boolean isValidMove(ChessMove move, PlayerColor turnColor) {
-        if (move == null || move.getFromPiece().getColor() != turnColor) {
-            return false;
-        }
-        ChessBoard clonedBoard = this.clone();
-        move.execute(clonedBoard);
-
-        return !clonedBoard.isKingInCheck(turnColor);
+        return validator.isDraw();
     }
 
     /**
-     * Determines if the player of the given color has any legal moves left.
+     * Validates if a move is legal considering check conditions.
      *
-     * @param color the color of the player to check
-     * @return true if the player has no legal moves, false otherwise
+     * @param move      the move to validate
+     * @param turnColor the color of the player making the move
+     * @return true if the move is valid, false otherwise
      */
-    private boolean hasNoLegalMoves(PlayerColor color) {
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == color) {
-                Position pos = entry.getKey();
-                Moves possibleMoves = piece.getPossibleMoves(this, pos);
-
-                // Check each possible move
-                for (ChessMove move : possibleMoves.getAllMoves()) {
-                    // Create a clone to test the move
-                    ChessBoard testBoard = this.clone();
-                    ChessPiece movingPiece = testBoard.get(pos);
-
-                    // Make the move on the test board
-                    testBoard.remove(pos);
-                    testBoard.put(move.getTo(), movingPiece);
-
-                    // If this move doesn't leave/put the king in check, it's a legal move
-                    if (!testBoard.isKingInCheck(color)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+    public boolean isValidMove(ChessMove move, PlayerColor turnColor) {
+        return validator.isValidMove(move, turnColor);
     }
 
     /**
@@ -298,5 +234,4 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
             throw new AssertionError("Cloning failed", e);
         }
     }
-
 }
