@@ -4,95 +4,84 @@ import chess.PlayerColor;
 import engine.piece.*;
 
 /**
- * Utility class for initializing a chessboard with the standard starting piece
- * configuration.
- * This class is not meant to be instantiated.
+ * Utility class for initializing a chessboard with different piece
+ * configurations.
+ * Provides methods for standard chess setup and supports custom board
+ * arrangements.
  *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
 public abstract class ChessBoardInitializer {
+    private static final int BOARD_SIZE = 8;
+    private static final int WHITE_BACK_ROW = 0;
+    private static final int WHITE_PAWN_ROW = 1;
+    private static final int BLACK_BACK_ROW = 7;
+    private static final int BLACK_PAWN_ROW = 6;
+
     /**
-     * Initializes the chessboard by placing all pieces in their standard starting
-     * positions.
+     * Initializes the chessboard with the standard chess piece configuration.
      *
-     * @param board the {@link ChessBoard} to initialize
+     * @param board the board to initialize
      */
     public static void initializeBoard(ChessBoardWriter board) {
         board.clear();
-        placePawns(board);
-        placeRooks(board);
-        placeKnights(board);
-        placeBishops(board);
-        placeKings(board);
-        placeQueens(board);
+        initializeStandardGame(board);
     }
 
     /**
-     * Places all pawns on the chessboard in their starting positions.
+     * Sets up the standard chess game configuration.
      *
-     * @param board the {@link ChessBoardWriter} to populate with pawns
+     * @param board the board to initialize
      */
-    private static void placePawns(ChessBoardWriter board) {
-        for (int i = 0; i < 8; i++) {
-            board.put(new Position(i, 1), new Pawn(PlayerColor.WHITE));
-            board.put(new Position(i, 6), new Pawn(PlayerColor.BLACK));
+    private static void initializeStandardGame(ChessBoardWriter board) {
+        placePieces(board, WHITE_BACK_ROW, PlayerColor.WHITE);
+        placePieces(board, BLACK_BACK_ROW, PlayerColor.BLACK);
+        placePawns(board, WHITE_PAWN_ROW, PlayerColor.WHITE);
+        placePawns(board, BLACK_PAWN_ROW, PlayerColor.BLACK);
+    }
+
+    /**
+     * Places all pieces for one player's back row according to standard chess
+     * rules.
+     *
+     * @param board the board to place pieces on
+     * @param row   the row number to place pieces
+     * @param color the color of the pieces to place
+     */
+    private static void placePieces(ChessBoardWriter board, int row, PlayerColor color) {
+        placePiece(board, 0, row, new Rook(color));
+        placePiece(board, 1, row, new Knight(color));
+        placePiece(board, 2, row, new Bishop(color));
+        placePiece(board, 3, row, new Queen(color));
+        placePiece(board, 4, row, new King(color));
+        placePiece(board, 5, row, new Bishop(color));
+        placePiece(board, 6, row, new Knight(color));
+        placePiece(board, 7, row, new Rook(color));
+    }
+
+    /**
+     * Places pawns for one player's row.
+     *
+     * @param board the board to place pawns on
+     * @param row   the row number to place pawns
+     * @param color the color of the pawns to place
+     */
+    private static void placePawns(ChessBoardWriter board, int row, PlayerColor color) {
+        for (int column = 0; column < BOARD_SIZE; column++) {
+            placePiece(board, column, row, new Pawn(color));
         }
     }
 
     /**
-     * Places all rooks on the chessboard in their starting positions.
+     * Places a single piece on the board at the specified position.
      *
-     * @param board the {@link ChessBoardWriter} to populate with rooks
+     * @param board the board to place the piece on
+     * @param x     the x-coordinate
+     * @param y     the y-coordinate
+     * @param piece the piece to place
      */
-    private static void placeRooks(ChessBoardWriter board) {
-        board.put(new Position(0, 0), new Rook(PlayerColor.WHITE));
-        board.put(new Position(7, 0), new Rook(PlayerColor.WHITE));
-        board.put(new Position(0, 7), new Rook(PlayerColor.BLACK));
-        board.put(new Position(7, 7), new Rook(PlayerColor.BLACK));
-    }
-
-    /**
-     * Places all knights on the chessboard in their starting positions.
-     *
-     * @param board the {@link ChessBoardWriter} to populate with knights
-     */
-    private static void placeKnights(ChessBoardWriter board) {
-        board.put(new Position(1, 0), new Knight(PlayerColor.WHITE));
-        board.put(new Position(6, 0), new Knight(PlayerColor.WHITE));
-        board.put(new Position(1, 7), new Knight(PlayerColor.BLACK));
-        board.put(new Position(6, 7), new Knight(PlayerColor.BLACK));
-    }
-
-    /**
-     * Places all bishops on the chessboard in their starting positions.
-     *
-     * @param board the {@link ChessBoardWriter} to populate with bishops
-     */
-    private static void placeBishops(ChessBoardWriter board) {
-        board.put(new Position(2, 0), new Bishop(PlayerColor.WHITE));
-        board.put(new Position(5, 0), new Bishop(PlayerColor.WHITE));
-        board.put(new Position(2, 7), new Bishop(PlayerColor.BLACK));
-        board.put(new Position(5, 7), new Bishop(PlayerColor.BLACK));
-    }
-
-    /**
-     * Places the kings on the chessboard in their starting positions.
-     *
-     * @param board the {@link ChessBoardWriter} to populate with kings
-     */
-    private static void placeKings(ChessBoardWriter board) {
-        board.put(new Position(4, 0), new King(PlayerColor.WHITE));
-        board.put(new Position(4, 7), new King(PlayerColor.BLACK));
-    }
-
-    /**
-     * Places the queens on the chessboard in their starting positions.
-     *
-     * @param board the {@link ChessBoardWriter} to populate with queens
-     */
-    private static void placeQueens(ChessBoardWriter board) {
-        board.put(new Position(3, 0), new Queen(PlayerColor.WHITE));
-        board.put(new Position(3, 7), new Queen(PlayerColor.BLACK));
+    private static void placePiece(ChessBoardWriter board, int x, int y, ChessPiece piece) {
+        board.put(new Position(x, y), piece);
     }
 }
