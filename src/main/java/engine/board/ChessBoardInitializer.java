@@ -50,14 +50,15 @@ public abstract class ChessBoardInitializer {
      * @param color the color of the pieces to place
      */
     private static void placePieces(ChessBoardWriter board, int row, PlayerColor color) {
-        placePiece(board, 0, row, new Rook(color));
-        placePiece(board, 1, row, new Knight(color));
-        placePiece(board, 2, row, new Bishop(color));
-        placePiece(board, 3, row, new Queen(color));
-        placePiece(board, 4, row, new King(color));
-        placePiece(board, 5, row, new Bishop(color));
-        placePiece(board, 6, row, new Knight(color));
-        placePiece(board, 7, row, new Rook(color));
+        int col = 0;
+        placePiece(board, col++, row, new Rook(color));
+        placePiece(board, col++, row, new Knight(color));
+        placePiece(board, col++, row, new Bishop(color));
+        placePiece(board, col++, row, new Queen(color));
+        placePiece(board, col++, row, new King(color));
+        placePiece(board, col++, row, new Bishop(color));
+        placePiece(board, col++, row, new Knight(color));
+        placePiece(board, col, row, new Rook(color));
     }
 
     /**
@@ -68,8 +69,8 @@ public abstract class ChessBoardInitializer {
      * @param color the color of the pawns to place
      */
     private static void placePawns(ChessBoardWriter board, int row, PlayerColor color) {
-        for (int column = 0; column < BOARD_SIZE; column++) {
-            placePiece(board, column, row, new Pawn(color));
+        for (int col = 0; col < BOARD_SIZE; col++) {
+            placePiece(board, col, row, new Pawn(color));
         }
     }
 
