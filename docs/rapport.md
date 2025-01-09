@@ -218,14 +218,14 @@ Cette image montre que notre jeu est capable de détecter un échec et mat.
 
 Cette image montre que notre jeu est capable de détecter un pat.
 
-![Stalemate](assets/checks/stalemate.png){ width=200px }
+![Stalemate](assets/checks/stalemate.png){ width=250px }
 
 ## Draw
 
 Nous observons sur l'image suivante le message d'égalité dû au manque de pièces
 pour effectuer un échec et mat.
 
-![Draw](assets/checks/draw.png){ width=200px }
+![Draw](assets/checks/draw.png){ width=250px }
 
 \newpage
 
@@ -240,12 +240,12 @@ l'attaque En Passant et permet de l'exécuter.
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{assets/en_passant/show_move.png}
-  \captionof{figure}{Le pion a la possibilité de capturer En Passant}
+  \captionof{figure}{Le pion a la possibilité de\\capturer En Passant}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{assets/en_passant/capture.png}
-  \captionof{figure}{Le pion capture En Passant}
+  \captionof{figure}{Le pion capture En Passant\vspace{1.25em}}
 \end{minipage}
 \end{figure}
 ```
@@ -261,7 +261,7 @@ castling si les cases du passage du roi sont attaquées.
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=.9\linewidth]{assets/castling/castling-next-square-attacked.png}
-  \captionof{figure}{Le roi est bloqué car la case à côté est attaquée}
+  \captionof{figure}{Le roi est bloqué car la\\case à côté est attaquée}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
