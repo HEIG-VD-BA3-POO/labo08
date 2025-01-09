@@ -2,7 +2,7 @@ MD_FILE = rapport.md
 OUTPUT = rapport.pdf
 ASSETS = assets/
 PLANTUML = plantuml
-PLANTUML_OPTS = -nbthread auto -o $(ASSETS)
+PLANTUML_OPTS = -nbthread auto -o ../$(ASSETS)
 LIMIT = PLANTUML_LIMIT_SIZE=8192
 
 default:

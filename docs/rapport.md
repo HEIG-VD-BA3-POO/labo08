@@ -133,7 +133,7 @@ Le diagramme UML fournit une vue d'ensemble de la structure et des relations du
 système. Les éléments grisés représentent le code que nous avons utilisé, mais
 que nous n’avons pas implémenté nous-mêmes.
 
-![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=70% }
+![Schéma UML (Vue simplifiée)](./assets/uml-simple.svg){ width=75% }
 
 ![Schéma UML (Vue détaillée)](./assets/uml.svg){ width=75% }
 
