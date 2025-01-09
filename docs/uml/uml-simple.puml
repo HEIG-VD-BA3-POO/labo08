@@ -69,6 +69,11 @@ interface Cloneable<<provided>> {}
 
 class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {}
 
+class ChessBoardStateValidator {}
+
+class MaterialCounter {}
+class PieceCount<<static>> {}
+
 abstract class ChessBoardInitializer {}
 
 class Position {}
@@ -132,11 +137,18 @@ ChessController "1" --> "1" ChessView : manage ▸
 ChessEngine "1" *-- "1" ChessBoardController : manages ▸
 ChessEngine "1" --> "1" PlayerColor : hasTurn ▸
 ChessEngine -[#8e8e8e]-> ChessBoardInitializer : usesStatically ▸\n<color #8e8e8e>**Note:** This is not a real association.\n<color #8e8e8e>We only indicate that the ChessEngine\n<color #8e8e8e>class uses the ChessBoardInitializer statically.
+
 ChessBoardController "1" *-- "1" ChessBoard : controls ▸
 ChessBoardController "1" --> "1" ChessView : controls ▸
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
 ChessBoard "1" *-- "2" Position : tracks ▸
 ChessBoard "1" *-- "1" ChessMove : tracks ▸
+ChessBoardStateValidator "1" *-- "1" ChessBoard : validates ▸
+ChessBoardStateValidator "1" *-- "1" MaterialCounter : counts ▸
+MaterialCounter "1" *-- "1" ChessBoardReader : reads ▸
+MaterialCounter "1" --> "1" PieceCount : hasWhite ▸
+MaterialCounter "1" --> "1" PieceCount : hasBlack ▸
+
 ChessPiece "1" --> "1" PieceType : represents ▸
 ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
 ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸
