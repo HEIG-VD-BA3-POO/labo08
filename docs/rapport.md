@@ -30,7 +30,8 @@ L'objectif de ce laboratoire est de développer un jeu d'échecs fonctionnel
 respectant les règles de base. Le projet inclut les fonctionnalités suivantes:
 déplacements des pièces, coups spéciaux (roque, prise en passant, promotion des
 pions) et gestion des états de jeu (par exemple, échec). Les objectifs bonus
-consistent à implémenter la détection de l'échec et mat ainsi que du pat.
+consistent à implémenter la détection de l'échec et mat, du pat et
+l'impossibilité de mater.
 
 Pour simplifier le développement, les éléments suivants nous ont été fournis:
 
@@ -61,7 +62,7 @@ l'état de l'échiquier et la génération des mouvements.
 
 ## Structure
 
-Comme mentionné précédemment, le notre implémentation se situe dans le package
+Comme mentionné précédemment, notre implémentation se situe dans le package
 `engine`.
 
 ```{=latex}
