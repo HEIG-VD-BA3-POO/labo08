@@ -1,27 +1,26 @@
 package engine.board;
 
 import chess.PlayerColor;
-import chess.PieceType;
 import engine.move.ChessMove;
 import engine.move.Moves;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
-import java.util.Map;
-
 /**
  * Validates chess game states including checkmate, stalemate, draws, and move
  * validity.
  * Separates game state validation logic from board management.
- * 
+ *
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
 class ChessGameStateValidator {
     private final ChessBoard board;
+    private final MaterialCounter materialCounter;
 
     public ChessGameStateValidator(ChessBoard board) {
         this.board = board;
+        this.materialCounter = new MaterialCounter(board);
     }
 
     /**
@@ -55,12 +54,7 @@ class ChessGameStateValidator {
         if (move == null || move.getFromPiece().getColor() != turnColor) {
             return false;
         }
-
-        // Create a copy of the board to test the move
-        ChessBoard testBoard = board.clone();
-        move.execute(testBoard);
-
-        return !testBoard.isKingInCheck(turnColor);
+        return !wouldResultInCheck(move, turnColor);
     }
 
     /**
@@ -71,88 +65,31 @@ class ChessGameStateValidator {
      * @return true if the game is a draw due to insufficient material
      */
     public boolean isDraw() {
-        Map<Position, ChessPiece> pieces = board.getPieces();
-        int whitePieces = 0;
-        int blackPieces = 0;
-        Position whiteBishopPos = null;
-        Position blackBishopPos = null;
-
-        // Count pieces and track bishops
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == PlayerColor.WHITE) {
-                whitePieces++;
-                if (piece.getType() == PieceType.BISHOP) {
-                    whiteBishopPos = entry.getKey();
-                }
-            } else {
-                blackPieces++;
-                if (piece.getType() == PieceType.BISHOP) {
-                    blackBishopPos = entry.getKey();
-                }
-            }
-        }
-
-        // King vs King
-        if (whitePieces == 1 && blackPieces == 1) {
-            return true;
-        }
-
-        // Cases with 2 pieces vs 1 piece
-        if ((whitePieces == 2 && blackPieces == 1) || (whitePieces == 1 && blackPieces == 2)) {
-            PlayerColor morePieces = whitePieces == 2 ? PlayerColor.WHITE : PlayerColor.BLACK;
-
-            // Find the extra piece
-            for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-                ChessPiece piece = entry.getValue();
-                if (piece.getColor() == morePieces && piece.getType() != PieceType.KING) {
-                    // King + Bishop vs King or King + Knight vs King
-                    return piece.getType() == PieceType.BISHOP ||
-                            piece.getType() == PieceType.KNIGHT;
-                }
-            }
-        }
-
-        // King + Bishop vs King + Bishop (same colored squares)
-        if (whitePieces == 2 && blackPieces == 2 && whiteBishopPos != null && blackBishopPos != null) {
-            return whiteBishopPos.getColor() == blackBishopPos.getColor();
-        }
-
-        return false;
+        return materialCounter.isInsufficientMaterial();
     }
 
-    /**
-     * Determines if the player of the given color has any legal moves left.
-     *
-     * @param color the color of the player to check
-     * @return true if the player has no legal moves, false otherwise
-     */
+    private boolean wouldResultInCheck(ChessMove move, PlayerColor turnColor) {
+        ChessBoard testBoard = board.clone();
+        move.execute(testBoard);
+        return testBoard.isKingInCheck(turnColor);
+    }
+
     private boolean hasNoLegalMoves(PlayerColor color) {
-        Map<Position, ChessPiece> pieces = board.getPieces();
+        return board.getPieces().entrySet().stream()
+                .filter(entry -> entry.getValue().getColor() == color)
+                .noneMatch(entry -> hasLegalMove(entry.getValue(), entry.getKey()));
+    }
 
-        for (Map.Entry<Position, ChessPiece> entry : pieces.entrySet()) {
-            ChessPiece piece = entry.getValue();
-            if (piece.getColor() == color) {
-                Position pos = entry.getKey();
-                Moves possibleMoves = piece.getPossibleMoves(board, pos);
+    private boolean hasLegalMove(ChessPiece piece, Position position) {
+        Moves possibleMoves = piece.getPossibleMoves(board, position);
+        return possibleMoves.getAllMoves().stream()
+                .anyMatch(move -> !wouldResultInMoveCheck(position, move, piece));
+    }
 
-                // Check each possible move
-                for (ChessMove move : possibleMoves.getAllMoves()) {
-                    // Create a clone to test the move
-                    ChessBoard testBoard = board.clone();
-                    ChessPiece movingPiece = testBoard.get(pos);
-
-                    // Make the move on the test board
-                    testBoard.remove(pos);
-                    testBoard.put(move.getTo(), movingPiece);
-
-                    // If this move doesn't leave/put the king in check, it's a legal move
-                    if (!testBoard.isKingInCheck(color)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+    private boolean wouldResultInMoveCheck(Position from, ChessMove move, ChessPiece piece) {
+        ChessBoard testBoard = board.clone();
+        testBoard.remove(from);
+        testBoard.put(move.getTo(), piece);
+        return testBoard.isKingInCheck(piece.getColor());
     }
 }
