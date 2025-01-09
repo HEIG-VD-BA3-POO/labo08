@@ -88,6 +88,8 @@ Comme mentionné précédemment, notre implémentation se situe dans le package
   (`ChessView`).
 - **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
   du jeu.
+- **`ChessBoardStateValidator`:** Vérifie les différents états de jeu.
+- **`ChessBoardInitializer`:** Mets en place l'échiquier.
 - **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture/écriture de
   l'échiquier.
 - **`ChessPiece`:** Classe abstraite définissant le comportement commun à toutes
@@ -106,6 +108,13 @@ Nous avons découplé la logique de l'échiquier avec la mise à jour de la vue
 Cela nous permet d'exécuter des mouvements sur la classe `ChessBoardContoller`
 pour mettre à jour l'interface et exécuter des mouvements sur la classe
 `ChessBoard` sans mettre à jour l'interface.
+
+\vspace{1em}
+
+**Séparation `ChessBoard` et `ChessBoardStateValidator`**
+
+Nous avons découplé l'état de l'échiquier avec la vérification de différents
+états de jeu. Cela permet de donner une seule responsabilité aux classes.
 
 \vspace{1em}
 
