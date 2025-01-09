@@ -260,18 +260,32 @@ castling si les cases du passage du roi sont attaquées.
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{assets/castling/part1.png}
-  \captionof{figure}{Le roi est bloqué car les cases sont attaquées}
+  \includegraphics[width=.9\linewidth]{assets/castling/castling-next-square-attacked.png}
+  \captionof{figure}{Le roi est bloqué car la case à côté est attaquée}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=.9\linewidth]{assets/castling/part2.png}
-  \captionof{figure}{Le roi peut effectuer un roque}
+  \includegraphics[width=.9\linewidth]{assets/castling/castling-king-attacked.png}
+  \captionof{figure}{Le roi est bloqué car il est attaqué}
 \end{minipage}
 \end{figure}
 ```
 
-![Le roi effectue un roque](./assets/castling/part3.png){ width=200px }
+```{=latex}
+\begin{figure}
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{assets/castling/part2.png}
+  \captionof{figure}{Le roi peut effectuer un roque}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{assets/castling/part3.png}
+  \captionof{figure}{Le roi a effectué le roque}
+\end{minipage}
+\end{figure}
+```
 
 ## Promotion
 
