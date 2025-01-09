@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Aladin Iseni
  */
 public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
-    private final ChessGameStateValidator validator;
+    private final ChessBoardStateValidator validator;
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private Map<PlayerColor, Position> kings = new HashMap<>();
     private ChessMove lastMove = null;
@@ -29,7 +29,7 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      * Constructor of the ChessBoard
      */
     public ChessBoard() {
-        this.validator = new ChessGameStateValidator(this);
+        this.validator = new ChessBoardStateValidator(this);
     }
 
     /**

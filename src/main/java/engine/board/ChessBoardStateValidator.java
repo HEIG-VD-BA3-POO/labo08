@@ -14,17 +14,17 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-class ChessGameStateValidator {
+class ChessBoardStateValidator {
     private final ChessBoard board;
     private final MaterialCounter materialCounter;
 
     /**
-     * Creates a new ChessGameStateValidator to validate game states and moves for
+     * Creates a new ChessBoardStateValidator to validate game states and moves for
      * the provided board.
      *
      * @param board the chess board to validate
      */
-    public ChessGameStateValidator(ChessBoard board) {
+    public ChessBoardStateValidator(ChessBoard board) {
         this.board = board;
         this.materialCounter = new MaterialCounter(board);
     }
