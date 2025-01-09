@@ -19,9 +19,9 @@ import java.util.Map;
  * @author Aladin Iseni
  */
 public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
-    Map<PlayerColor, Position> kings = new HashMap<>();
     private Map<Position, ChessPiece> pieces = new HashMap<>();
     private ChessMove lastMove = null;
+    private Map<PlayerColor, Position> kings = new HashMap<>();
 
     /**
      * Creates a new chessboard state validator and returns it
@@ -145,7 +145,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     public boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore) {
         return new ChessBoardStateValidator(this).isSquareAttacked(position, color, ignore);
     }
-
 
     /**
      * Gets the kings mapped by player color

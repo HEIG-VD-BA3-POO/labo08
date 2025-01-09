@@ -23,7 +23,7 @@ class MaterialCounter {
      *
      * @param board the chess board to analyze
      */
-    public MaterialCounter(ChessBoard board) {
+    MaterialCounter(ChessBoard board) {
         this.board = board;
         PieceCount[] counts = countPieces();
         this.whiteCount = counts[0];
@@ -37,7 +37,7 @@ class MaterialCounter {
      *
      * @return true if the game is a draw due to insufficient material, false otherwise
      */
-    public boolean isInsufficientMaterial() {
+    boolean isInsufficientMaterial() {
         return isKingVsKing() || isKingAndMinorPieceVsKing() || isKingAndBishopVsKingAndBishop();
     }
 
