@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-class MaterialCounter {
+final class MaterialCounter {
     private final ChessBoardReader board;
     private final PieceCount whiteCount;
     private final PieceCount blackCount;

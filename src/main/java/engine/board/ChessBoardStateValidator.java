@@ -15,7 +15,7 @@ import engine.piece.Position;
  * @author Leonard Cseres
  * @author Aladin Iseni
  */
-public class ChessBoardStateValidator {
+public final class ChessBoardStateValidator {
     private final ChessBoard board;
     private final MaterialCounter materialCounter;
 
