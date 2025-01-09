@@ -6,6 +6,8 @@ import engine.move.ChessMove;
 import engine.piece.ChessPiece;
 import engine.piece.Position;
 
+import java.util.Map;
+
 /**
  * Read-only interface for the ChessBoard.
  *
@@ -21,6 +23,13 @@ public interface ChessBoardReader {
      * present
      */
     ChessPiece get(Position pos);
+
+    /**
+     * Get all the chessboard pieces
+     *
+     * @return a map of the positions its piece
+     */
+    Map<Position, ChessPiece> getPieces();
 
     /**
      * Checks if the specified position contains a chess piece.

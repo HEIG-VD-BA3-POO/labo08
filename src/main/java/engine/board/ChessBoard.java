@@ -29,7 +29,7 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      * @return the chessboard state validator
      */
     public ChessBoardStateValidator getValidator() {
-        return new ChessBoardStateValidator(this);
+        return new ChessBoardStateValidator(clone());
     }
 
     /**
@@ -142,7 +142,8 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
      *
      * @return a map of the positions its piece
      */
-    Map<Position, ChessPiece> getPieces() {
+    @Override
+    public Map<Position, ChessPiece> getPieces() {
         return Collections.unmodifiableMap(pieces);
     }
 

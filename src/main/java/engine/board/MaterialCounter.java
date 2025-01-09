@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Aladin Iseni
  */
 class MaterialCounter {
-    private final ChessBoard board;
+    private final ChessBoardReader board;
     private final PieceCount whiteCount;
     private final PieceCount blackCount;
 
@@ -23,7 +23,7 @@ class MaterialCounter {
      *
      * @param board the chess board to analyze
      */
-    MaterialCounter(ChessBoard board) {
+    MaterialCounter(ChessBoardReader board) {
         this.board = board;
         PieceCount[] counts = countPieces();
         this.whiteCount = counts[0];
