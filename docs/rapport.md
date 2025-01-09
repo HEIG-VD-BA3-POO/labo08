@@ -7,7 +7,7 @@ papersize: a4
 header-includes:
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  - \fancyhead[L]{Rapport de Projet BDR}
+  - \fancyhead[L]{Rapport de Projet POO}
   - \fancyhead[R]{Page \thepage}
   - \fancyfoot[C]{}
   - \fancyfoot[R]{\thepage}
@@ -77,6 +77,8 @@ Comme mentionné précédemment, notre implémentation se situe dans le package
 .3 piece\DTcomment{logique des pièces d'échec}.
 }
 ```
+
+\newpage
 
 ## Composants Clés
 
