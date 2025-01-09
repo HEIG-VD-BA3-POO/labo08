@@ -20,9 +20,16 @@ public interface ChessBoardReader {
      *
      * @param pos the position on the chessboard
      * @return the {@link ChessPiece} at the given position, or null if no piece is
-     *         present
+     * present
      */
     ChessPiece get(Position pos);
+
+    /**
+     * Get all the chessboard pieces
+     *
+     * @return a map of the positions its piece
+     */
+    Map<Position, ChessPiece> getPieces();
 
     /**
      * Checks if the specified position contains a chess piece.
@@ -33,26 +40,11 @@ public interface ChessBoardReader {
     boolean containsKey(Position pos);
 
     /**
-     * Get all the chessboard pieces
-     *
-     * @return a map of the positions its piece
-     */
-    Map<Position, ChessPiece> getPieces();
-
-    /**
      * Retrieves the last move that was made on the chessboard.
      *
      * @return the last move that was made on the chessboard
      */
     ChessMove getLastMove();
-
-    /**
-     * Determines if the king of the specified color is currently in check.
-     *
-     * @param color the color of the king to check
-     * @return true if the king of the specified color is in check, false otherwise
-     */
-    boolean isKingInCheck(PlayerColor color);
 
     /**
      * Checks if the square at the given position is attacked by any piece of the

@@ -17,6 +17,7 @@ header-includes:
   - \def\fps@figure{H}
   - \makeatother
   - \usepackage{caption}
+  - \usepackage{tabularx}
 toc: true
 lang: fr
 numbersections: true
@@ -82,19 +83,21 @@ Comme mentionné précédemment, notre implémentation se situe dans le package
 
 ## Composants Clés
 
-- **`ChessEngine`:** Gère le déroulement du jeu et communique avec le contrôleur
-  de l'échiquier.
-- **`ChessBoardContoller`:** Expose l'échiquier en contrôlant la view
-  (`ChessView`).
-- **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
-  du jeu.
-- **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture/écriture de
-  l'échiquier.
-- **`ChessPiece`:** Classe abstraite définissant le comportement commun à toutes
-  les pièces, étendue par des sous-classes spécifiques.
-- **`MoveGenerator`:** Classe abstraite responsable de la génération des
-  mouvements possibles pour les pièces.
-- **`ChessMove`:** Représente un type de mouvement aux échecs.
+```{=latex}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Composant} & \textbf{Description} \\ \hline
+  \texttt{ChessEngine} & Gère le déroulement du jeu et communique avec le contrôleur de l'échiquier. \\ \hline
+  \texttt{ChessBoardController} & Expose l'échiquier en contrôlant la vue (\texttt{ChessView}). \\ \hline
+  \texttt{ChessBoard} & Représente l'échiquier, suit les pièces et valide les états du jeu. \\ \hline
+  \texttt{ChessBoardInitializer} & Met en place l'échiquier. \\ \hline
+  \texttt{ChessBoardReader} /\\ \texttt{ChessBoardWriter} & Interface de lecture/écriture de l'échiquier. \\ \hline
+  \texttt{ChessPiece} & Classe abstraite définissant le comportement commun à toutes les pièces, étendue par des sous-classes spécifiques. \\ \hline
+  \texttt{MoveGenerator} & Classe abstraite responsable de la génération des mouvements possibles pour les pièces. \\ \hline
+  \texttt{ChessMove} & Représente un type de mouvement aux échecs. \\
+  \toprule
+\end{tabularx}
+```
 
 ## Détails de Conception
 
@@ -106,6 +109,13 @@ Nous avons découplé la logique de l'échiquier avec la mise à jour de la vue
 Cela nous permet d'exécuter des mouvements sur la classe `ChessBoardContoller`
 pour mettre à jour l'interface et exécuter des mouvements sur la classe
 `ChessBoard` sans mettre à jour l'interface.
+
+\vspace{1em}
+
+**Séparation `ChessBoard` et `ChessBoardStateValidator`**
+
+Nous avons découplé l'état de l'échiquier avec la vérification de différents
+états de jeu. Cela permet de donner une seule responsabilité aux classes.
 
 \vspace{1em}
 

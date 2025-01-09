@@ -94,7 +94,7 @@ public final class King extends ChessPiece {
 
         return isValidRook(rook) &&
                 areSquaresBetweenEmptyAndSafe(board, from, rookPosition, direction) &&
-                !board.isKingInCheck(color);
+                !board.isSquareAttacked(from, color, null);
     }
 
     /**

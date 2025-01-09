@@ -86,10 +86,9 @@ interface ChessBoardWriter {
 
 interface ChessBoardReader {
     + get(pos: Position): ChessPiece
-    + containsKey(pos: Position): boolean
     + getPieces(): Map<Position, ChessPiece>
+    + containsKey(pos: Position): boolean
     + getLastMove(): ChessMove
-    + isKingInCheck(color: PlayerColor): boolean
     + isSquareAttacked(postition: Position, color: PlayerColor, ignore: PieceType): boolean
 }
 
@@ -107,11 +106,12 @@ class ChessBoardController implements ChessBoardWriter {
 interface Cloneable<<provided>> {}
 
 class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
+    + getValidator(): ChessBoardStateValidator
+
     + get(pos: Position): ChessPiece
-    + containsKey(pos: Position): boolean
     + getPieces(): Map<Position, ChessPiece>
+    + containsKey(pos: Position): boolean
     + getLastMove(): ChessMove
-    + isKingInCheck(color: PlayerColor): boolean
     + isSquareAttacked(postition: Position, color: PlayerColor): boolean
 
     + put(pos: Position, piece: ChessPiece): void
@@ -120,25 +120,58 @@ class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
     + setLastMove(chessMove: ChessMove): void
     + handlePawnPromotion(pos: Position): void
 
-    + isCheckmate(color: PlayerColor): boolean
-    + isStalemate(color: PlayerColor): boolean
-    + isDraw(): boolean
-    + isValidMove(move: ChessMove, turnColor: PlayerColor): boolean
+    ~ getKings(): Map<PlayerColor, ChessPiece>
 
     + clone(): ChessBoard
+}
+
+class ChessBoardStateValidator {
+    + isCheckmate(color: PlayerColor): boolean
+    + isStalemate(color: PlayerColor): boolean
+    + isValidMove(move: ChessMove, turnColor: PlayerColor): boolean
+    + isDraw(): boolean
+    + isKingInCheck(color: PlayerColor): boolean
+
+    ~ isSquareAttacked(postition: Position, color: PlayerColor, ignore: PieceType): boolean
 
     - hasNoLegalMoves(color: PlayerColor): boolean
+    - hasLegalMove(piece: ChessPiece, position: Position): boolean
+    - wouldResultInCheck(move: ChessMove, turnColor: PlayerColor): boolean
+}
+
+class MaterialCounter {
+    ~ isInsufficientMaterial(): boolean
+
+    - isKingVsKing(): boolean
+    - isKingAndMinorPieceVsKing(): boolean
+    - isKingAndBishopVsKingAndBishop(): boolean
+    - areBishopsOnSameColoredSquares(): boolean
+    - findBishopPosition(color: PlayerColor): Position
+    - isBishopOfColor(piece: ChessPiece, color: PlayerColor): boolean
+    - countPieces(): PieceCount[]
+}
+class PieceCount<<static>> {
+    - total: int = 0
+    - bishops: int = 0
+
+    - isKingOnly(): boolean
+    - isKingAndBishop(): boolean
+    - isKingPlusOneMinorPiece(): boolean
 }
 
 abstract class ChessBoardInitializer {
+    - BOARD_SIZE: int = 8
+    - WHITE_BACK ROW: int = 0
+    - WHITE_PAWN_ROW: int = 1
+    - BLACK_BACK_ROW: int = 7
+    - BLACK_PAWN_ROW: int = 6
+
     + {static} initializeBoard(board: ChessBoard): void
 
-    - {static} placePawns(board: ChessBoard): void
-    - {static} placeRooks(board: ChessBoard): void
-    - {static} placeKnights(board: ChessBoard): void
-    - {static} placeBishops(board: ChessBoard): void
-    - {static} placeKings(board: ChessBoard): void
-    - {static} placeQueens(board: ChessBoard): void
+    - {static} initializeStandardGame(board: ChessBoardWriter): void
+    - {static} placePieces(board: ChessBoardWriter, row: int, color: PlayerColor): void
+    - {static} placePawns(board: ChessBoardWriter, row: int, color: PlayerColor): void
+    - {static} placePiece(board: ChessBoardWriter, x: int, y: int, piece: ChessPiece): void
 }
 
 class Position {
@@ -301,11 +334,18 @@ ChessController "1" --> "1" ChessView : manage ▸
 ChessEngine "1" *-- "1" ChessBoardController : manages ▸
 ChessEngine "1" --> "1" PlayerColor : hasTurn ▸
 ChessEngine -[#8e8e8e]-> ChessBoardInitializer : usesStatically ▸\n<color #8e8e8e>**Note:** This is not a real association.\n<color #8e8e8e>We only indicate that the ChessEngine\n<color #8e8e8e>class uses the ChessBoardInitializer statically.
+
 ChessBoardController "1" *-- "1" ChessBoard : controls ▸
 ChessBoardController "1" --> "1" ChessView : controls ▸
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
 ChessBoard "1" *-- "2" Position : tracks ▸
 ChessBoard "1" *-- "1" ChessMove : tracks ▸
+ChessBoardStateValidator "1" *-- "1" ChessBoard : validates ▸
+ChessBoardStateValidator "1" *-- "1" MaterialCounter : counts ▸
+MaterialCounter "1" *-- "1" ChessBoardReader : reads ▸
+MaterialCounter "1" --> "1" PieceCount : hasWhite ▸
+MaterialCounter "1" --> "1" PieceCount : hasBlack ▸
+
 ChessPiece "1" --> "1" PieceType : represents ▸
 ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
 ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸

@@ -67,7 +67,7 @@ public final class ChessEngine implements ChessController {
         ChessBoard board = controller.getBoard();
         Moves moves = board.get(from).getPossibleMoves(board, from);
         ChessMove move = moves.getMove(to);
-        if (!board.isValidMove(move, turnColor)) {
+        if (!board.getValidator().isValidMove(move, turnColor)) {
             return false;
         }
         move.execute(controller);
@@ -98,13 +98,13 @@ public final class ChessEngine implements ChessController {
     private void updateState() {
         ChessBoard board = controller.getBoard();
         String event;
-        if (board.isCheckmate(turnColor)) {
+        if (board.getValidator().isCheckmate(turnColor)) {
             event = "Checkmate! " + getOpponentPlayer() + " won!";
-        } else if (board.isStalemate(turnColor)) {
+        } else if (board.getValidator().isStalemate(turnColor)) {
             event = "Stalemate... It's a draw";
-        } else if (board.isDraw()) {
+        } else if (board.getValidator().isDraw()) {
             event = "Draw! Impossible to checkmate";
-        } else if (board.isKingInCheck(turnColor)) {
+        } else if (board.getValidator().isKingInCheck(turnColor)) {
             event = "Check!";
         } else {
             event = null;
