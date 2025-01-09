@@ -17,6 +17,7 @@ header-includes:
   - \def\fps@figure{H}
   - \makeatother
   - \usepackage{caption}
+  - \usepackage{tabularx}
 toc: true
 lang: fr
 numbersections: true
@@ -82,21 +83,21 @@ Comme mentionné précédemment, notre implémentation se situe dans le package
 
 ## Composants Clés
 
-- **`ChessEngine`:** Gère le déroulement du jeu et communique avec le contrôleur
-  de l'échiquier.
-- **`ChessBoardContoller`:** Expose l'échiquier en contrôlant la view
-  (`ChessView`).
-- **`ChessBoard`:** Représente l'échiquier, suit les pièces et valide les états
-  du jeu.
-- **`ChessBoardStateValidator`:** Vérifie les différents états de jeu.
-- **`ChessBoardInitializer`:** Mets en place l'échiquier.
-- **`ChessBoardReader`/`ChessBoardWriter`:** Interface de lecture/écriture de
-  l'échiquier.
-- **`ChessPiece`:** Classe abstraite définissant le comportement commun à toutes
-  les pièces, étendue par des sous-classes spécifiques.
-- **`MoveGenerator`:** Classe abstraite responsable de la génération des
-  mouvements possibles pour les pièces.
-- **`ChessMove`:** Représente un type de mouvement aux échecs.
+```{=latex}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Composant} & \textbf{Description} \\ \hline
+  \texttt{ChessEngine} & Gère le déroulement du jeu et communique avec le contrôleur de l'échiquier. \\ \hline
+  \texttt{ChessBoardController} & Expose l'échiquier en contrôlant la vue (\texttt{ChessView}). \\ \hline
+  \texttt{ChessBoard} & Représente l'échiquier, suit les pièces et valide les états du jeu. \\ \hline
+  \texttt{ChessBoardInitializer} & Met en place l'échiquier. \\ \hline
+  \texttt{ChessBoardReader} /\\ \texttt{ChessBoardWriter} & Interface de lecture/écriture de l'échiquier. \\ \hline
+  \texttt{ChessPiece} & Classe abstraite définissant le comportement commun à toutes les pièces, étendue par des sous-classes spécifiques. \\ \hline
+  \texttt{MoveGenerator} & Classe abstraite responsable de la génération des mouvements possibles pour les pièces. \\ \hline
+  \texttt{ChessMove} & Représente un type de mouvement aux échecs. \\
+  \toprule
+\end{tabularx}
+```
 
 ## Détails de Conception
 
