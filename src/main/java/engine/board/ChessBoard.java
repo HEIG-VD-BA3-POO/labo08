@@ -55,15 +55,6 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     }
 
     /**
-     * Get all the chessboard pieces
-     *
-     * @return a map of the positions its piece
-     */
-    public Map<Position, ChessPiece> getPieces() {
-        return Collections.unmodifiableMap(pieces);
-    }
-
-    /**
      * Retrieves the last move that was made on the chessboard.
      *
      * @return the last move that was made on the chessboard
@@ -144,6 +135,15 @@ public final class ChessBoard implements ChessBoardReader, ChessBoardWriter, Clo
     @Override
     public boolean isSquareAttacked(Position position, PlayerColor color, PieceType ignore) {
         return new ChessBoardStateValidator(this).isSquareAttacked(position, color, ignore);
+    }
+
+    /**
+     * Get all the chessboard pieces
+     *
+     * @return a map of the positions its piece
+     */
+    Map<Position, ChessPiece> getPieces() {
+        return Collections.unmodifiableMap(pieces);
     }
 
     /**
