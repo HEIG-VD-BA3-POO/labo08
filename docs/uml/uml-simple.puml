@@ -136,6 +136,7 @@ ChessBoardController "1" *-- "1" ChessBoard : controls ▸
 ChessBoardController "1" --> "1" ChessView : controls ▸
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
 ChessBoard "1" *-- "2" Position : tracks ▸
+ChessBoard "1" *-- "1" ChessMove : tracks ▸
 ChessPiece "1" --> "1" PieceType : represents ▸
 ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
 ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸

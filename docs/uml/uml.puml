@@ -91,7 +91,6 @@ interface ChessBoardReader {
     + getLastMove(): ChessMove
     + isKingInCheck(color: PlayerColor): boolean
     + isSquareAttacked(postition: Position, color: PlayerColor, ignore: PieceType): boolean
-    + isInAttackCalculationMode(): boolean
 }
 
 class ChessBoardController implements ChessBoardWriter {
@@ -108,15 +107,12 @@ class ChessBoardController implements ChessBoardWriter {
 interface Cloneable<<provided>> {}
 
 class ChessBoard implements ChessBoardReader, ChessBoardWriter, Cloneable {
-    - inAttackCalculationMode: boolean = false;
-
     + get(pos: Position): ChessPiece
     + containsKey(pos: Position): boolean
     + getPieces(): Map<Position, ChessPiece>
     + getLastMove(): ChessMove
     + isKingInCheck(color: PlayerColor): boolean
     + isSquareAttacked(postition: Position, color: PlayerColor): boolean
-    + isInAttackCalculationMode(): boolean
 
     + put(pos: Position, piece: ChessPiece): void
     + remove(pos: Position): void
@@ -173,7 +169,7 @@ enum PieceType<<provided>> {
 }
 
 abstract class ChessPiece implements Cloneable {
-    - boolean: hasMoved
+    - hasMoved: boolean
 
     + getType(): PieceType
     + getColor(): PlayerColor
@@ -208,7 +204,6 @@ class Queen extends PromotableChessPiece {}
 class King extends ChessPiece {
     + getPossibleMoves(board: ChessBoardReader, from: Position): Moves
     
-    - getPossibleMoves(board: ChessBoardReader, from: Position): Moves
     - getCastlingMoves(board: ChessBoardReader, from: Position)
     - canCastle(board: ChessBoardReader, from: Position, to: Position): boolean
     - getRookPosition(from: Position, direction: Direction): Position
@@ -218,7 +213,7 @@ class King extends ChessPiece {
 
 
 abstract class MoveGenerator implements Cloneable {
-+ {abstract} generate(board: ChessBoardReader, from: Position): Moves
+    + {abstract} generate(board: ChessBoardReader, from: Position): Moves
     + clone(): MoveGenerator
 }
 class DirectionalGenerator extends MoveGenerator {
@@ -254,6 +249,9 @@ enum Direction {
     + {static} ALL: List<Direction>
     + {static} STRAIGHT: List<Direction>
     + {static} DIAGONAL: List<Direction>
+
+    - dx: int
+    - dy: int
 
     + add(position: Position): Position
     + toString(): String
@@ -307,6 +305,7 @@ ChessBoardController "1" *-- "1" ChessBoard : controls ▸
 ChessBoardController "1" --> "1" ChessView : controls ▸
 ChessBoard "1" *-- "2..32" ChessPiece : composedOf ▸
 ChessBoard "1" *-- "2" Position : tracks ▸
+ChessBoard "1" *-- "1" ChessMove : tracks ▸
 ChessPiece "1" --> "1" PieceType : represents ▸
 ChessPiece "1" --> "1" PlayerColor : belongsTo ▸
 ChessPiece "1" *-- "1..*" MoveGenerator : composedOf ▸
